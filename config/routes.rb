@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get 'transaction/transfer'
+
+  get 'transaction/history'
+
+  get 'transaction/exchange'
+
+  get 'dashboard/dashboard'
+
+  get 'dashboard/overview'
+
   get 'static_pages/homepage'
 
   # The priority is based upon order of creation: first created -> highest priority.
