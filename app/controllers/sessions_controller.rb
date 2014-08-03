@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
   def authenticate
     token = params[:auth_token]
-    check_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/check/?auth_token=' + token
+    check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
     result = JSON.parse(open(check_link).read)
 
     if result && result["success"]
