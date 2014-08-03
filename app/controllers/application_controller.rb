@@ -11,13 +11,14 @@ class ApplicationController < ActionController::Base
 
     def sign_in(user)
       session[:user_id] = user.id
+      session[:auth_token] = user.auth_token
     end
 
     def current_user
       if @current_user
         @current_user
       else
-        @current_user = session[:user_id] && User.find(session[:user_id])
+        @current_user = session[:user_id] && session[:auth_token] && User.find_by(id: session[:user_id], auth_token: session[:auth_token])
       end
     end
 
@@ -27,6 +28,7 @@ class ApplicationController < ActionController::Base
 
     def sign_out
       session[:user_id] = nil
+      session[:auth_token] = nil
     end
 
     helper_method :current_user, :signed_in, :current_user_name

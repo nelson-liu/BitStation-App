@@ -22,6 +22,9 @@ class SessionsController < ApplicationController
         })
       end
 
+      user.auth_token = token
+      user.save
+
       sign_in user
 
       redirect_to root_path

@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140802073553) do
+ActiveRecord::Schema.define(version: 20140803130707) do
 
   create_table "users", force: true do |t|
     t.string   "kerberos"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "auth_token"
   end
 
 end
