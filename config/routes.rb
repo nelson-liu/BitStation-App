@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
+  get 'sessions/destroy'
+  get 'sessions/authenticate'
+  get 'sessions/fail'
+
   get 'transaction/transfer'
-
   get 'transaction/history'
-
   get 'transaction/exchange'
 
   get 'dashboard/dashboard'
-
   get 'dashboard/overview'
 
   get 'static_pages/homepage'
