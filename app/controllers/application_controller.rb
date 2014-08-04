@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def signed_in
+    def signed_in?
       current_user != nil
     end
 
@@ -31,5 +31,5 @@ class ApplicationController < ActionController::Base
       session[:auth_token] = nil
     end
 
-    helper_method :current_user, :signed_in, :current_user_name
+    helper_method :current_user, :signed_in?, :current_user_name
 end
