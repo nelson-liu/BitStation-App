@@ -58,6 +58,11 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def clear_current_coinbase_oauth_token
+      session[:coinbase_oauth_token] = nil
+      @current_coinbase_client = nil
+    end
+
     def current_user_name
       current_user ? current_user.name : 'Guest'
     end
@@ -66,6 +71,15 @@ class ApplicationController < ActionController::Base
       session[:user_id] = nil
       session[:auth_token] = nil
       session[:coinbase_oauth_token] = nil
+    end
+
+    def rescue_unhandled_exception
+      begin
+        yield
+      rescue
+        flash[:error] = 'An unknown error happened. '
+        redirect_to root_url
+      end
     end
 
     helper_method :current_user, :signed_in?, :current_user_name
