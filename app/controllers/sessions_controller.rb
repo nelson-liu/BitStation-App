@@ -27,6 +27,7 @@ class SessionsController < ApplicationController
 
       sign_in user
 
+      flash[:success] = "You have successfully signed in as #{user.name}. "
       redirect_to root_path
     else
       redirect_to sessions_fail_path(message: 'Authentication failed. ')
@@ -34,11 +35,16 @@ class SessionsController < ApplicationController
   end
 
   def fail
-    @message = params[:message]
+    flash[:error] = params[:message]
+    redirect_to root_path
+    # @message = params[:message]
   end
 
   def destroy
-    sign_out if signed_in?
+    if signed_in?
+      sign_out
+      flash[:success] = "You have successfully signed out. "
+    end
     redirect_to root_path
   end
 
