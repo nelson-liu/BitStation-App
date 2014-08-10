@@ -16,18 +16,6 @@ Rails.application.routes.draw do
   get 'dashboard/dashboard'
   get 'dashboard/overview'
 
-  get 'static_pages/homepage'
-
-  get 'static_pages/about'
-
-  get 'static_pages/security'
-
-  get 'static_pages/faq'
-
-  get 'static_pages/team'
-
-  get 'static_pages/privacy'
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -35,15 +23,11 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root :to => 'static_pages#homepage'
 
-  match '/about', to: 'static_pages#about', via: [:get, :post]
-
-  match '/security', to: 'static_pages#security', via: [:get, :post]
-
-  match '/faq', to: 'static_pages#faq', via: [:get, :post]
-
-  match '/team', to: 'static_pages#team', via: [:get, :post]
-
-  match '/privacy', to: 'static_pages#privacy', via: [:get, :post]
+  match '/about', to: 'static_pages#about', via: :get, as: :about
+  match '/security', to: 'static_pages#security', via: :get, as: :security
+  match '/faq', to: 'static_pages#faq', via: :get, as: :faq
+  match '/team', to: 'static_pages#team', via: :get, as: :team
+  match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
