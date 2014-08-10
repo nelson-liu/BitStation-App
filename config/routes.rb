@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   get 'sessions/fail'
   get 'sessions/oauth', as: :oauth
 
-  get 'transaction/transfer'
-  get 'transaction/history'
-  get 'transaction/exchange'
+  post 'transactions/transact', as: :transact
+  get 'transactions/history'
+  get 'transactions/exchange'
 
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/overview'
