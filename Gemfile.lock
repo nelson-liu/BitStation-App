@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   specs:
     actionmailer (4.1.4)
       actionpack (= 4.1.4)
@@ -65,6 +65,8 @@ GEM
     execjs (2.2.1)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    font-awesome-rails (4.1.0.0)
+      railties (>= 3.2, < 5.0)
     hashie (3.2.0)
     hike (1.2.3)
     httparty (0.13.1)
@@ -173,6 +175,7 @@ DEPENDENCIES
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   coinbase
+  font-awesome-rails
   jbuilder (~> 2.0)
   jquery-rails
   oauth2

@@ -1,65 +1,8 @@
 <div id="dashboard-wrapper" class="row">
-	<section class="module col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Account Summary</h5>
-			<div>
-				<% if has_coinbase_account_linked? %>
-					<p>The currently linked Coinbase account is <%= current_user.coinbase_account.email %>. <%= link_to 'Unlink', unlink_coinbase_account_path, data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
-					<p>Your current balance is <%= @current_balance %>. </p>
-				<% else %>
-					<p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
-				<% end %>
-			</div>
-		</div>
-	</section>
-	<section class="module col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Transact</h5>
-			<div>
-				<%= form_tag transact_path %>
-					<div class="form-group">
-						<%= label_tag 'amount' %>
-						<%= text_field_tag 'amount', '', placeholder: 'The amount to give in BTC, e. g. 0.001', class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag 'recipient' %>
-						<%= text_field_tag 'kerberos', '', placeholder: 'The Kerberos ID of the recipient', class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag 'Message' %>
-						<%= text_field_tag 'message', '', placeholder: 'A kind word or two', class: 'form-control' %>
-					</div>
-					<%= submit_tag 'Transfer', class: 'btn btn-default' %>
-				</form>
-			</div>
-		</div>
-	</section>
-	<section class="module expandable col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Address Book</h5>
-			<div>
-			</div>
-		</div>
-	</section>
-	<section class="module expandable col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Transaction History</h5>
-			<div>
-			</div>
-		</div>
-	</section>
-	<section class="module col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Exchange Currencies</h5>
-			<div>
-			</div>
-		</div>
-	</section>
-	<section class="module col-lg-4 col-sm-6 col-xs-12">
-		<div>
-			<h5>Manage Account</h5>
-			<div>
-			</div>
-		</div>
-	</section>
+	<%= render('module', title: 'Account Summary', content_path: dashboard_account_summary_path) %>
+	<%= render('module', title: 'Transfer', content_path: dashboard_transfer_path) %>
+	<%= render('module', title: 'Address Book', content_path: dashboard_address_book_path) %>
+	<%= render('module', title: 'Transaction History', content_path: dashboard_transaction_history_path) %>
+	<%= render('module', title: 'Exchange Currencies', content_path: dashboard_exchange_currencies_path) %>
+	<%= render('module', title: 'Manage Account', content_path: dashboard_manage_account_path) %>
 </div>

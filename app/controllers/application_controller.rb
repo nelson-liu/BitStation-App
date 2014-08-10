@@ -42,6 +42,10 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def ensure_signed_in_without_redirect
+      head :forbidden unless signed_in?
+    end
+
     def ensure_coinbase_account_linked
       ensure_signed_in
       if current_user.coinbase_account.nil?

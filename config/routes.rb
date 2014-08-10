@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   get 'transactions/exchange'
 
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
+  get 'dashboard/account_summary'
+  get 'dashboard/transfer'
+  get 'dashboard/address_book'
+  get 'dashboard/transaction_history'
+  get 'dashboard/exchange_currencies'
+  get 'dashboard/manage_account'
   get 'dashboard/overview'
 
   # The priority is based upon order of creation: first created -> highest priority.
