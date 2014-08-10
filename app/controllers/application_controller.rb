@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     def ensure_signed_in
       unless signed_in?
         flash[:error] = "Please sign in first. "
-        redirect_to sessions_new_url
+        redirect_to sign_in_url
       end
     end
 

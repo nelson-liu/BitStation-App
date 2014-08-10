@@ -15,9 +15,9 @@
         <ul class="nav navbar-nav pull-right">
           <li>
             <% if signed_in? %>
-              <%= link_to 'Sign out', sessions_destroy_path %>
+              <%= link_to 'Sign out', sign_out_path %>
             <% else %>
-              <%= link_to 'Sign in with Kerberos', sessions_new_path %>
+              <%= link_to 'Sign in with Kerberos', sign_in_path %>
             <% end %>
           </li>
         </ul>
