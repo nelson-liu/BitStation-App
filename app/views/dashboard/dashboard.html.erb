@@ -1,8 +1,8 @@
 <div id="dashboard-wrapper" class="row">
-	<%= render('module', title: 'Account Summary', content_path: dashboard_account_summary_path) %>
-	<%= render('module', title: 'Transfer', content_path: dashboard_transfer_path) %>
-	<%= render('module', title: 'Address Book', content_path: dashboard_address_book_path) %>
-	<%= render('module', title: 'Transaction History', content_path: dashboard_transaction_history_path) %>
-	<%= render('module', title: 'Exchange Currencies', content_path: dashboard_exchange_currencies_path) %>
-	<%= render('module', title: 'Manage Account', content_path: dashboard_manage_account_path) %>
+	<%= render('module', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
+	<%= render('module', title: 'Transfer', content_path: dashboard_transfer_path, expandable: false) %>
+	<%= render('module', title: 'Address Book', content_path: dashboard_address_book_path, expandable: true) %>
+	<%= render('module', title: 'Transaction History', content_path: dashboard_transaction_history_path, expandable: true) %>
+	<%= render('module', title: 'Exchange Currencies', content_path: dashboard_exchange_currencies_path, expandable: false) %>
+	<%= render('module', title: 'Manage Account', content_path: dashboard_manage_account_path, expandable: false) %>
 </div>
