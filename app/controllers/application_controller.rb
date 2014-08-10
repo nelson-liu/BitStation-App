@@ -14,6 +14,18 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def coinbase_client_id
+      Rails.env.development? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
+    end
+
+    def coinbase_client_secret
+      Rails.env.development? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
+    end
+
+    def coinbase_callback_uri
+      Rails.env.development? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
+    end
+
     def check_for_refreshed_token
       # Check only if the user has account linked and api calls have been made
       return unless has_coinbase_account_linked?
@@ -43,7 +55,7 @@ class ApplicationController < ActionController::Base
     end
 
     def prepare_oauth_client
-      @oauth_client = OAuth2::Client.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, site: 'https://coinbase.com')
+      @oauth_client = OAuth2::Client.new(coinbase_client_id, coinbase_client_secret, site: 'https://coinbase.com')
     end
 
     def warn_unlinked_coinbase_account
@@ -74,7 +86,7 @@ class ApplicationController < ActionController::Base
     end
 
     def coinbase_client_with_oauth_credentials(credentials)
-      Coinbase::OAuthClient.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, credentials.symbolize_keys)
+      Coinbase::OAuthClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys)
     end
 
     def current_coinbase_client

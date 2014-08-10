@@ -65,7 +65,7 @@ class SessionsController < ApplicationController
   def oauth
     begin
       code = params[:code]
-      token = @oauth_client.auth_code.get_token(code, redirect_uri: COINBASE_CALLBACK_URI)
+      token = @oauth_client.auth_code.get_token(code, redirect_uri: coinbase_callback_uri)
 
       if current_user.coinbase_account.nil?
         flash[:coinbase_oauth_credentials] = token.to_hash
