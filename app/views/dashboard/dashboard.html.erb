@@ -1,38 +1,50 @@
 <div id="dashboard-wrapper" class="row">
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Account Summary</h3>
-		<% if has_coinbase_account_linked? %>
-			<p>The currently linked Coinbase account is <%= current_user.coinbase_account.email %>. <%= link_to 'Unlink', unlink_coinbase_account_path, data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
-			<p>Your current balance is <%= @current_balance %>. </p>
-		<% else %>
-			<p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
-		<% end %>
-	</div>
-</section>
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Transact</h3>
-	</div>
-</section>
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Address Book</h3>
-	</div>
-</section>
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Transaction History</h3>
-	</div>
-</section>
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Exchange Currencies</h3>
-	</div>
-</section>
-<section class="module col-lg-4 col-sm-6 col-xs-12">
-	<div>
-		<h3>Manage Account</h3>
-	</div>
-</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Account Summary</h5>
+			<div>
+				<% if has_coinbase_account_linked? %>
+					<p>The currently linked Coinbase account is <%= current_user.coinbase_account.email %>. <%= link_to 'Unlink', unlink_coinbase_account_path, data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
+					<p>Your current balance is <%= @current_balance %>. </p>
+				<% else %>
+					<p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
+				<% end %>
+			</div>
+		</div>
+	</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Transact</h5>
+			<div>
+			</div>
+		</div>
+	</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Address Book</h5>
+			<div>
+			</div>
+		</div>
+	</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Transaction History</h5>
+			<div>
+			</div>
+		</div>
+	</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Exchange Currencies</h5>
+			<div>
+			</div>
+		</div>
+	</section>
+	<section class="module col-lg-4 col-sm-6 col-xs-12">
+		<div>
+			<h5>Manage Account</h5>
+			<div>
+			</div>
+		</div>
+	</section>
 </div>

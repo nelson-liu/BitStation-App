@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700);
+
 .dashboard-action {
 	section.module {
 		padding: 0 8px;
@@ -17,14 +19,24 @@
 	}
 
 	section.module>div {
-		/*border: 1px solid black;*/
 		height: 400px;
-		padding: 0 23px;
-
-	  box-shadow:0 1px 2px #aaa;
-	  background:white;
-	  border-radius:3px;
-	  border:1px solid #aaa;
+		box-shadow:0 1px 2px #aaa;
+		background:white;
+		border-radius:3px;
+		border:1px solid #aaa;
+		div {
+			padding: 0 20px;
+		}
 	}
 
+	.module h5 {
+		text-align: center;
+		border-bottom: 1px solid #AAA;
+    margin: 0;
+    padding: 8px;
+    background-color: #428bca;
+    color: #FAFAFA;
+    font-family: "Open Sans";
+    text-transform: uppercase;
+	}
 }
