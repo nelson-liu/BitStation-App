@@ -30,15 +30,15 @@ class SessionsController < ApplicationController
       sign_in user
 
       flash[:success] = "You have successfully signed in as #{user.name}. "
-      redirect_to root_path
+      redirect_to dashboard_url
     else
-      redirect_to sessions_fail_path(message: 'Authentication failed. ')
+      redirect_to sessions_fail_url(message: 'Authentication failed. ')
     end
   end
 
   def fail
     flash[:error] = params[:message]
-    redirect_to root_path
+    redirect_to sign_in_url
     # @message = params[:message]
   end
 

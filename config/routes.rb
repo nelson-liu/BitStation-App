@@ -3,17 +3,17 @@ Rails.application.routes.draw do
   get 'users/confirm_coinbase_account'
   get 'users/unlink_coinbase_account'
 
-  get 'sessions/new'
-  get 'sessions/destroy'
+  get 'sessions/new', as: :sign_in
+  get 'sessions/destroy', as: :sign_out
   get 'sessions/authenticate'
   get 'sessions/fail'
-  get 'sessions/oauth'
+  get 'sessions/oauth', as: :oauth
 
   get 'transaction/transfer'
   get 'transaction/history'
   get 'transaction/exchange'
 
-  get 'dashboard/dashboard'
+  match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/overview'
 
   # The priority is based upon order of creation: first created -> highest priority.

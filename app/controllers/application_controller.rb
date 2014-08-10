@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
+  after_filter :check_for_refreshed_token
   #around_filter :rescue_unhandled_exception
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
@@ -13,10 +14,19 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def check_for_refreshed_token
+      # Check only if the user has account linked and api calls have been made
+      return unless has_coinbase_account_linked?
+      return if @current_coinbase_client.nil?
+
+      new_credentials = @current_coinbase_client.credentials
+      current_user.update_coinbase_oauth_credentials(new_credentials) unless (new_credentials == current_user.coinbase_account.oauth_credentials)
+    end
+
     def ensure_signed_in
       unless signed_in?
         flash[:error] = "Please sign in first. "
-        redirect_to sessions_new_url
+        redirect_to sign_in_url
       end
     end
 
