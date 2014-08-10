@@ -45,3 +45,6 @@ gem 'autoprefixer-rails'
 # Coinbase support
 gem 'coinbase'
 gem 'oauth2'
+
+# Profiling
+gem 'rack-mini-profiler'
