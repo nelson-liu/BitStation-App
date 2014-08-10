@@ -2,6 +2,12 @@
 <section class="module col-lg-4 col-sm-6 col-xs-12">
 	<div>
 		<h3>Account Summary</h3>
+		<% if has_coinbase_account_linked? %>
+			<p>The currently linked Coinbase account is <%= current_user.coinbase_account.email %>. <%= link_to 'Unlink', unlink_coinbase_account_path, data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
+			<p>Your current balance is <%= @current_balance %>. </p>
+		<% else %>
+			<p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
+		<% end %>
 	</div>
 </section>
 <section class="module col-lg-4 col-sm-6 col-xs-12">

@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
       ensure_signed_in
       if current_user.coinbase_account.nil?
         flash[:error] = "You need to link a Coinbase account first. "
-        redirect_to users_link_coinbase_account_url
+        redirect_to link_coinbase_account_url
       end
     end
 
@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
 
     def warn_unlinked_coinbase_account
       if signed_in? && current_user.coinbase_account.nil?
-        @flash[:warning] = "You haven't linked a Coinbase account yet. You can link it #{view_context.link_to 'here', users_link_coinbase_account_path}. ".html_safe
+        @flash[:warning] = "You haven't linked a Coinbase account yet. You can link it #{view_context.link_to 'here', link_coinbase_account_path}. ".html_safe
       end
     end
 

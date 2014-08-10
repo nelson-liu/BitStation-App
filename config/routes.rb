@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  get 'users/link_coinbase_account'
+  get 'users/link_coinbase_account', as: :link_coinbase_account
   get 'users/confirm_coinbase_account'
-  get 'users/unlink_coinbase_account'
+  get 'users/unlink_coinbase_account', as: :unlink_coinbase_account
 
   get 'sessions/new', as: :sign_in
   get 'sessions/destroy', as: :sign_out
