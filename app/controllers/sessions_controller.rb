@@ -54,11 +54,22 @@ class SessionsController < ApplicationController
     begin
       code = params[:code]
       token = @oauth_client.auth_code.get_token(code, redirect_uri: COINBASE_CALLBACK_URI)
-      session[:coinbase_oauth_token] = token.to_hash
 
       if current_user.coinbase_account.nil?
+        flash[:coinbase_oauth_credentials] = token.to_hash
         redirect_to users_confirm_coinbase_account_url
       else
+        client = coinbase_client_with_oauth_credentials(token.to_hash).
+        email = client.get('/users').users[0].user.email
+
+        if email != current_user.coinbase_account.email
+          flash[:error] = 'Please authenticate with the Coinbase account that is linked to you only. '
+          redirect_to root_url
+          return
+        end
+
+        current_user.update_coinbase_oauth_credentials(token.to_hash)
+
         flash[:success] = 'You have successfully authenticated your Coinbase account. '
         redirect_to root_url
       end

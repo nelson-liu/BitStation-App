@@ -1,1 +1,4 @@
 <h1>Welcome to BitStation</h1>
+<% if has_coinbase_account_linked? %>
+  <p>You have <%= @balance %> BTC in your account. </p>
+<% end %>

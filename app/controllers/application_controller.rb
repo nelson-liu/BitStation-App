@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
+  around_filter :rescue_unhandled_exception
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
   COINBASE_CLIENT_SECRET = '72bbe98c81e7b02765812e0c3c059d453cdf28bb45e6e6067dea9363ba618b74'
@@ -16,6 +17,14 @@ class ApplicationController < ActionController::Base
       unless signed_in?
         flash[:error] = "Please sign in first. "
         redirect_to sessions_new_url
+      end
+    end
+
+    def ensure_coinbase_account_linked
+      ensure_signed_in
+      if current_user.coinbase_account.nil?
+        flash[:error] = "You need to link a Coinbase account first. "
+        redirect_to users_link_coinbase_account_url
       end
     end
 
@@ -42,6 +51,10 @@ class ApplicationController < ActionController::Base
       session[:auth_token] = user.auth_token
     end
 
+    def has_coinbase_account_linked?
+      signed_in? && !current_user.coinbase_account.nil?
+    end
+
     def current_user
       if @current_user
         @current_user
@@ -50,16 +63,19 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def coinbase_client_with_oauth_credentials(credentials)
+      Coinbase::OAuthClient.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, credentials.symbolize_keys)
+    end
+
     def current_coinbase_client
-      if session[:coinbase_oauth_token]
-        @current_coinbase_client ||= Coinbase::OAuthClient.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, session[:coinbase_oauth_token].symbolize_keys)
+      if current_user.coinbase_account && current_user.coinbase_account.oauth_credentials
+        @current_coinbase_client ||= coinbase_client_with_oauth_credentials(current_user.coinbase_account.oauth_credentials)
       else
         nil
       end
     end
 
     def clear_current_coinbase_oauth_token
-      session[:coinbase_oauth_token] = nil
       @current_coinbase_client = nil
     end
 
@@ -70,7 +86,6 @@ class ApplicationController < ActionController::Base
     def sign_out
       session[:user_id] = nil
       session[:auth_token] = nil
-      session[:coinbase_oauth_token] = nil
     end
 
     def rescue_unhandled_exception
@@ -82,5 +97,5 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    helper_method :current_user, :signed_in?, :current_user_name
+    helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?
 end

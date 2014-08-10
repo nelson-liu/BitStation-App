@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_filter :ensure_signed_in, only: [:link_coinbase_account, :confirm_coinbase_account, :unlink_coinbase_account]
-  around_filter :rescue_unhandled_exception
 
   def link_coinbase_account
     # FIXME writing out the scope query is ugly but authorize_url over-escapes it
@@ -15,8 +14,10 @@ class UsersController < ApplicationController
     end
 
     begin
-      email = current_coinbase_client.get('/users').users[0].user.email
+      client = coinbase_client_with_oauth_credentials(flash[:coinbase_oauth_credentials])
+      email = client.get('/users').users[0].user.email
       CoinbaseAccount.create({user: current_user, email: email})
+      current_user.update_coinbase_oauth_credentials(flash[:coinbase_oauth_credentials])
 
       flash[:success] = "You have successfully linked your Coinbase account #{email}. "
       redirect_to root_url
