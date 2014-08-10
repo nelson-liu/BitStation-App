@@ -2,18 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-section.module {
-	padding: 0 8px;
-	margin-bottom: 20px;
-}
+.dashboard-action {
+	section.module {
+		padding: 0 8px;
+		margin-bottom: 20px;
+	}
 
-section.module>div {
-	/*border: 1px solid black;*/
-	height: 400px;
-	padding: 0 20px;
+	section.module>div {
+		/*border: 1px solid black;*/
+		height: 400px;
+		padding: 0 20px;
 
-  box-shadow:0 1px 2px #aaa;
-  background:white;
-  border-radius:3px;
-  border:1px solid #aaa;
+	  box-shadow:0 1px 2px #aaa;
+	  background:white;
+	  border-radius:3px;
+	  border:1px solid #aaa;
+	}
+
 }
