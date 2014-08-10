@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   def homepage
+    redirect_to dashboard_url if signed_in?
   end
   def about
   end
