@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     end
 
     clear_current_coinbase_oauth_token
+    current_user.update_coinbase_oauth_credentials(nil)
     current_user.update({coinbase_account: nil})
 
     flash[:success] = "You have successfully unlinked your Coinbase account. "
