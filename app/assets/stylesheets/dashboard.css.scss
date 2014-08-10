@@ -8,6 +8,10 @@
 	section.module {
 		padding: 0 8px;
 		margin-bottom: 20px;
+		-webkit-transition: all 0.5s ease;
+		-moz-transition: all 0.5s ease;
+		-o-transition: all 0.5s ease;
+		transition: all 0.5s ease;
 
 		h3 {
 			margin-bottom: 20px;
