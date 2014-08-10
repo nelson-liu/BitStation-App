@@ -7,12 +7,24 @@ class SessionsController < ApplicationController
 
   def new
     @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token
+    @nelly_auth_link = sessions_authenticate_path(auth_token: 'nelly') if Rails.env.development?
   end
 
   def authenticate
+    result = nil
     token = params[:auth_token]
-    check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
-    result = JSON.parse(open(check_link).read)
+
+    if Rails.env.development? && token == 'nelly'
+      result = {
+        'success' => true,
+        'message' => '',
+        'kerberos' => 'nelsonliu',
+        'name' => 'Nelson Liu'
+      }
+    else
+      check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
+      result = JSON.parse(open(check_link).read)
+    end
 
     if result && result["success"]
       user = User.find_by(kerberos: result["kerberos"])
