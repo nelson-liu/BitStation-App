@@ -43,14 +43,14 @@
     <% end %>
   </div>
 
-  <div class="container">
+  <div id="wrapper-main" class="container">
     <%= yield %>
   </div>
 
   <%= javascript_include_tag "application" %>
   <!-- FOOTER -->
-  <footer class="row">
-    <div class="col-xs-10 col-xs-offset-1">
+  <footer class="container">
+    <div class="">
       <p class="pull-right"><a href="#">Back to top</a></p>
       <p>&copy; 2014 BitStation. &middot;
         <%= link_to 'About', about_path %> &middot;
