@@ -12,15 +12,12 @@
         <%= link_to 'BitStation', root_path, class: 'navbar-brand' %>
       </div>
       <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to 'Login with Kerberos', root_path %></li>
-        </ul>
         <ul class="nav navbar-nav pull-right">
           <li>
             <% if signed_in? %>
               <%= link_to 'Sign out', sessions_destroy_path %>
             <% else %>
-              <%= link_to 'Sign in', sessions_new_path %>
+              <%= link_to 'Sign in with Kerberos', sessions_new_path %>
             <% end %>
           </li>
         </ul>
