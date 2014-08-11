@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
   before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :exchange_currencies, :manage_account]
 
-  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 5
+  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
 
   def dashboard
     @subtitle = "Dashboard"
