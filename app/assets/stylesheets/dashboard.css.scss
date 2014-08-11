@@ -86,6 +86,19 @@
 		opacity: 0;
 		display: none;
 	}
+
+	/***** TRANSACTION HISTORY STYLES *****/
+
+	#transaction-history-table {
+		text-align: center;
+
+	}
+	/* took this selector from bootstrap */
+	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+		border-color: white;
+	}
+
+
 }
 
 @media (min-width: 768px) {
@@ -96,3 +109,5 @@
     }
 	}
 }
+
+
