@@ -21,14 +21,16 @@ ready = ->
     $("#detailed-wrapper h5").html(name + " Detailed View")
     $("#detailed-wrapper").show()
     $("#mask").show().fadeTo(300, 0.5)
-    $("html, body").animate
-    	scrollTop: $("#detailed-wrapper").offset().top
-    , 500
 
   $("#mask").click ->
   	$("#detailed-wrapper>div>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
   	$("#detailed-wrapper, #mask").hide()
   	$("#mask").css("opacity", 0)
+
+  $("#mask2").click ->
+    $("#popup-card-wrapper>div>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+    $("#popup-card-wrapper, #mask2").hide()
+    $("#mask2").css("opacity", 0)
 
   $("div[data-load]").filter(":visible").each ->
     path = $(this).attr('data-load')
@@ -60,12 +62,20 @@ ready = ->
     })
 
   window.setup_transaction_history_paging_links = ->
-    $('#history_buttons_container a').bind('ajax:beforeSend', ->
+    $('.paging').parent().bind('ajax:beforeSend', ->
       # FIXME ugly ugly ugly
       html = '<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>'
 
       $('#transaction_history_module').html(html)
     );
+
+  window.bind_popup_card = ->
+    $(".popuppable").children().click ->
+      # path = $(this).next().attr('data-load')
+      # $("#detailed-wrapper>div>div").load(path + "_detailed")
+      $("#popup-card-wrapper h5").html("Detailed View")
+      $("#popup-card-wrapper").show()
+      $("#mask2").show().fadeTo(300, 0.5)
 
 $(document).ready(ready)
 $(document).on('page:load', ready)

@@ -71,20 +71,20 @@
 
     /* Webkit overflow: scroll; scrollbar fix */
 
-    #history_buttons_container {
+    .paging {
       position: absolute;
-      top: -7px;
-      left: 0px; // to offset the section.module 8px padding
-      padding: 15px 21px;
-      width: 100%;
-
-      i {
-        color: white;
-
-        &:hover {
-          color: #ccc;
-        }
-      }
+	    color: white;
+			top: 0;
+			padding: 8.5px;
+	    &:hover {
+	      color: #ccc;
+	    }
+    }
+    .paging-right {
+    	right: 8px;
+    }
+    .paging-left {
+    	left: 8px;
     }
 	}
 
@@ -92,10 +92,11 @@
     display: none;
   }
 
-	#detailed-wrapper {
-		position: absolute;
+	#detailed-wrapper, #popup-card-wrapper {
+		position: fixed;
 		z-index: 1000;
 		top: 0px;
+		left: 0px;
 		padding-top:40px;
 		display: none;
 		>div {
@@ -109,7 +110,8 @@
       }
     }
 	}
-	#mask {
+
+	#mask, #mask2 {
 		position: fixed;
 		top: 0;
 		right: 0;

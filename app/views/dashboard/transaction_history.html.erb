@@ -1,17 +1,15 @@
 <% if has_coinbase_account_linked? %>
-  <div id="history_buttons_container">
-    <% unless @current_page == 1 %>
-      <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
-        <i class="fa fa-lg fa-chevron-circle-left float-left"></i>
-      <% end %>
+  <% unless @current_page == 1 %>
+    <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
+      <i class="fa fa-lg fa-chevron-circle-left paging paging-left"></i>
     <% end %>
+  <% end %>
 
-    <% if @might_have_next_page %>
-      <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
-        <i class="fa fa-lg fa-chevron-circle-right float-right"></i>
-      <% end %>
+  <% if @might_have_next_page %>
+    <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
+      <i class="fa fa-lg fa-chevron-circle-right paging paging-right"></i>
     <% end %>
-  </div>
+  <% end %>
   <% if @history.empty? %>
     <div class="panel-body">
       <p>No more transaction history to show.</p>
@@ -22,7 +20,8 @@
       <% @history.each do |entry| %>
         <!-- TODO ignore request transactions for now -->
         <% next if entry['request'] %>
-        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %>">
+        <!-- TODO put data-load attr in tr for popup card ajax load -->
+        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" >
           <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
           <td><%= friendly_amount_from_money(entry['amount']) %></td>
           <td>
@@ -49,6 +48,7 @@
   <!-- FIXME this too is ugly -->
   <script>
     window.setup_transaction_history_paging_links();
+    window.bind_popup_card();
   </script>
 <% else %>
   <div class="panel-body">
