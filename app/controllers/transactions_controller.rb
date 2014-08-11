@@ -47,13 +47,14 @@ class TransactionsController < ApplicationController
       return
     end
 
+    amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
+
     if amount > current_coinbase_client.balance.to_d
       flash[:error] = "You do not have enough funds in your Coinbase account. "
       redirect_to dashboard_url
       return
     end
 
-    amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
     pt = PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message})
     redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s, scope: 'send')
   end
