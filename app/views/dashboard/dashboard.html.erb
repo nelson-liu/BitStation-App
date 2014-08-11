@@ -1,5 +1,15 @@
 <div id="dashboard-wrapper" class="row">
-	<section  id="detailed-wrapper" class="module transition col-xs-12">
+	<section  id="detailed-wrapper" class="module transition col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+	  <div>
+	    <h5>Detailed View</h5>
+	    <div>
+	      <div class="dashboard-module-spinner-container">
+	        <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+	      </div>
+	    </div>
+	  </div>
+	</section>
+	<section  id="popup-card-wrapper" class="module transition col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0">
 	  <div>
 	    <h5>Detailed View</h5>
 	    <div>
@@ -10,6 +20,7 @@
 	  </div>
 	</section>
 	<div id="mask" class="transition"></div>
+	<div id="mask2" class="transition"></div>
 	<%= render('module', name: 'account_summary', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
 	<%= render('module', name: 'transfer', title: 'Transfer', content_path: dashboard_transfer_path, expandable: false) %>
 	<%= render('module', name: 'address_book', title: 'Address Book', content_path: dashboard_address_book_path, expandable: true) %>
