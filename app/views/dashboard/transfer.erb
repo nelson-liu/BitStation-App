@@ -1,5 +1,5 @@
 <div>
-  <%= form_tag transact_path %>
+  <%= form_tag transact_path, id: 'transfer_form' %>
     <div class="form-group">
       <%= label_tag 'amount' %>
       <div class="input-group">
@@ -29,4 +29,9 @@
 
     <%= submit_tag 'Transfer', class: 'btn btn-default' %>
   </form>
+
+  <script>
+    // FIXME This is ugly...
+    window.setup_recipient_autocomplete();
+  </script>
 </div>
