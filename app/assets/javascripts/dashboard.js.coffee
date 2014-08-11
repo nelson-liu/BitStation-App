@@ -9,8 +9,7 @@ ready = ->
     element = $("form input[name='currency']")
     currency = $target.text()
     element.val currency
-    placeholder = $("form input[name='amount']")
-    placeholder.val "The amount of #{currency} to send"
+    $('input[name=amount]').attr("placeholder", "The amount of #{currency} to send");
     false
 
   $(".module.expandable h5").click ->
