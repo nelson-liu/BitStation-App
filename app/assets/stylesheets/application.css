@@ -63,6 +63,16 @@ footer {
   margin-top: 20px;
 }
 
+/* Utility classes */
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
 /* Debug info styles */
 
 .debug_dump {

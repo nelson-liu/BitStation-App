@@ -59,5 +59,13 @@ ready = ->
       }
     })
 
+  window.setup_transaction_history_paging_links = ->
+    $('#history_buttons_container a').bind('ajax:beforeSend', ->
+      # FIXME ugly ugly ugly
+      html = '<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>'
+
+      $('#transaction_history_module').html(html)
+    );
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

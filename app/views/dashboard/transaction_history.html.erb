@@ -1,4 +1,22 @@
 <% if has_coinbase_account_linked? %>
+  <div id="history_buttons_container">
+    <% unless @current_page == 1 %>
+      <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
+        <i class="fa fa-lg fa-chevron-circle-left float-left"></i>
+      <% end %>
+    <% end %>
+
+    <% if @might_have_next_page %>
+      <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
+        <i class="fa fa-lg fa-chevron-circle-right float-right"></i>
+      <% end %>
+    <% end %>
+  </div>
+  <% if @history.empty? %>
+    <div class="panel-body">
+      <p>No more transaction history to show.</p>
+    </div>
+  <% end %>
   <table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
     <tbody>
       <% @history.each do |entry| %>
@@ -27,17 +45,13 @@
       <% end %>
     </tbody>
   </table>
-  <footer class="pagination-wrapper">
-    <ul class="pagination">
-      <li><a href="#">&laquo;</a></li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">&raquo;</a></li>
-    </ul>
-  </footer>
+
+  <!-- FIXME this too is ugly -->
+  <script>
+    window.setup_transaction_history_paging_links();
+  </script>
 <% else %>
-  <p>Click <%= link_to 'here', link_coinbase_account_path %> to link a Coinbase account first</p>
+  <div class="panel-body">
+    <p>Click <%= link_to 'here', link_coinbase_account_path %> to link a Coinbase account first. </p>
+  </div>
 <% end %>
