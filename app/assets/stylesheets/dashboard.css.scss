@@ -68,7 +68,14 @@
     .autocomplete-coinbase-link-status {
       font-size: 12px;
     }
+
+    /* Webkit overflow: scroll; scrollbar fix */
+
 	}
+
+  section.module>div::-webkit-scrollbar {
+    display: none;
+  }
 
 	#detailed-wrapper {
 		position: absolute;
