@@ -1,44 +1,19 @@
-<div class="panel-body">
-	An example table follows:
-</div>
-
-<table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
-  <tbody>
-    <tr class="danger">
-      <td>Aug 6, 2014</td>
-      <td>- 0.001</td>
-      <td>to</td>
-      <td>Ford Prefect</td>
-    </tr>
-    <tr class="danger">
-      <td>Aug 5, 2014</td>
-      <td>- 0.001</td>
-      <td>to</td>
-      <td>Arthur Dent</td>
-    </tr>
-    <tr class="success">
-      <td>Aug 4, 2014</td>
-      <td>+ 0.002</td>
-      <td>from</td>
-      <td>Zaphod Beeblebrox</td>
-    </tr>
-    <tr class="danger">
-      <td>Aug 3, 2014</td>
-      <td>- 0.001</td>
-      <td>to</td>
-      <td>Trillian</td>
-    </tr>
-    <tr class="danger">
-      <td>Aug 6, 2014</td>
-      <td>- 0.001</td>
-      <td>to</td>
-      <td>Marvin</td>
-    </tr>
-    <tr class="success">
-      <td>Aug 6, 2014</td>
-      <td>+ 1024</td>
-      <td>from</td>
-      <td>God</td>
-    </tr>
-  </tbody>
-</table>
+<% if has_coinbase_account_linked? %>
+  <table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
+    <tbody>
+      <% @history.each do |entry| %>
+        <!-- TODO ignore request transactions for now -->
+        <% next if entry['request'] %>
+        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %>">
+          <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
+          <td><%= friendly_amount_from_money(entry['amount']) %></td>
+          <td><%= entry['sender']['id'] == @coinbase_id ? 'to' : 'from' %></td>
+          <td><%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %></td>
+        </tr>
+        <% @previous_date = DateTime.parse(entry['created_at']) %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Click <%= link_to 'here', link_coinbase_account_path %> to link a Coinbase account first</p>
+<% end %>

@@ -28,6 +28,14 @@ class DashboardController < ApplicationController
   end
 
   def transaction_history
+    if has_coinbase_account_linked?
+      client = current_coinbase_client
+
+      @transactions = client.transactions
+      @history = @transactions['transactions'].map { |t| t['transaction'] }
+      @coinbase_id = @transactions['current_user']['id']
+    end
+
     render layout: false
   end
 
