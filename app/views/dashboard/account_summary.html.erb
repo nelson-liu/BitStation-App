@@ -1,20 +1,24 @@
+<% if has_coinbase_account_linked? %>
 <div class="panel-body">
 	<label>Balance</label>
 	<div id="balances">
-		<span class="well well-sm"><%= friendly_amount(@current_balance, "BTC", {:round => 4})[1..-4] %><i class="fa fa-btc"></i></span>
-		<span class="well well-sm"><%= friendly_amount(@current_balance_usd, "USD", {:round => 4}) %></span>
+		<span class="well well-sm"><%= friendly_amount(@current_balance, "BTC", {:round => 4})[0..-4] %><i class="fa fa-btc"></i></span>
+		<br><br><span class="well well-sm"><%= friendly_amount(@current_balance_usd, "USD", {:round => 4}) %></span>
 	</div>
 </div>
 <hr>
+<% end %>
 <div class="panel-body">
 	<label>Coinbase</label>
   <% if has_coinbase_account_linked? %>
 		<p>Currently linked account: <span class="label label-default"><%= current_user.coinbase_account.email %></span></p>
     <p class="text-center"><%= link_to 'Unlink this account', unlink_coinbase_account_path, class: "btn btn-primary", data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
   <% else %>
-    <p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
+    <p>You haven't linked a Coinbase account yet.</p>
+    <p class="text-center"><%= link_to 'Link a Coinbase account', link_coinbase_account_path,  class: "btn btn-primary" %></p>
   <% end %>
 </div>
+<% if has_coinbase_account_linked? %>
 <hr>
 <div class="panel-body">
 	<label>Access BitStation from your phone</label>
@@ -23,3 +27,4 @@
 	  <%= link_to 'Revoke QR Code', :revoke_access_code, class: "btn btn-primary" %>
   </p>
 </div>
+<% end %>
