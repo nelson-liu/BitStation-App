@@ -3,6 +3,10 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
+  $(document.body).on "click", ".dropdown-menu li", (event) ->
+    $target = $(event.currentTarget)
+    $target.closest(".input-group-btn").find("[data-bind=\"label\"]").text($target.text()).end().children(".dropdown-toggle").dropdown "toggle"
+    false
 
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
