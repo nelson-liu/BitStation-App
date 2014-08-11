@@ -11,13 +11,10 @@
           <li><a href="#">BTC</a></li>
           <li><a href="#">USD</a></li>
        </ul>
+       <input type="hidden" name="currency" value="">
       </div><!-- /btn-group -->
-       <%= text_field_tag 'amount', '', placeholder: 'The amount to give in BTC, e. g. 0.001', class: 'form-control' %>
+       <%= text_field_tag 'amount', '', placeholder: 'The amount of currency to send', class: 'form-control' %>
     </div><!-- /input-group -->
-
-
-
-
     </div>
 
     <div class="form-group">
