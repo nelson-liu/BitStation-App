@@ -1,4 +1,15 @@
 <div id="dashboard-wrapper" class="row">
+	<section  id="detailed-wrapper" class="module transition col-xs-12">
+	  <div>
+	    <h5>Detailed View</h5>
+	    <div>
+	      <div class="dashboard-module-spinner-container">
+	        <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+	      </div>
+	    </div>
+	  </div>
+	</section>
+	<div id="mask" class="transition"></div>
 	<%= render('module', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
 	<%= render('module', title: 'Transfer', content_path: dashboard_transfer_path, expandable: false) %>
 	<%= render('module', title: 'Address Book', content_path: dashboard_address_book_path, expandable: true) %>
