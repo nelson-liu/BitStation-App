@@ -1,32 +1,65 @@
-<div id ="intro" class ="center row" style="height:500px;">
+<div id ="intro" class ="row">
 	<div class = "col-xs-10 col-xs-offset-1">
-	<h1>Meet BitStation</h1>
-	<h3>The Kerberos-Integrated Social BitCoin Wallet</h3>
-	<br><br><br><br><br><br><br><br><br><br><br><br>
-	<button type="button" class="btn btn-primary btn-lg">Get Started Now</button>
-	<h5>*Requires Coinbase and MIT Kerberos accounts</h5>
-	</div>
-</div>
-<div id ="info1" class ="row">
-	<div class = "col-lg-12 col-xs-offset-1">
-	<h1>Send, recieve, and request payments from anyone</h1>
-	<h5>No need to use unwieldy public BitCoin addresses, all you need is their MIT ID</h5>
+		<aside class="pull-left">
+			<h3>BitStation: The Kerberos-Integrated Social Bitcoin Wallet</h3>
+			<p>Requires a MIT certificate and a coinbase account.</p>
+		</aside>
+		<%= link_to 'Get Started Now', @auth_link, class: 'btn btn-default btn-lg pull-right' %>
 	</div>
 </div>
 
-<div id ="info2" class ="row">
-	<div class = "col-lg-12 col-xs-offset-1">
-	<h1>Share your activity with friends</h1>
-	<h5>See how your classmates are using their BitCoin</h5>
+<div id="features" class="center row">
+	<div class="col-xs-10 col-xs-offset-1">
+		<h1>Features</h1>
+		<div class="row">
+			<div class="col-md-4 center">
+				<i class="fa fa-exchange fa-5x"></i>
+				<h4>Send, recieve, and request payments from anyone</h4>
+				<p>Bitstation gives you the option of using either MIT ID or BitCoin Address</p>
+			</div>
+			
+			<div class="col-md-4 center">
+				<i class="fa  fa-comments-o fa-5x"></i>
+				<h4>Share your activity with friends</h4>
+				<p>See how your classmates are using their BitCoin</p>
+			</div>
+			
+			<div class="col-md-4 center">
+				<i class="fa fa-globe fa-5x"></i>
+				<h4>Use it anywhere</h4>
+				<p>BitStation is web and mobile ready</p>
+			</div>
+		</div>
+
+		<br><br>
+
+			<div class="row">
+			<div class="col-md-4 center">
+				<%= image_tag("dashboard-icon.png", :alt => "dashboard icon", :size => "99x70") %>
+				<h4>Easy to use dashboard interface</h4>
+				<p>Bitstation puts the power of Bitcoin at your fingertips</p>
+			</div>
+
+			<div class="col-md-4 center">
+				<i class="fa fa-lock fa-5x"></i>
+				<h4>Your BitCoins are Safe</h4>
+				<p>Your BitCoins are backed by Coinbase's security features including 97% offline storage and SSL encrypted traffic</p>
+			</div>
+
+
+			<div class="col-md-4 center">
+				<%= image_tag("mit-logo.png", :alt => "MIT", :size => "132x70") %>
+				<h4>MIT Kerberos Integrated</h4>
+				<p>No need to use unwieldy public BitCoin addresses, all you need is their MIT ID</p>
+			</div>
+			
+		</div>
 	</div>
 </div>
 
-
-<div id ="info3" class ="row">
-	<div class = "col-lg-12 col-xs-offset-1">
-	<h1>Use it anywhere</h1>
-	<h5>BitStation is web and mobile ready</h5>
+<div id="preview" class="center row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<h1>One dashboard, full control.</h1>
+		<%= image_tag("preview.png", :alt => "Dashboard Preview") %>
 	</div>
-</div>
-</div>
 </div>

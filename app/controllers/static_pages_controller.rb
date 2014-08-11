@@ -1,6 +1,9 @@
 class StaticPagesController < ApplicationController
+  require 'securerandom'
   def homepage
-    @balance = current_coinbase_client.balance if has_coinbase_account_linked?
+    redirect_to dashboard_url if signed_in?
+    @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + SecureRandom.hex
+    @nelly_auth_link = sessions_authenticate_path(auth_token: 'nelly') if Rails.env.development?
   end
   def about
   end

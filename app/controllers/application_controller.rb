@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
+  after_filter :check_for_refreshed_token
   #around_filter :rescue_unhandled_exception
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
@@ -13,18 +14,43 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def coinbase_client_id
+      Rails.env.development? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
+    end
+
+    def coinbase_client_secret
+      Rails.env.development? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
+    end
+
+    def coinbase_callback_uri
+      Rails.env.development? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
+    end
+
+    def check_for_refreshed_token
+      # Check only if the user has account linked and api calls have been made
+      return unless has_coinbase_account_linked?
+      return if @current_coinbase_client.nil?
+
+      new_credentials = @current_coinbase_client.credentials
+      current_user.update_coinbase_oauth_credentials(new_credentials) unless (new_credentials == current_user.coinbase_account.oauth_credentials)
+    end
+
     def ensure_signed_in
       unless signed_in?
         flash[:error] = "Please sign in first. "
-        redirect_to sessions_new_url
+        redirect_to sign_in_url
       end
+    end
+
+    def ensure_signed_in_without_redirect
+      head :forbidden unless signed_in?
     end
 
     def ensure_coinbase_account_linked
       ensure_signed_in
       if current_user.coinbase_account.nil?
         flash[:error] = "You need to link a Coinbase account first. "
-        redirect_to users_link_coinbase_account_url
+        redirect_to link_coinbase_account_url
       end
     end
 
@@ -33,12 +59,12 @@ class ApplicationController < ActionController::Base
     end
 
     def prepare_oauth_client
-      @oauth_client = OAuth2::Client.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, site: 'https://coinbase.com')
+      @oauth_client = OAuth2::Client.new(coinbase_client_id, coinbase_client_secret, site: 'https://coinbase.com')
     end
 
     def warn_unlinked_coinbase_account
       if signed_in? && current_user.coinbase_account.nil?
-        @flash[:warning] = "You haven't linked a Coinbase account yet. You can link it #{view_context.link_to 'here', users_link_coinbase_account_path}. ".html_safe
+        @flash[:warning] = "You haven't linked a Coinbase account yet. You can link it #{view_context.link_to 'here', link_coinbase_account_path}. ".html_safe
       end
     end
 
@@ -64,7 +90,7 @@ class ApplicationController < ActionController::Base
     end
 
     def coinbase_client_with_oauth_credentials(credentials)
-      Coinbase::OAuthClient.new(COINBASE_CLIENT_ID, COINBASE_CLIENT_SECRET, credentials.symbolize_keys)
+      Coinbase::OAuthClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys)
     end
 
     def current_coinbase_client

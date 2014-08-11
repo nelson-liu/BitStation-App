@@ -2,9 +2,124 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-section.module>div {
-	border: 1px solid black;
-	height: 400px;
-	padding: 20px;
-	margin-bottom: 30px;
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700);
+
+.dashboard-action {
+	#wrapper-main {
+		margin-top: 20px;
+	}
+
+	.alert {
+		margin: 0 0 20px 0;
+	}
+
+	#dashboard-wrapper {
+		position: relative;
+	}
+
+	section.module {
+		padding: 0 8px;
+		margin-bottom: 20px;
+		border: none;
+		background-color: transparent;
+		border-radius: 0;
+
+		h5 {
+			text-align: center;
+	    margin: 0;
+	    padding: 8px;
+	    background-color: #428bca;
+	    color: #FAFAFA;
+	    font-family: "Open Sans";
+	    text-transform: uppercase;
+	    border: none;
+	    border-radius: 0;
+		}
+
+		p {
+			font-size: 15px;
+		}
+
+    input[type=submit] {
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      margin-top: 20px;
+    }
+	}
+
+	section.module>div {
+		box-shadow: 0 1px 2px #aaa;
+		background: white;
+		overflow: scroll;
+		>div {
+			padding: 15px 20px;
+		}
+
+    .dashboard-module-spinner-container {
+      text-align: center;
+      i {
+        color: #428bca;
+      }
+    }
+
+    .autocomplete-coinbase-link-status {
+      font-size: 12px;
+    }
+	}
+
+	#detailed-wrapper {
+		position: absolute;
+		z-index: 1000;
+		top: 0px;
+		padding-top:40px;
+		display: none;
+		>div {
+			height: 100%;
+		}
+    .dashboard-module-spinner-container {
+      text-align: center;
+      margin-top: inherit;
+      i {
+        color: #428bca;
+      }
+    }
+	}
+	#mask {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		z-index:999;
+		background-color: black;
+		opacity: 0;
+		display: none;
+	}
+
+	/***** TRANSACTION HISTORY STYLES *****/
+
+	#transaction-history-table {
+		text-align: center;
+
+	}
+	/* took this selector from bootstrap */
+	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+		border-color: white;
+	}
+
+
 }
+
+@media (min-width: 768px) {
+	section.module>div {
+		height: 400px;
+    .dashboard-module-spinner-container {
+      margin-top: 140px;
+    }
+	}
+}
+
+

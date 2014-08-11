@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def link_coinbase_account
     # FIXME writing out the scope query is ugly but authorize_url over-escapes it
-    redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: COINBASE_CALLBACK_URI) + "&scope=balance+addresses+user+transactions"
+    redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri) + "&scope=balance+addresses+user+transactions"
   end
 
   def confirm_coinbase_account
@@ -16,7 +16,14 @@ class UsersController < ApplicationController
     begin
       client = coinbase_client_with_oauth_credentials(flash[:coinbase_oauth_credentials])
       email = client.get('/users').users[0].user.email
-      CoinbaseAccount.create({user: current_user, email: email})
+
+      if CoinbaseAccount.find_by({email: email})
+        flash[:error] = 'The Coinbase account is already linked to another user. '
+        redirect_to dashboard_url
+        return
+      end
+
+      CoinbaseAccount.create!({user: current_user, email: email})
       current_user.update_coinbase_oauth_credentials(flash[:coinbase_oauth_credentials])
 
       flash[:success] = "You have successfully linked your Coinbase account #{email}. "
@@ -36,7 +43,8 @@ class UsersController < ApplicationController
 
     clear_current_coinbase_oauth_token
     current_user.update_coinbase_oauth_credentials(nil)
-    current_user.update({coinbase_account: nil})
+    current_user.coinbase_account.destroy!
+    current_user.update!({coinbase_account: nil})
 
     flash[:success] = "You have successfully unlinked your Coinbase account. "
     redirect_to root_url

@@ -1,2 +1,6 @@
-<h1>Login</h1>
-<p>Click <%= link_to 'here', @auth_link %> to log in with your Kerberos certificate. </p>
+<div id="auth-buttons" class="center">
+	<%= link_to 'MIT Certificate Login', @auth_link, class: 'btn btn-primary btn-lg' %>
+	<% if Rails.env.development? %>
+	  <%= link_to 'Nelly\'s Backdoor', @nelly_auth_link, class: 'btn btn-primary btn-lg' %>
+	<% end %>
+</div>
