@@ -20,12 +20,28 @@ body {
   background-color: #d5d5d5;
 }
 
+#wrapper-main{
+  padding:40px;
+}
+
 .center {
   text-align: center;
 }
 
 .center h1 {
   margin-bottom: 10px;
+}
+
+.center p{
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #747474;
+}
+
+.center h6 {
+  font-size: 19px;
+  font-weight: 400;
 }
 
 .navbar {
