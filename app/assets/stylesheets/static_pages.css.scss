@@ -2,10 +2,45 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.static_pages-action {
+.static_pages-action, .sessions-action {
 	#wrapper-main {
 		background-color: white;
 		box-shadow:0 1px 2px #aaa;
-		background:white;
+		background: white;
+		margin-top: -20px;
+		padding: 0;
+	}
+}
+
+#static_pages-homepage {
+	#intro {
+		background-color: #436F94;
+		color: #f2f2f2;
+		.btn {
+			margin: 25px;
+		}
+		aside {
+			padding: 0 20px;
+		}
+		p {
+			margin-bottom: 5px;
+		}
+	}
+	#features {
+		background-color: white;
+	}
+	#preview {
+		padding-top: 30px;
+		padding-bottom: 30px;
+		background-color: #363636;
+		img {
+			max-width: 100%
+		}
+		h1 {
+			color: #f2f2f2;	
+		}
+	}
+	.center.row h1 {
+			margin-bottom: 30px;
 	}
 }
