@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def link_coinbase_account
     # FIXME writing out the scope query is ugly but authorize_url over-escapes it
-    redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri) + "&scope=balance+addresses+user+transactions"
+    redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri) + "&scope=balance+addresses+user+transactions+transfers"
   end
 
   def confirm_coinbase_account
