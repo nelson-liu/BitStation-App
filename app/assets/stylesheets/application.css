@@ -46,6 +46,18 @@ body {
   box-shadow:0 1px 2px #aaa;
 }
 
+.navbar-nav {
+  text-align: right;
+
+}
+.navbar-nav p.navbar-text {
+  padding: 0 15px;
+}
+
+.navbar-default .navbar-brand {
+  color: #428bca;
+}
+
 /* Universal footer */
 
 .footer {

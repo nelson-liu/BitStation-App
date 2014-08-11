@@ -7,13 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body id="<%= "#{params[:controller]}-#{params[:action]}" %>" class="<%= "#{params[:controller]}-action" %>">
-  <div class="navbar" role="navigation">
+  <div class="navbar navbar-default" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <%= link_to 'BitStation', root_path, class: 'navbar-brand' %>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav pull-right">
+          <li><p class="navbar-text">Welcome, <%= current_user_name %></a></li>
           <li>
             <% if signed_in? %>
               <%= link_to 'Sign out', sign_out_path %>
@@ -22,7 +29,6 @@
             <% end %>
           </li>
         </ul>
-        <p class="navbar-text pull-right">Welcome, <%= current_user_name %></p>
       </div>
     </div>
   </div>
