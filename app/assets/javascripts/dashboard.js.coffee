@@ -3,6 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
+  $(".alert-success").delay(2000).fadeOut 2000
+
   $(document.body).on "click", ".dropdown-menu li", (event) ->
     $target = $(event.currentTarget)
     $target.closest(".input-group-btn").find("[data-bind=\"label\"]").text($target.text()).end().children(".dropdown-toggle").dropdown "toggle"
@@ -59,10 +61,3 @@ ready = ->
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
-
-###
-#$(this).parents(".module").toggleClass("col-lg-12 col-sm-12 expanded")
-#$('html, body').animate
-#	scrollTop: $(this).offset().top
-#, 1000
-###

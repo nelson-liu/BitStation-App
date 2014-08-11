@@ -33,7 +33,11 @@
     </div>
   </div>
 
-  <div class="container" id="flashes-container">
+  <div id="wrapper-main" class="<% if params[:controller] == "dashboard" %>
+                <%= "container" %>
+              <% else %>
+                <%= "container-fluid" %>
+              <% end %>">
     <% flash.each do |key, value| %>
       <% next unless ['success', 'warning', 'info', 'error'].include?(key.to_s) %>
       <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %>">
@@ -48,13 +52,6 @@
         </div>
       <% end%>
     <% end %>
-  </div>
-
-  <div id="wrapper-main" class="<% if params[:controller] == "static_pages" %>
-                <%= "container-fluid" %>
-              <% else %>
-                <%= "container" %>
-              <% end %>">
     <%= yield %>
   </div>
 
