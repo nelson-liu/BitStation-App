@@ -33,9 +33,13 @@ body {
   z-index: 100;
   margin: 0;
   text-align: center;
-  /* padding: 10px; */
   bottom: 10px;
   right: 10px;
+}
+
+hr {
+  margin: 0;
+  border-color: #CCC;
 }
 
 .navbar {
