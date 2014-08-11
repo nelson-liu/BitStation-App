@@ -13,38 +13,65 @@ class SessionsController < ApplicationController
   def authenticate
     result = nil
     token = params[:auth_token]
+    code = params[:access_code]
 
-    if Rails.env.development? && token == 'nelly'
-      result = {
-        'success' => true,
-        'message' => '',
-        'kerberos' => 'nelsonliu',
-        'name' => 'Nelson Liu'
-      }
-    else
-      check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
-      result = JSON.parse(open(check_link).read)
-    end
-
-    if result && result["success"]
-      user = User.find_by(kerberos: result["kerberos"])
+    if code
+      # authenticate with access code
+      sign_in_user = User.user_with_unredeemed_access_code(code)
+      user = User.user_with_access_code(code)
 
       if user.nil?
-        user = User.create({
-          kerberos: result["kerberos"],
-          name: result["name"]
-        })
+        # invalid access code
+        redirect_to root_url, flash: {error: 'Invalid access code'}
+        return
+      else
+        if sign_in_user.nil?
+          # access code already redeemed
+          redirect_to root_url, flash: {error: 'Access code already used. '}
+          return
+        else
+          sign_in_user.update({access_code_redeemed: true})
+
+          sign_in_with_access_code code
+          redirect_to dashboard_url, flash: {success: "You have successfully logged in as #{sign_in_user.name}. "}
+          return
+        end
+      end
+    else
+      # plain old Kerberos certificate
+
+      if Rails.env.development? && token == 'nelly'
+        result = {
+          'success' => true,
+          'message' => '',
+          'kerberos' => 'nelsonliu',
+          'name' => 'Nelson Liu'
+        }
+      else
+        check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
+        result = JSON.parse(open(check_link).read)
       end
 
-      user.auth_token = token
-      user.save
+      if result && result["success"]
+        user = User.find_by(kerberos: result["kerberos"])
 
-      sign_in user
+        if user.nil?
+          user = User.create({
+            kerberos: result["kerberos"],
+            name: result["name"]
+          })
+        end
 
-      flash[:success] = "You have successfully signed in as #{user.name}. "
-      redirect_to dashboard_url
-    else
-      redirect_to sessions_fail_url(message: 'Authentication failed. ')
+        user.auth_token = token
+        user.save
+
+        sign_in user
+
+        flash[:success] = "You have successfully signed in as #{user.name}. "
+        redirect_to dashboard_url
+      else
+        redirect_to sessions_fail_url(message: 'Authentication failed. ')
+      end
     end
   end
 

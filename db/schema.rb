@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811165528) do
+ActiveRecord::Schema.define(version: 20140811183404) do
 
   create_table "coinbase_accounts", force: true do |t|
     t.string   "email"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20140811165528) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "auth_token"
+    t.string   "access_code"
+    t.boolean  "access_code_redeemed"
   end
 
 end

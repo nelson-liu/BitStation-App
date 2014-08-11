@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :ensure_signed_in, only: [:link_coinbase_account, :confirm_coinbase_account, :unlink_coinbase_account]
+  before_filter :ensure_signed_in, only: [:link_coinbase_account, :confirm_coinbase_account, :unlink_coinbase_account, :access_qrcode]
+
+  QRCODE_DEFAULT_SIZE = 300
 
   def link_coinbase_account
     # FIXME writing out the scope query is ugly but authorize_url over-escapes it
@@ -48,5 +50,13 @@ class UsersController < ApplicationController
 
     flash[:success] = "You have successfully unlinked your Coinbase account. "
     redirect_to root_url
+  end
+
+  def access_qrcode
+    require 'cgi'
+    size = params[:size] || QRCODE_DEFAULT_SIZE
+    text = sessions_authenticate_url(access_code: current_user.new_access_code)
+    url = "http://api.qrserver.com/v1/create-qr-code/?size=#{size}x#{size}&data=#{CGI.escape(text)}"
+    redirect_to url
   end
 end
