@@ -2,16 +2,34 @@
   <%= form_tag transact_path %>
     <div class="form-group">
       <%= label_tag 'amount' %>
-      <%= text_field_tag 'amount', '', placeholder: 'The amount to give in BTC, e. g. 0.001', class: 'form-control' %>
+      <div class="input-group">
+      <div class="btn-group input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+          <span data-bind="label">Select Currency</span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">BTC</a></li>
+          <li><a href="#">USD</a></li>
+       </ul>
+      </div><!-- /btn-group -->
+       <%= text_field_tag 'amount', '', placeholder: 'The amount to give in BTC, e. g. 0.001', class: 'form-control' %>
+    </div><!-- /input-group -->
+
+
+
+
     </div>
+
     <div class="form-group">
       <%= label_tag 'recipient' %>
-      <%= text_field_tag 'kerberos', '', placeholder: 'The Kerberos ID of the recipient', class: 'form-control' %>
+      <%= text_field_tag 'kerberos', '', placeholder: 'The Kerberos ID / BTC Address of the recipient', class: 'form-control' %>
     </div>
+
     <div class="form-group">
       <%= label_tag 'Message' %>
       <%= text_field_tag 'message', '', placeholder: 'A kind word or two', class: 'form-control' %>
     </div>
+
     <%= submit_tag 'Transfer', class: 'btn btn-default' %>
   </form>
 </div>
