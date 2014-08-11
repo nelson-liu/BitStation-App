@@ -1,19 +1,29 @@
 Rails.application.routes.draw do
-  get 'users/link_coinbase_account'
-  get 'users/confirm_coinbase_account'
-  get 'users/unlink_coinbase_account'
+  get 'search_suggestions/user/:query', to: 'search_suggestions#user'
 
-  get 'sessions/new'
-  get 'sessions/destroy'
+  get 'users/link_coinbase_account', as: :link_coinbase_account
+  get 'users/confirm_coinbase_account'
+  get 'users/unlink_coinbase_account', as: :unlink_coinbase_account
+
+  get 'sessions/new', as: :sign_in
+  get 'sessions/destroy', as: :sign_out
   get 'sessions/authenticate'
   get 'sessions/fail'
-  get 'sessions/oauth'
+  get 'sessions/oauth', as: :oauth
 
-  get 'transaction/transfer'
-  get 'transaction/history'
-  get 'transaction/exchange'
+  post 'transactions/transact', as: :transact
+  get 'transactions/history'
+  get 'transactions/exchange'
 
-  get 'dashboard/dashboard'
+  match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
+  get 'dashboard/account_summary'
+  get 'dashboard/transfer'
+  get 'dashboard/address_book'
+  get 'dashboard/address_book_detailed'
+  get 'dashboard/transaction_history'
+  get 'dashboard/transaction_history_detailed'
+  get 'dashboard/exchange_currencies'
+  get 'dashboard/manage_account'
   get 'dashboard/overview'
 
   # The priority is based upon order of creation: first created -> highest priority.

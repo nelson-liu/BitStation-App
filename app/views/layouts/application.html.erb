@@ -4,29 +4,42 @@
   <title>BitStation</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-  <div class="navbar" role="navigation">
+<body id="<%= "#{params[:controller]}-#{params[:action]}" %>" class="<%= "#{params[:controller]}-action" %>">
+  <div class="navbar navbar-default" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <%= link_to 'BitStation', root_path, class: 'navbar-brand' %>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav pull-right">
-          <li>
+          <li><p class="navbar-text">Welcome, <%= current_user_name %></a></li>
             <% if signed_in? %>
-              <%= link_to 'Sign out', sessions_destroy_path %>
-            <% else %>
-              <%= link_to 'Sign in with Kerberos', sessions_new_path %>
+              <%= link_to 'Sign out', sign_out_path, class: "btn btn-primary btn-sm pull-right" if signed_in? %>
+            <% elsif !@auth_link.nil? %>  
+              <% if Rails.env.development? %>
+                <%= link_to 'Nelly\'s Backdoor', @nelly_auth_link, class: 'btn btn-primary btn-sm pull-right' %>
+              <% end %>
+              <%= link_to 'MIT Certificate Login', @auth_link, class: 'btn btn-primary btn-sm pull-right' %>
             <% end %>
           </li>
         </ul>
-        <p class="navbar-text pull-right">Welcome, <%= current_user_name %></p>
       </div>
     </div>
   </div>
 
-  <div class="container" id="flashes-container">
+  <div id="wrapper-main" class="<% if params[:controller] == "dashboard" %>
+                <%= "container" %>
+              <% else %>
+                <%= "container-fluid" %>
+              <% end %>">
     <% flash.each do |key, value| %>
       <% next unless ['success', 'warning', 'info', 'error'].include?(key.to_s) %>
       <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %>">
@@ -41,16 +54,13 @@
         </div>
       <% end%>
     <% end %>
-  </div>
-
-  <div class="container">
     <%= yield %>
   </div>
 
   <%= javascript_include_tag "application" %>
   <!-- FOOTER -->
-  <footer class="row">
-    <div class="col-xs-10 col-xs-offset-1">
+  <footer class="container">
+    <div class="">
       <p class="pull-right"><a href="#">Back to top</a></p>
       <p>&copy; 2014 BitStation. &middot;
         <%= link_to 'About', about_path %> &middot;
@@ -58,7 +68,7 @@
         <%= link_to 'FAQ', faq_path %> &middot;
         <%= link_to 'Team', team_path %> &middot;
         <%= link_to 'Privacy', privacy_path %> &middot;
-        <a href="MAILTO LINK HERE">Contact</a>
+        <a href="mailto:someone@example.com" target="_top">Contact</a>
       </p>
       </div>
     </footer>
