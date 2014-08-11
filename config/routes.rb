@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'users/confirm_coinbase_account'
   get 'users/unlink_coinbase_account', as: :unlink_coinbase_account
   get 'users/access_qrcode', as: :access_qrcode
+  get 'users/revoke_access_code', as: :revoke_access_code
 
   get 'sessions/new', as: :sign_in
   get 'sessions/destroy', as: :sign_out

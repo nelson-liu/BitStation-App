@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :ensure_signed_in, only: [:link_coinbase_account, :confirm_coinbase_account, :unlink_coinbase_account, :access_qrcode]
+  before_filter :ensure_signed_in, only: [:link_coinbase_account, :confirm_coinbase_account, :unlink_coinbase_account, :access_qrcode, :revoke_access_code]
 
   QRCODE_DEFAULT_SIZE = 300
 
@@ -58,5 +58,11 @@ class UsersController < ApplicationController
     text = sessions_authenticate_url(access_code: current_user.new_access_code)
     url = "http://api.qrserver.com/v1/create-qr-code/?size=#{size}x#{size}&data=#{CGI.escape(text)}"
     redirect_to url
+  end
+
+  def revoke_access_code
+    current_user.revoke_access_code
+
+    redirect_to dashboard_url, flash: {success: 'Access code successfully revoked. '}
   end
 end
