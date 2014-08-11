@@ -1,5 +1,12 @@
+GIT
+  remote: https://github.com/lian/bitcoin-ruby
+  revision: b7bd36fe7e6ac30ad5910a73c527617974e3086e
+  branch: master
+  specs:
+    bitcoin-ruby (0.0.5)
+
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   specs:
     actionmailer (4.1.4)
       actionpack (= 4.1.4)
@@ -173,6 +180,7 @@ PLATFORMS
 
 DEPENDENCIES
   autoprefixer-rails
+  bitcoin-ruby!
   bootstrap-sass (~> 3.2.0)
   capistrano-bundler
   capistrano-rails

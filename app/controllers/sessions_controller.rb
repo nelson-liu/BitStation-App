@@ -97,22 +97,24 @@ class SessionsController < ApplicationController
       elsif pending_action == 'transact'
         # It's a pending transaction
         pt = PendingTransaction.find(pending_action_id)
+        cc = coinbase_client_with_oauth_credentials(token.to_hash)
+        email = cc.get('/users').users[0].user.email
 
-        if pt.sender != current_user
+        if pt.sender != current_user || email != current_user.coinbase_account.email
           flash[:error] = "Please authenticate with the Coinbase accuont that is linked to you only. "
           redirect_to dashboard_url
           return
         end
 
         begin
-          if process_pending_transaction(pt, token)
-            flash[:success] = "You have successfully given #{pt.recipient.name} #{pt.amount} BTC. "
+          if process_pending_transaction(pt, cc)
+            flash[:success] = "You have successfully given #{pt.recipient.name rescue 'an external account'} #{pt.amount} BTC. "
             redirect_to dashboard_url
           else
             raise
           end
         rescue
-          flash[:error] = "Transaction failed. Maybe you do not have enough funds? "
+          flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
           redirect_to dashboard_url
         end
       end
@@ -128,9 +130,8 @@ class SessionsController < ApplicationController
       SecureRandom.hex
     end
 
-    def process_pending_transaction(pt, oauth_token)
-      critical_client = coinbase_client_with_oauth_credentials(oauth_token.to_hash)
-      r = critical_client.send_money(pt.recipient.coinbase_account.email, pt.amount, pt.message)
+    def process_pending_transaction(pt, critical_client)
+      r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message)
       pt.destroy!
       r.success?
     end
