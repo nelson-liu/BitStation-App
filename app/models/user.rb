@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     access_code
   end
 
+  def revoke_access_code
+    update({access_code: nil, access_code_redeemed: false})
+  end
+
   def self.user_with_unredeemed_access_code(code)
     where({access_code: code, access_code_redeemed: false}).first
   end
