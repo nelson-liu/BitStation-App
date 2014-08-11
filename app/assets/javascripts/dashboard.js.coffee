@@ -27,6 +27,7 @@ ready = ->
   $("#mask").click ->
   	$("#detailed-wrapper>div>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
   	$("#detailed-wrapper, #mask").hide()
+  	$("#mask").css("opacity", 0)
 
   $("div[data-load]").filter(":visible").each ->
     path = $(this).attr('data-load')
