@@ -80,7 +80,7 @@ class SessionsController < ApplicationController
           flash[:coinbase_oauth_credentials] = token.to_hash
           redirect_to users_confirm_coinbase_account_url
         else
-          client = coinbase_client_with_oauth_credentials(token.to_hash).
+          client = coinbase_client_with_oauth_credentials(token.to_hash)
           email = client.get('/users').users[0].user.email
 
           if email != current_user.coinbase_account.email
