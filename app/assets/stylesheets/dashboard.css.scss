@@ -131,17 +131,17 @@
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
 		border-color: white;
-		padding: 7px 5px 6px 5px;
-		height: 34px;
+		padding: 7px 5px;
+		height: 35px;
 	}
 
 }
 
 @media (min-width: 768px) {
 	section.module>div {
-		height: 400px;
+		height: 420px;
     .dashboard-module-spinner-container {
-      margin-top: 140px;
+      margin-top: 165px;
     }
 	}
 }
