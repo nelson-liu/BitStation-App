@@ -32,6 +32,31 @@ ready = ->
     path = $(this).attr('data-load')
     $(this).load(path)
 
+  # FIXME I do NOT want to pollute global namespace...
+  window.setup_recipient_autocomplete = ->
+    suggestion_engine = new Bloodhound({
+      datumTokenizer: (d) ->
+        d.tokens
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      remote: '/search_suggestions/user/%QUERY'
+    });
+    suggestion_engine.initialize();
+    $('#transfer_form input[name=kerberos]').typeahead({
+      minLength: 1,
+    }, {
+      name: 'user-dataset',
+      source: suggestion_engine.ttAdapter(),
+      displayKey: 'kerberos',
+      templates: {
+        suggestion: (d) ->
+          result = '<p class="autocomplete_name">' + d.name + '</p>'
+          if d.coinbase_account_linked
+            result += '<p class="autocomplete-coinbase-link-status text-success">Coinbase account linked</p>'
+          else
+            result += '<p class="autocomplete-coinbase-link-status text-danger">No Coinbase account linked</p>'
+      }
+    })
+
 $(document).ready(ready)
 $(document).on('page:load', ready)
 

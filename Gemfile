@@ -53,3 +53,7 @@ gem 'rack-mini-profiler'
 
 # Font Awesome
 gem "font-awesome-rails"
+
+# Auto-complete plugin
+gem 'twitter-typeahead-rails'
+
