@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'search_suggestions/user/:query', to: 'search_suggestions#user'
+
   get 'users/link_coinbase_account', as: :link_coinbase_account
   get 'users/confirm_coinbase_account'
   get 'users/unlink_coinbase_account', as: :unlink_coinbase_account
