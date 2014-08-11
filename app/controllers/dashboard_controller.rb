@@ -49,6 +49,7 @@ class DashboardController < ApplicationController
 
       @coinbase_id = @transactions['current_user']['id']
       @might_have_next_page = (@history.size == TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
+      @might_have_next_page = !client.transactions(page + 1, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)['transactions'].empty? if @might_have_next_page
     end
 
     respond_to do |format|
