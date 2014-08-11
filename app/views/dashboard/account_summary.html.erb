@@ -1,7 +1,7 @@
 <div class="panel-body">
   <% if has_coinbase_account_linked? %>
     <p>The currently linked Coinbase account is <%= current_user.coinbase_account.email %>. <%= link_to 'Unlink', unlink_coinbase_account_path, data: {confirm: 'Do you really want to unlink your Coinbase account? '} %></p>
-    <p>Your current balance is <%= @current_balance %>. </p>
+    <p>Your current have <%= (1000 * @current_balance).round(2) %> mBTC (<%= @current_balance_usd.round(2) %> USD). </p>
   <% else %>
     <p>You haven't linked a Coinbase account yet. <%= link_to 'Link', link_coinbase_account_path %></p>
   <% end %>

@@ -7,7 +7,8 @@ class DashboardController < ApplicationController
 
   def account_summary
     if has_coinbase_account_linked?
-      @current_balance = current_coinbase_client.balance.format
+      @current_balance = current_coinbase_client.balance.to_d
+      @current_balance_usd = current_coinbase_client.spot_price("USD").to_d * @current_balance
     end
 
     render layout: false
