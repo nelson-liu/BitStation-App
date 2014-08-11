@@ -45,7 +45,7 @@
               <% else %>
                 <%= "container-fluid" %>
               <% end %>">
-    <% flash.each do |key, value| %>
+    <div class="row"><% flash.each do |key, value| %>
       <% next unless ['success', 'warning', 'info', 'error'].include?(key.to_s) %>
       <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %>">
         <%= value %>
@@ -59,6 +59,7 @@
         </div>
       <% end%>
     <% end %>
+    </div>
     <%= yield %>
   </div>
 
