@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>BitStation</title>
+  <title>
+    BitStation
+    <% if @subtitle %>
+      <%= " - #{@subtitle}" %>
+    <% end %>
+  </title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +28,7 @@
           <li><p class="navbar-text">Welcome, <%= current_user_name %></a></li>
             <% if signed_in? %>
               <%= link_to 'Sign out', sign_out_path, class: "btn btn-primary btn-sm pull-right" if signed_in? %>
-            <% elsif !@auth_link.nil? %>  
+            <% elsif !@auth_link.nil? %>
               <% if Rails.env.development? %>
                 <%= link_to 'Nelly\'s Backdoor', @nelly_auth_link, class: 'btn btn-primary btn-sm pull-right' %>
               <% end %>
