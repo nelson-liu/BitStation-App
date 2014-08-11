@@ -43,7 +43,11 @@
     <% end %>
   </div>
 
-  <div id="wrapper-main" class="container">
+  <div id="wrapper-main" class="<% if params[:controller] == "static_pages" %>
+                <%= "container-fluid" %>
+              <% else %>
+                <%= "container" %>
+              <% end %>">
     <%= yield %>
   </div>
 
