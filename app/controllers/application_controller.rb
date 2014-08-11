@@ -90,7 +90,11 @@ class ApplicationController < ActionController::Base
       if @current_user
         @current_user
       else
-        @current_user = session[:user_id] && session[:auth_token] && User.find_by(id: session[:user_id], auth_token: session[:auth_token])
+        if session[:access_code]
+          @current_user = User.user_with_access_code(session[:access_code])
+        else
+          @current_user = session[:user_id] && session[:auth_token] && User.find_by(id: session[:user_id], auth_token: session[:auth_token])
+        end
       end
     end
 
@@ -117,6 +121,7 @@ class ApplicationController < ActionController::Base
     def sign_out
       session[:user_id] = nil
       session[:auth_token] = nil
+      session[:access_code] = nil
     end
 
     def rescue_unhandled_exception
@@ -147,5 +152,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?
+    def sign_in_with_access_code(code)
+      session[:access_code] = code
+    end
+
+    def signed_in_with_access_code?
+      session[:access_code] && signed_in?
+    end
+
+    helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?, :sign_in_with_access_code, :signed_in_with_access_code?
 end
