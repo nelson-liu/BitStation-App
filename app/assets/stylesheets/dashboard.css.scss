@@ -123,6 +123,19 @@
 		display: none;
 	}
 
+	#account_summary_module {
+		#balances {
+			text-align: center;
+			padding: 10px 0;
+			span {
+				font-size: 22px;
+				color: green;
+				font-family: "Courier New";
+				font-weight: bold;
+			}
+		}
+	}
+
 	/***** TRANSACTION HISTORY STYLES *****/
 
 	#transaction-history-table {
