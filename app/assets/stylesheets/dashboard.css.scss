@@ -110,10 +110,22 @@
 
 	#transaction-history-table {
 		text-align: center;
+		border-bottom: 1px solid #BBB;
+		margin-bottom: 0;
 	}
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
 		border-color: white;
+		padding: 7px 5px 6px 5px;
+		height: 34px;
+	}
+	.pagination-wrapper {
+		text-align: center;
+		margin: 10px 0;
+		height: 34px;
+		.pagination {
+			margin: 0;
+		}
 	}
 
 
