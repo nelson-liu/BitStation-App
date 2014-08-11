@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
   before_filter :ensure_signed_in, only: []
-  before_filter :ensure_coinbase_account_linked, only: [:transact, :history, :exchange]
+  before_filter :ensure_coinbase_account_linked, only: [:transact, :request_bitcoin, :history, :exchange]
 
   CURRENCIES = ["USD", "BTC"]
 
@@ -70,6 +70,9 @@ class TransactionsController < ApplicationController
 
     # FIXME ugh
     redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
+  end
+
+  def request_bitcoin
   end
 
   def history
