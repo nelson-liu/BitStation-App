@@ -4,7 +4,10 @@ class TransactionsController < ApplicationController
 
   CURRENCIES = ["USD", "BTC"]
 
-  MINIMUM_TRANSACTION_AMOUNT = 0.001
+  MINIMUM_TRANSACTION_AMOUNT = {
+    "BTC" => 0.001,
+    "USD" => 0.5
+  }
 
   def transact
     recipient = params[:kerberos]
@@ -38,7 +41,7 @@ class TransactionsController < ApplicationController
       return
     end
 
-    if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT
+    if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
       flash[:error] = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC."
       redirect_to dashboard_url
       return
