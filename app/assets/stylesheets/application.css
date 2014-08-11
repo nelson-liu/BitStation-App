@@ -44,12 +44,13 @@ body {
   box-shadow:0 1px 2px #aaa;
 }
 
+.navbar .btn-sm {
+  margin: 10px;
+}
+
 .navbar-nav {
   text-align: right;
 
-}
-.navbar-nav p.navbar-text {
-  padding: 0 15px;
 }
 
 .navbar-default .navbar-brand {
@@ -73,4 +74,10 @@ footer {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav p.navbar-text {
+    padding: 0 15px;
+  }
 }
