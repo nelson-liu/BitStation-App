@@ -5,6 +5,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700);
 
 .dashboard-action {
+	#wrapper-main {
+		margin-top: 20px;
+	}
+
+	.alert {
+		margin: 0 0 20px 0;
+	}
+
 	#dashboard-wrapper {
 		position: relative;
 	}
