@@ -5,13 +5,13 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700);
 
 .dashboard-action {
+	#dashboard-wrapper {
+		position: relative;
+	}
+
 	section.module {
 		padding: 0 8px;
 		margin-bottom: 20px;
-		-webkit-transition: all 0.5s ease;
-		-moz-transition: all 0.5s ease;
-		-o-transition: all 0.5s ease;
-		transition: all 0.5s ease;
 
 		h3 {
 			margin-bottom: 20px;
@@ -57,5 +57,34 @@
     color: #FAFAFA;
     font-family: "Open Sans";
     text-transform: uppercase;
+	}
+
+	#detailed-wrapper {
+		position: absolute;
+		z-index: 1000;
+		top: 0px;
+		padding-top:30px;
+		display: none;
+		>div {
+			height: 100%;
+		}
+    .dashboard-module-spinner-container {
+      text-align: center;
+      margin-top: inherit;
+      i {
+        color: #428bca;
+      }
+    }
+	}
+	#mask {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		z-index:999;
+		background-color: black;
+		opacity: 0;
+		display: none;
 	}
 }

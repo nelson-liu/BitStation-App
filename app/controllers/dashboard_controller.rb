@@ -21,7 +21,15 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
+  def address_book_detailed
+    render layout: false
+  end
+
   def transaction_history
+    render layout: false
+  end
+
+  def transaction_history_detailed
     render layout: false
   end
 
