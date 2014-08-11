@@ -22,9 +22,9 @@
 	<div id="mask" class="transition"></div>
 	<div id="mask2" class="transition"></div>
 	<%= render('module', name: 'account_summary', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
-	<%= render('module', name: 'transfer', title: 'Transfer', content_path: dashboard_transfer_path, expandable: false) %>
+	<%= render('module', name: 'transfer', title: 'Transfer Bitcoin', content_path: dashboard_transfer_path, expandable: false) %>
+	<%= render('module', name: 'request_bitcoin', title: 'Request Bitcoin', content_path: dashboard_request_bitcoin_path, expandable: false) %>
 	<%= render('module', name: 'address_book', title: 'Address Book', content_path: dashboard_address_book_path, expandable: true) %>
 	<%= render('module', name: 'transaction_history', title: 'Transaction History', content_path: dashboard_transaction_history_path, expandable: true) %>
 	<%= render('module', name: 'exchange_currencies', title: 'Exchange Currencies', content_path: dashboard_exchange_currencies_path, expandable: false) %>
-	<%= render('module', name: 'manage_account', title: 'Manage Account', content_path: dashboard_manage_account_path, expandable: false) %>
 </div>

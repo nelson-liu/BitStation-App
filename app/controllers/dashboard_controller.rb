@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
-  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :exchange_currencies, :manage_account]
+  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :exchange_currencies, :request_bitcoin]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
 
@@ -73,7 +73,7 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
-  def manage_account
+  def request_bitcoin
     render layout: false
   end
 

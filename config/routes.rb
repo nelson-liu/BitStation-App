@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'sessions/oauth', as: :oauth
 
   post 'transactions/transact', as: :transact
+  post 'transactions/request_bitcoin', as: :request_bitcoin
   get 'transactions/history'
   get 'transactions/exchange'
 
@@ -25,7 +26,7 @@ Rails.application.routes.draw do
   get 'dashboard/transaction_history'
   get 'dashboard/transaction_history_detailed'
   get 'dashboard/exchange_currencies'
-  get 'dashboard/manage_account'
+  get 'dashboard/request_bitcoin'
   get 'dashboard/overview'
 
   # The priority is based upon order of creation: first created -> highest priority.
