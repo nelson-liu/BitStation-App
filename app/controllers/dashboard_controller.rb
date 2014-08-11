@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
   before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :exchange_currencies, :manage_account]
 
   def dashboard
+    @subtitle = "Dashboard"
   end
 
   def account_summary
