@@ -6,12 +6,16 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
   after_filter :check_for_refreshed_token
+  before_filter :check_for_unauthenticated_coinbase_account, except: [:link_coinbase_account, :oauth]
   around_filter :rescue_oauth_exception
   around_filter :rescue_unhandled_exception unless Rails.env.development?
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
   COINBASE_CLIENT_SECRET = '72bbe98c81e7b02765812e0c3c059d453cdf28bb45e6e6067dea9363ba618b74'
   COINBASE_CALLBACK_URI = 'http://localhost:3000/sessions/oauth'
+
+  # FIXME must be a better way
+  include ActionView::Helpers::JavaScriptHelper
 
   private
 
@@ -121,6 +125,16 @@ class ApplicationController < ActionController::Base
       rescue
         flash[:error] = 'An unknown error happened. '
         redirect_to root_url
+      end
+    end
+
+    def check_for_unauthenticated_coinbase_account
+      return unless has_coinbase_account_linked?
+      unless (!current_user.coinbase_account.oauth_credentials.empty? rescue false)
+
+        code = ''
+        code = 'alert("' + escape_javascript(flash[:error]) + '"); ' if flash[:error]
+        render inline: '<script>' + code + 'window.location = "' + link_coinbase_account_url + '"; </script>'.html_safe
       end
     end
 

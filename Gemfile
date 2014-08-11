@@ -1,5 +1,5 @@
-# source 'https://ruby.taobao.org/'
-source 'https://rubygems.org/'
+source 'https://ruby.taobao.org/'
+# source 'https://rubygems.org/'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
@@ -57,3 +57,5 @@ gem "font-awesome-rails"
 # Auto-complete plugin
 gem 'twitter-typeahead-rails'
 
+# BitCoin gem
+gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
