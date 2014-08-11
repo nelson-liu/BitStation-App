@@ -1,7 +1,7 @@
-<section class="module <%= expandable ? 'expandable' : '' %> col-lg-4 col-sm-6 col-xs-12">
-  <div>
-    <h5><%= title %></h5>
-    <div data-load="<%= content_path %>">
+<section class="module panel panel-default <%= expandable ? 'expandable' : '' %> col-lg-4 col-sm-6 col-xs-12">
+  <h5 class="panel-heading"><%= title %></h5>
+  <div data-load="<%= content_path %>">
+    <div>
       <div class="dashboard-module-spinner-container">
         <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
       </div>
