@@ -71,6 +71,21 @@
 
     /* Webkit overflow: scroll; scrollbar fix */
 
+    #history_buttons_container {
+      position: absolute;
+      top: -7px;
+      left: 0px; // to offset the section.module 8px padding
+      padding: 15px 21px;
+      width: 100%;
+
+      i {
+        color: white;
+
+        &:hover {
+          color: #ccc;
+        }
+      }
+    }
 	}
 
   section.module>div::-webkit-scrollbar {
@@ -119,15 +134,6 @@
 		padding: 7px 5px 6px 5px;
 		height: 34px;
 	}
-	.pagination-wrapper {
-		text-align: center;
-		margin: 10px 0;
-		height: 34px;
-		.pagination {
-			margin: 0;
-		}
-	}
-
 
 }
 

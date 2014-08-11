@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
   before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :exchange_currencies, :manage_account]
 
-  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 10
+  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 5
 
   def dashboard
     @subtitle = "Dashboard"
@@ -34,6 +34,7 @@ class DashboardController < ApplicationController
       client = current_coinbase_client
       page = params[:page] || 1
       page = page.to_i
+      @current_page = page
 
       @transactions = client.transactions(page, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
       # FIXME assuming the user has no more than 1000 transfers
@@ -47,9 +48,20 @@ class DashboardController < ApplicationController
       end
 
       @coinbase_id = @transactions['current_user']['id']
+      @might_have_next_page = (@history.size == TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
     end
 
-    render layout: false
+    respond_to do |format|
+      format.js do
+        @rendered_html = render_to_string(formats: [:html]).lines.map { |l| l.strip }.join('').html_safe
+        # raise @rendered_html.lines.count.to_s
+        render formats: [:js]
+      end
+
+      format.html do
+        render layout: false
+      end
+    end
   end
 
   def transaction_history_detailed
