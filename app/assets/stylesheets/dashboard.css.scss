@@ -154,12 +154,16 @@
 		i.fa {
 			font-size: 20px;
 			line-height: 50%;
+			margin-left: 5px;
 		}
+		.label {
+			width: 100%;
+			display: inline-block;
+			}
 	}
 
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
-		border-color: white;
 		padding: 7px 5px;
 		height: 35px;
 	}
