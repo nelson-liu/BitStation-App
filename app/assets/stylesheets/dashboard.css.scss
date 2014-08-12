@@ -142,7 +142,12 @@
 		text-align: center;
 		border-bottom: 1px solid #BBB;
 		margin-bottom: 0;
+		i.fa {
+			font-size: 20px;
+			line-height: 50%;	
+		}
 	}
+
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
 		border-color: white;
