@@ -37,6 +37,7 @@ class DashboardController < ApplicationController
     @current_page = page
 
     @transactions = client.transactions(page, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
+    @num_pages = @transactions['num_pages'].to_i
     # FIXME assuming the user has no more than 1000 transfers
     @transfers = client.transfers(limit: [1000, page * TRANSACTION_HISTORY_ENTRIES_PER_PAGE].min)
     @transfers = @transfers['transfers'].map { |t| t['transfer'] }
@@ -48,8 +49,7 @@ class DashboardController < ApplicationController
     end
 
     @coinbase_id = @transactions['current_user']['id']
-    @might_have_next_page = (@history.size == TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
-    @might_have_next_page = !client.transactions(page + 1, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)['transactions'].empty? if @might_have_next_page
+    @might_have_next_page = (@current_page < @num_pages)
 
     respond_to do |format|
       format.js do
