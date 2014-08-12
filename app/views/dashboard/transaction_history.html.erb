@@ -28,7 +28,7 @@
             <% if entry['transfer_type'] %>
               <%= entry['transfer_type'] %>
             <% else %>
-              <%= entry['sender']['id'] == @coinbase_id ? 'to' : 'from' %></td>
+              <%= entry['sender']['id'] == @coinbase_id ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%></td>
             <% end %>
           <td>
           <% unless entry['transfer_type'] %>
