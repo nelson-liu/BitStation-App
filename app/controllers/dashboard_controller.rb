@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
   before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin, :access_qrcode_details]
+  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
 
@@ -30,27 +31,25 @@ class DashboardController < ApplicationController
   end
 
   def transaction_history
-    if has_coinbase_account_linked?
-      client = current_coinbase_client
-      page = params[:page] || 1
-      page = page.to_i
-      @current_page = page
+    client = current_coinbase_client
+    page = params[:page] || 1
+    page = page.to_i
+    @current_page = page
 
-      @transactions = client.transactions(page, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
-      # FIXME assuming the user has no more than 1000 transfers
-      @transfers = client.transfers(limit: [1000, page * TRANSACTION_HISTORY_ENTRIES_PER_PAGE].min)
-      @transfers = @transfers['transfers'].map { |t| t['transfer'] }
-      @history = @transactions['transactions'].map { |t| t['transaction'] }
+    @transactions = client.transactions(page, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
+    # FIXME assuming the user has no more than 1000 transfers
+    @transfers = client.transfers(limit: [1000, page * TRANSACTION_HISTORY_ENTRIES_PER_PAGE].min)
+    @transfers = @transfers['transfers'].map { |t| t['transfer'] }
+    @history = @transactions['transactions'].map { |t| t['transaction'] }
 
-      @history.each do |e|
-        ts = @transfers.select { |t| t['transaction_id'] == e['id'] }
-        e['transfer_type'] = ts.first['type'].downcase unless ts.empty?
-      end
-
-      @coinbase_id = @transactions['current_user']['id']
-      @might_have_next_page = (@history.size == TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
-      @might_have_next_page = !client.transactions(page + 1, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)['transactions'].empty? if @might_have_next_page
+    @history.each do |e|
+      ts = @transfers.select { |t| t['transaction_id'] == e['id'] }
+      e['transfer_type'] = ts.first['type'].downcase unless ts.empty?
     end
+
+    @coinbase_id = @transactions['current_user']['id']
+    @might_have_next_page = (@history.size == TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
+    @might_have_next_page = !client.transactions(page + 1, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)['transactions'].empty? if @might_have_next_page
 
     respond_to do |format|
       format.js do
@@ -120,4 +119,10 @@ class DashboardController < ApplicationController
 
   def overview
   end
+
+  private
+
+    def check_for_unlinked_coinbase_account
+      render 'unlinked_coinbase_account', layout: false unless has_coinbase_account_linked?
+    end
 end
