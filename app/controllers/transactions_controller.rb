@@ -120,7 +120,7 @@ class TransactionsController < ApplicationController
 
       redirect_to dashboard_url, flash: {success: "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "}
     rescue
-      redirect_to dashboard_url, flash: {error: 'Failed to send to request. '} and return
+      redirect_to dashboard_url, flash: {error: 'Failed to send the request. '} and return
     end
   end
 
