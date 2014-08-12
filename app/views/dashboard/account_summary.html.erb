@@ -18,7 +18,7 @@
     <p class="text-center"><%= link_to 'Link a Coinbase account', link_coinbase_account_path,  class: "btn btn-primary" %></p>
   <% end %>
 </div>
-<% if has_coinbase_account_linked? %>
+<% unless signed_in_with_access_code? %>
 <hr>
 <div class="panel-body">
 	<label>Access BitStation from your phone</label>
