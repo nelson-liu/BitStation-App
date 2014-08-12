@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get 'dashboard/transaction_history'
   get 'dashboard/transaction_details'
   get 'dashboard/transaction_history_detailed'
-  get 'dashboard/exchange_currencies'
+  get 'dashboard/buy_sell_bitcoin'
   get 'dashboard/request_bitcoin'
   get 'dashboard/overview'
   get 'dashboard/access_qrcode_details'
