@@ -8,16 +8,16 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   def update_coinbase_oauth_credentials(credentials)
-    coinbase_account.update({oauth_credentials: credentials})
+    coinbase_account.update!({oauth_credentials: credentials})
   end
 
   def new_access_code
-    update({access_code: generate_access_code, access_code_redeemed: false})
+    update!({access_code: generate_access_code, access_code_redeemed: false})
     access_code
   end
 
   def revoke_access_code
-    update({access_code: nil, access_code_redeemed: false})
+    update!({access_code: nil, access_code_redeemed: false})
   end
 
   def self.user_with_unredeemed_access_code(code)
