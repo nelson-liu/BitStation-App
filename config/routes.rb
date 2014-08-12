@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get 'dashboard/exchange_currencies'
   get 'dashboard/request_bitcoin'
   get 'dashboard/overview'
+  get 'dashboard/access_qrcode_details'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
