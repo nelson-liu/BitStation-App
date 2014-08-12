@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'dashboard/address_book'
   get 'dashboard/address_book_detailed'
   get 'dashboard/transaction_history'
+  get 'dashboard/transaction_details'
   get 'dashboard/transaction_history_detailed'
   get 'dashboard/exchange_currencies'
   get 'dashboard/request_bitcoin'

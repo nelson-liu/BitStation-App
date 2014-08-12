@@ -17,7 +17,7 @@ ready = ->
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
     name = $(this).html()
-    $("#detailed-wrapper>div>div").load(path + "_detailed")
+    $("#detailed-wrapper>div").load(path + "_detailed")
     $("#detailed-wrapper h5").html(name + " Detailed View")
     $("#detailed-wrapper").show()
     $("#mask").show().fadeTo(300, 0.5)
@@ -71,8 +71,8 @@ ready = ->
 
   window.bind_popup_card = ->
     $(".popuppable").children().click ->
-      # path = $(this).next().attr('data-load')
-      # $("#detailed-wrapper>div>div").load(path + "_detailed")
+      path = $(this).closest(".popuppable").attr('data-load')
+      $("#popup-card-wrapper>div").load(path)
       $("#popup-card-wrapper h5").html("Detailed View")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)

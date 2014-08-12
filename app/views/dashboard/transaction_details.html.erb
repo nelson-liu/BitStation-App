@@ -1,0 +1,32 @@
+<div class="panel-body">
+	<h4>Transaction ID: <%= @transaction_id %></h4>
+	<p>Date: <%= @transaction_date %></p>
+	<p>Amount: <%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %>
+		<% if @transaction['amount'] < 0 %>
+			<%= '<span class="label label-danger">Outgoing</span>'.html_safe %>
+		<% elsif @transaction['amount'] > 0 %>
+			<%= '<span class="label label-success">Incoming</span>'.html_safe %>
+		<% end %>
+		<% if @transaction['status'] == "pending" %>
+			<%= '<span class="label label-warning">Pending</span>'.html_safe %>
+		<% elsif @transaction['status'] == "complete" %>
+			<%= '<span class="label label-success">Complete</span>'.html_safe %>
+		<% end %>
+	</p>
+</div>
+<hr>
+<div class="panel-body">
+	<h4>Sender</h4>
+	<p>Name: <%= @transaction_sender_name %></p>
+	<p>Coinbase email: <%= @transaction_sender_email %></p>
+</div>
+<hr>
+<div class="panel-body">
+	<h4>Recipient</h4>
+	<p>Name: <%= @transaction_recipient_name %></p>
+	<p>Coinbase email: <%= @transaction_recipient_email %></p>
+</div>
+<hr>
+<div class="panel-body">
+	<p><%= @footer.html_safe %><p>
+</div>
