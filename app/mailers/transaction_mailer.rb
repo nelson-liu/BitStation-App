@@ -2,6 +2,7 @@ class TransactionMailer < ActionMailer::Base
   default from: "BitStation@bs.ljh.me"
 
   add_template_helper(ApplicationHelper)
+  include ApplicationHelper
 
   def request_money(sender, requestee, amount, message, respond_link)
     return if requestee.coinbase_account.nil?
