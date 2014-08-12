@@ -47,14 +47,20 @@
               <% end %>">
     <div class="row"><% flash.each do |key, value| %>
       <% next unless ['success', 'warning', 'info', 'error'].include?(key.to_s) %>
-      <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %>">
+      <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %> <%= key.to_s == 'success' ? '' : 'alert-dismissible' %>" role="alert">
+        <% if key.to_s != 'success' %>
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <% end %>
         <%= value %>
       </div>
     <% end %>
     <% if @flash %>
       <% @flash.each do |key, value| %>
         <% next unless ['success', 'warning', 'info', 'error'].include?(key.to_s) %>
-        <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %>">
+        <div class="alert alert-<%= key.to_s == 'error' ? 'danger' : key.to_s %> <%= key.to_s == 'success' ? '' : 'alert-dismissible' %>" role="alert">
+          <% if key.to_s != 'success' %>
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <% end %>
           <%= value %>
         </div>
       <% end%>
