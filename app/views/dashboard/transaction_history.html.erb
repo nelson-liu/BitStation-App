@@ -21,7 +21,7 @@
         <!-- TODO ignore request transactions for now -->
         <% next if entry['request'] %>
         <!-- TODO put data-load attr in tr for popup card ajax load -->
-        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" >
+        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" data-load="<%= dashboard_transaction_details_path(id: entry['id']) %>" >
           <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
           <td><%= friendly_amount_from_money(entry['amount']) %></td>
           <td>
