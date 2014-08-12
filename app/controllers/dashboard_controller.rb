@@ -19,6 +19,8 @@ class DashboardController < ApplicationController
   end
 
   def transfer
+    @send_money = params[:send_money]
+    @default_currency = (params[:send_money][:currency] rescue 'USD')
     render layout: false
   end
 

@@ -12,23 +12,23 @@
     <div class="form-group">
       <%= label_tag 'amount' %>
       <div class="input-group">
-        <%= text_field_tag 'amount', '', placeholder: 'The amount of USD to send', class: 'form-control' %>
+        <%= text_field_tag 'amount', (@send_money[:amount] rescue nil), placeholder: "The amount of #{@default_currency} to send", class: 'form-control' %>
         <div class="btn-group input-group-btn">
           <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-            <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
+            <span data-bind="label" id="sendlabel"><%= @default_currency %></span> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" id="currency_dropdown" role="menu">
             <li><a href="#">USD</a></li>
             <li><a href="#">BTC</a></li>
           </ul>
-          <input type="hidden" name="currency" value="USD">
+          <%= hidden_field_tag 'currency', @default_currency %>
         </div><!-- /btn-group -->
       </div><!-- /input-group -->
     </div>
 
     <div class="form-group">
       <%= label_tag target %>
-      <%= text_field_tag 'kerberos', '', placeholder: 'Kerberos ID or BTC Address', class: 'form-control' %>
+      <%= text_field_tag 'kerberos', (@send_money[:recipient] rescue nil), placeholder: 'Kerberos ID or BTC Address', class: 'form-control' %>
     </div>
 
     <div class="form-group">

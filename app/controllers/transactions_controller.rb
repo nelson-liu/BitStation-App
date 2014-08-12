@@ -112,12 +112,15 @@ class TransactionsController < ApplicationController
 
     # FIXME more specific rescue here
     begin
-      # FIXME drop in a meaningful respond link here.
-      TransactionMailer.request_money(current_user, requestee, amount, message, 'http://google.com.hk').deliver
+      TransactionMailer.request_money(current_user, requestee, amount, message, dashboard_url(send_money: {
+        recipient: current_user.kerberos,
+        amount: amount,
+        currency: 'BTC'
+      })).deliver
 
       redirect_to dashboard_url, flash: {success: "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "}
-    # rescue
-      # redirect_to dashboard_url, flash: {error: 'Failed to send to request. '} and return
+    rescue
+      redirect_to dashboard_url, flash: {error: 'Failed to send to request. '} and return
     end
   end
 
