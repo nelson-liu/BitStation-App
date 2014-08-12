@@ -1,25 +1,35 @@
 <div>
-  <%= form_tag path, id: id %>
+  <!-- FIXME substitute request_bitcoin_path with actual transaction path -->
+  <%= form_tag transact_path, id: 'transfer_form', 'data-send-path' => transact_path, 'data-request-path' => request_bitcoin_path %>
+    <div class="form-group">
+      <%= label_tag 'action' %>
+      <div class="btn-group btn-group-justified" id="transfer_action_btn_group">
+        <a class="btn btn-default btn-primary">Send</a>
+        <a class="btn btn-default">Request</a>
+      </div>
+      <%= hidden_field_tag 'action', 'send' %>
+    </div>
+
     <div class="form-group">
       <%= label_tag 'amount' %>
       <div class="input-group">
-      <%= text_field_tag 'amount', '', placeholder: 'The amount of USD', class: 'form-control' %>
-      <div class="btn-group input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-          <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">USD</a></li>
-          <li><a href="#">BTC</a></li>
-       </ul>
-       <input type="hidden" name="currency" value="USD">
-      </div><!-- /btn-group -->
-    </div><!-- /input-group -->
+        <%= text_field_tag 'amount', '', placeholder: 'The amount of USD to send', class: 'form-control' %>
+        <div class="btn-group input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+            <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" id="currency_dropdown" role="menu">
+            <li><a href="#">USD</a></li>
+            <li><a href="#">BTC</a></li>
+          </ul>
+          <input type="hidden" name="currency" value="USD">
+        </div><!-- /btn-group -->
+      </div><!-- /input-group -->
     </div>
 
     <div class="form-group">
       <%= label_tag target %>
-      <%= text_field_tag 'kerberos', '', placeholder: 'The Kerberos ID / BTC Address of the ' + target, class: 'form-control' %>
+      <%= text_field_tag 'kerberos', '', placeholder: 'Kerberos ID or BTC Address', class: 'form-control' %>
     </div>
 
     <div class="form-group">
@@ -27,11 +37,11 @@
       <%= text_field_tag 'message', '', placeholder: 'A kind word or two', class: 'form-control' %>
     </div>
 
-    <%= submit_tag 'Authorize Transaction', class: 'btn btn-primary' %>
+    <%= submit_tag 'Send Money', class: 'btn btn-primary' %>
   </form>
 
   <script>
     // FIXME This is ugly...
-    window.setup_recipient_autocomplete("<%= id %>");
+    window.setup_recipient_autocomplete("transfer_form");
   </script>
 </div>
