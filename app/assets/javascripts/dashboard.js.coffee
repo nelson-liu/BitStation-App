@@ -48,7 +48,8 @@ ready = ->
 
   $("div[data-load]").filter(":visible").each ->
     path = $(this).attr('data-load')
-    $(this).load(path)
+    # passes the query string to sub-modules for fields pre-filling
+    $(this).load(path + '?' + window.location.search.substring(1))
 
   # FIXME I do NOT want to pollute global namespace...
   window.setup_recipient_autocomplete = (formID) ->

@@ -1,5 +1,5 @@
 class TransactionMailer < ActionMailer::Base
-  default from: "bitstation@bs.ljh.me"
+  default from: "BitStation@bs.ljh.me"
 
   add_template_helper(ApplicationHelper)
 
@@ -13,6 +13,6 @@ class TransactionMailer < ActionMailer::Base
     @respond_link = respond_link
 
     mail to: requestee.coinbase_account.email,
-         subject: "#{sender.name} is requesting #{amount} BTC from you. "
+         subject: "#{sender.name} is requesting #{friendly_amount(amount, 'BTC')} from you. "
   end
 end
