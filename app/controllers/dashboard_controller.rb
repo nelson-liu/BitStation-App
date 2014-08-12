@@ -110,6 +110,7 @@ class DashboardController < ApplicationController
   end
 
   def exchange_currencies
+    @current_sell_price = current_coinbase_client.sell_price(1).format
     render layout: false
   end
 
