@@ -3,6 +3,9 @@ class UsersController < ApplicationController
 
   QRCODE_DEFAULT_SIZE = 300
 
+  def require_coinbase_account
+  end
+
   def link_coinbase_account
     # FIXME writing out the scope query is ugly but authorize_url over-escapes it
     redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri) + "&scope=balance+addresses+user+transactions+transfers"

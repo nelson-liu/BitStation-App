@@ -1,0 +1,9 @@
+<p>You will be redirected to link your Coinbase account in a few seconds... </p>
+<p>If your browser doesn't redirect you, click <%= link_to 'here', link_coinbase_account_path %> to proceed. </p>
+
+<script>
+  // FIXME another mix here
+  setTimeout(function() {
+    window.location = "<%= j link_coinbase_account_path %>";
+  }, 3000);
+</script>

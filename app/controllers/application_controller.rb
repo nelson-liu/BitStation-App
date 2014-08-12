@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
       ensure_signed_in
       if current_user.coinbase_account.nil?
         flash[:error] = "You need to link a Coinbase account first. "
-        redirect_to link_coinbase_account_url
+        redirect_to require_coinbase_account_url
       end
     end
 
