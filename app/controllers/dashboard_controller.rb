@@ -100,7 +100,7 @@ class DashboardController < ApplicationController
   end
 
   def access_qrcode_details
-    @qr_path = access_qrcode_path(current_user)
+    @qr_path = access_qrcode_path(current_user, r: Time.now.to_f.to_s)
     render layout: false
   end
 
