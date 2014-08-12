@@ -115,6 +115,10 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
+  def bitstation_feed
+    render layout: false
+  end
+
   def overview
   end
 
