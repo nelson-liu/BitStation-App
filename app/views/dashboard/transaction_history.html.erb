@@ -14,15 +14,15 @@
     <p>No more transaction history to show.</p>
   </div>
 <% end %>
-<table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
+<table id="transaction-history-table" class="table table-striped table-responsive table-hover table-condensed">
   <tbody>
     <% @history.each do |entry| %>
       <!-- TODO ignore request transactions for now -->
       <% next if entry['request'] %>
       <!-- TODO put data-load attr in tr for popup card ajax load -->
-      <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" data-load="<%= dashboard_transaction_details_path(id: entry['id']) %>" >
+      <tr class=" popuppable" data-load="<%= dashboard_transaction_details_path(id: entry['id']) %>" >
         <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
-        <td><%= friendly_amount_from_money(entry['amount']) %></td>
+        <td><span class="label label-<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %>"><%= friendly_amount_from_money(entry['amount']) %></span></td>
         <td>
           <% if entry['transfer_type'] %>
             <%= entry['transfer_type'] %>

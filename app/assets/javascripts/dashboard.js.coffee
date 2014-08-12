@@ -4,7 +4,7 @@
 
 ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
-  $(".expandable h5").append(" <i class='fa fa-arrows-alt'></i>");
+  $(".expandable h5").append("<i class='fa fa-arrows-alt'></i>");
 
   #dropdown menu for sending
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
