@@ -3,16 +3,16 @@
     <div class="form-group">
       <%= label_tag 'request-amount' %>
       <div class="input-group">
-      <%= text_field_tag 'request-amount', '', placeholder: 'The amount of currency to request', class: 'form-control' %>
+      <%= text_field_tag 'request-amount', '', placeholder: 'The amount of USD to request', class: 'form-control' %>
       <div class="btn-group input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-          <span data-bind="label">USD</span> <span class="caret"></span>
+          <span data-bind="label" id="requestlabel">USD</span> <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu" role="menu" id="requestcurrencymenu">
           <li><a href="#">USD</a></li>
           <li><a href="#">BTC</a></li>
        </ul>
-       <input type="hidden" name="currency" value="USD">
+       <input type="hidden" name="currencyrequest" value="USD">
       </div><!-- /btn-group -->
     </div><!-- /input-group -->
     </div>
