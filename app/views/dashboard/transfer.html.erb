@@ -3,10 +3,10 @@
     <div class="form-group">
       <%= label_tag 'amount' %>
       <div class="input-group">
-      <%= text_field_tag 'amount', '', placeholder: 'The amount of currency to send', class: 'form-control' %>
+      <%= text_field_tag 'amount', '', placeholder: 'The amount of USD to send', class: 'form-control' %>
       <div class="btn-group input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-          <span data-bind="label">USD</span> <span class="caret"></span>
+          <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
           <li><a href="#">USD</a></li>

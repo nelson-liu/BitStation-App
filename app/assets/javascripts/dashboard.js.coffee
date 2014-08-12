@@ -5,13 +5,24 @@
 ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
 
+  #dropdown menu for sending
   $(document.body).on "click", ".dropdown-menu li", (event) ->
     $target = $(event.currentTarget)
-    $target.closest(".input-group-btn").find("[data-bind=\"label\"]").text($target.text()).end().children(".dropdown-toggle").dropdown "toggle"
+    $target.closest(".input-group-btn").find("[id=\"sendlabel\"]").text($target.text()).end().children(".dropdown-toggle").dropdown "toggle"
     element = $("form input[name='currency']")
     currency = $target.text()
     element.val currency
-    $('input[name=amount]').attr("placeholder", "The amount of #{currency} to send");
+    $target.parents($('form')).find('input[name=amount]').attr("placeholder", "The amount of #{currency} to send");
+    false
+
+  #dropdown menu for requesting
+  $(document.body).on "click", "#requestcurrencymenu", (event) ->
+    $targetrequest = $(event.currentTarget)
+    $targetrequest.closest(".input-group-btn").find("[data-bind=\"label\"]").text($targetrequest.text()).end().children(".dropdown-toggle").dropdown "toggle"
+    elementrequest = $("form input[name='currencyrequest']")
+    currencyrequest = $targetrequest.text()
+    elementrequest.val currencyrequest
+    $targetrequest.parents($('form')).find('input[name=amount]').attr("placeholder", "The amount of #{currencyrequest} to request");
     false
 
   $(".module.expandable h5").click ->
