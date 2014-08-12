@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
-  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin, :access_qrcode_details]
-  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin]
+  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :buy_sell_bitcoin, :request_bitcoin, :access_qrcode_details]
+  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :transaction_history, :transaction_details, :buy_sell_bitcoin, :request_bitcoin]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
 
@@ -108,7 +108,7 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
-  def exchange_currencies
+  def buy_sell_bitcoin
     @current_sell_price = current_coinbase_client.sell_price(1).format
     render layout: false
   end
