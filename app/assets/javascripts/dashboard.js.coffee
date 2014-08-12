@@ -4,6 +4,7 @@
 
 ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
+  $(".expandable h5").append(" <i class='fa fa-arrows-alt'></i>");
 
   #dropdown menu for sending
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
@@ -16,7 +17,7 @@ ready = ->
     $(this).parents('form').find('input[name=currency]').val($(this).text()).trigger('change')
     false
 
-  # action selecting for tranfer form
+  # action selecting for transfer form
   $(document.body).on "click", "#transfer_form #transfer_action_btn_group a", (event) ->
     $(this).parent().children().removeClass('btn-primary')
     $(this).addClass('btn-primary')
@@ -28,7 +29,7 @@ ready = ->
 
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
-    name = $(this).html()
+    name = $(this).html().split("<i", 1)[0]
     $("#detailed-wrapper>div").load(path + "_detailed")
     $("#detailed-wrapper h5").html(name + " Detailed View")
     $("#detailed-wrapper").show()
