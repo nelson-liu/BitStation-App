@@ -1,0 +1,6 @@
+<p><%= @sender_name %> is requesting <%= friendly_amount(@amount, 'BTC') %> BTC from you<%= @has_message ? ' saying:' : '.' %> </p>
+<% if @has_message %>
+  <p>"<%= @message %>"</p>
+<% end %>
+<p>You can go to <%= link_to @respond_link, @respond_link %> to send money to <%= @sender_name %>. </p>
+

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'sessions/oauth', as: :oauth
 
   post 'transactions/transact', as: :transact
-  post 'transactions/request_bitcoin', as: :request_bitcoin
+  post 'transactions/request_money', as: :request_money
   get 'transactions/history'
   get 'transactions/exchange'
 
