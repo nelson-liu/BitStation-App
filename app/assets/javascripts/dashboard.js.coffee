@@ -30,6 +30,7 @@ ready = ->
   $("#mask2").click ->
     $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
     $("#popup-card-wrapper, #mask2").hide()
+    $("#popup-card-wrapper").css "bottom", "initial"
     $("#mask2").css("opacity", 0)
 
   $("div[data-load]").filter(":visible").each ->
@@ -72,7 +73,10 @@ ready = ->
   window.bind_popup_card = ->
     $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
       path = $(this).closest(".popuppable").attr('data-load')
-      $("#popup-card-wrapper>div").load(path)
+      $("#popup-card-wrapper>div").load path, ->
+        if $(this).height() + 80 > $(window).height()
+          $(this).parent().css "bottom", "40px"
+        return
       $("#popup-card-wrapper h5").html("Detailed View")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)

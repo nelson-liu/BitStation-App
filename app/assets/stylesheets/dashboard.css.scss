@@ -95,9 +95,8 @@
 	#detailed-wrapper, #popup-card-wrapper {
 		position: fixed;
 		z-index: 1000;
-		top: 0px;
+		top: 40px;
 		left: 0px;
-		padding-top:40px;
 		display: none;
 		>div {
 			height: 100%;
@@ -112,9 +111,12 @@
 
     #access_qrcode {
       display: block;
-      width: 300px;
       height: 300px;
       margin: 30px auto;
+			padding: 10px;
+			margin: 0 auto;
+			max-height: 87%;
+			width: auto;
     }
 	}
 
