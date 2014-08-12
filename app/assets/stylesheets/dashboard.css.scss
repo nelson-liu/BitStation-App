@@ -148,6 +148,17 @@
 		}
 	}
 
+	.transaction_details {
+		padding: 5px 20px;
+		h4 {
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
+		p {
+			margin-bottom: 0;
+		}
+	}
+
 	/***** TRANSACTION HISTORY STYLES *****/
 
 	#transaction-history-table {
@@ -164,7 +175,6 @@
 			}
 		.td-badge {
 			padding-left: 0;
-			padding-right: 0;
 		}
 		.td-truncate {
 			position: relative;
