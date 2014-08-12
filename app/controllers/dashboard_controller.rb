@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
-  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin]
+  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :exchange_currencies, :request_bitcoin, :access_qrcode_details]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
 
@@ -64,41 +64,46 @@ class DashboardController < ApplicationController
       end
     end
   end
-  
+
   def transaction_details
     @transaction_id = params['id']
     client = current_coinbase_client
-    
+
     @transaction = client.transaction(@transaction_id)['transaction']
-    
+
     @transaction_date = Time.parse(@transaction['created_at']).localtime.to_s[0..-7]
-    
-    if @transaction['hsh'].nil? 
+
+    if @transaction['hsh'].nil?
       @footer = "This transaction occurred within the Coinbase network and off the blockchain with zero fees."
     else
       @footer = '<a target=“_blank” href="https://coinbase.com/network/transactions/' + @transaction['hsh'] + '">View this transaction on the blockchain</a>'
     end
-    
-    if @transaction[:sender].nil? 
+
+    if @transaction[:sender].nil?
       @transaction_sender_name = "External Account"
       @transaction_sender_email = "N/A"
     else
       @transaction_sender_name = @transaction[:sender][:name]
       @transaction_sender_email = @transaction[:sender][:email]
     end
-    if @transaction[:recipient].nil? 
+    if @transaction[:recipient].nil?
       @transaction_recipient_name = "External Account"
       @transaction_recipient_email = "N/A"
     else
       @transaction_recipient_name = @transaction[:recipient][:name]
       @transaction_recipient_email = @transaction[:recipient][:email]
     end
-    
+
     # TODO: Get full names from our user database if possible, not coinbase
     @transaction_json = @transaction.to_json
-    
+
     render layout: false
-  end  
+  end
+
+  def access_qrcode_details
+    @qr_path = access_qrcode_path(current_user)
+    render layout: false
+  end
 
   def transaction_history_detailed
     render layout: false

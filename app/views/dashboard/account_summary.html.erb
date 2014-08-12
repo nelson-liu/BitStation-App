@@ -23,8 +23,13 @@
 <div class="panel-body">
 	<label>Access BitStation from your phone</label>
 	<p class="text-center">
-	  <%= link_to 'Get QR Access Code', :access_qrcode, class: "btn btn-primary" %>
+	  <%= link_to 'Get QR Access Code', :access_qrcode, class: "btn btn-primary popuppable", 'data-load' => "#{dashboard_access_qrcode_details_path}" %>
 	  <%= link_to 'Revoke QR Code', :revoke_access_code, class: "btn btn-primary" %>
   </p>
 </div>
+
+<script>
+  // FIXME need say more?
+  window.bind_popup_card();
+</script>
 <% end %>

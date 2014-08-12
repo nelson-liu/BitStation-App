@@ -70,12 +70,13 @@ ready = ->
     );
 
   window.bind_popup_card = ->
-    $(".popuppable").children().click ->
+    $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
       path = $(this).closest(".popuppable").attr('data-load')
       $("#popup-card-wrapper>div").load(path)
       $("#popup-card-wrapper h5").html("Detailed View")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)
+      return false
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
