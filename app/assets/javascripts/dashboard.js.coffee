@@ -6,12 +6,24 @@ ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
 
   #dropdown menu for sending
-  $(document.body).on "click", "form .dropdown-menu li", (event) ->
-    target = $(event.currentTarget)
-    currency = target.text()
-    target.closest(".input-group-btn").find("[id=\"sendlabel\"]").text(target.text()).end().children(".dropdown-toggle").dropdown "toggle"
-    target.parents('form').find('input[name=currency]').val(currency)
-    target.parents('form').find('input[name=amount]').attr("placeholder", "The amount of #{currency}")
+  $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
+    action = $(this).closest('form').find('input[name=action]').val()
+    currency = $(this).closest('form').find('input[name=currency]').val()
+    $(this).closest('form').find('input[name=amount]').attr('placeholder', "The amount of #{currency} to #{action}")
+
+  $(document.body).on "click", "#transfer_form #currency_dropdown li", (event) ->
+    $(this).closest(".input-group-btn").find("[id=\"sendlabel\"]").text($(this).text()).end().children(".dropdown-toggle").dropdown "toggle"
+    $(this).parents('form').find('input[name=currency]').val($(this).text()).trigger('change')
+    false
+
+  # action selecting for tranfer form
+  $(document.body).on "click", "#transfer_form #transfer_action_btn_group a", (event) ->
+    $(this).parent().children().removeClass('btn-primary')
+    $(this).addClass('btn-primary')
+    $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
+    $(this).closest('form').find('label[for=recipient]').text(if $(this).text() == 'Send' then 'Recipient' else 'Requestee')
+    $(this).closest('form').attr('action', $(this).closest('form').attr('data-' + $(this).text().toLowerCase() + '-path'))
+    $(this).closest('form').find('input[type=submit]').val($(this).text() + ' Money')
     false
 
   $(".module.expandable h5").click ->
