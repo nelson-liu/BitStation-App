@@ -11,7 +11,7 @@ ready = ->
     currency = target.text()
     target.closest(".input-group-btn").find("[id=\"sendlabel\"]").text(target.text()).end().children(".dropdown-toggle").dropdown "toggle"
     target.parents('form').find('input[name=currency]').val(currency)
-    target.parents('form').find('input[name=amount]').attr("placeholder", "The amount of #{currency} to send")
+    target.parents('form').find('input[name=amount]').attr("placeholder", "The amount of #{currency}")
     false
 
   $(".module.expandable h5").click ->

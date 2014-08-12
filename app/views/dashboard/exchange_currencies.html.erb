@@ -1,0 +1,41 @@
+<div class="panel-body">
+  <%= form_tag request_bitcoin_path, id: 'exchange_bitcoin_form' %>
+  <div class="form-group">
+    <%= label_tag 'amount' %>
+    <div class="input-group">
+      <%= text_field_tag 'amount', '', placeholder: 'The amount of USD', class: 'form-control' %>
+      <div class="btn-group input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+          <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">USD</a></li>
+          <li><a href="#">BTC</a></li>
+        </ul>
+        <input type="hidden" name="currency" value="USD">
+      </div><!-- /btn-group -->
+    </div><!-- /input-group -->
+  </div>
+</div>
+<hr>
+
+<div class="panel-body">
+  <label>Current BitCoin Sell Price</label>
+  <div id="balances">
+    <br><span class="well well-sm"> 1 BTC = <%= @current_sell_price %></span>
+  </div>
+</div>
+<br>
+<hr>
+
+<div class="panel-body">
+  <%= submit_tag 'Authorize Transaction', class: 'btn btn-default' %>
+</div>
+
+</form>
+
+<script>
+    // FIXME This is ugly...
+    // window.setup_recipient_autocomplete();
+    </script>
+  </div>
