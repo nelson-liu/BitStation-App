@@ -34,6 +34,9 @@
 	    text-transform: uppercase;
 	    border: none;
 	    border-radius: 0;
+	    i {
+				margin-left: 5px;
+	    }
 		}
 
 		p {
@@ -154,18 +157,37 @@
 		i.fa {
 			font-size: 20px;
 			line-height: 50%;
-			margin-left: 5px;
 		}
 		.label {
 			width: 100%;
 			display: inline-block;
 			}
+		.td-badge {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.td-truncate {
+			position: relative;
+			.td-a {
+		    position: absolute;
+		    max-width: 100%;
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    text-align: center
+			}
+			.td-b {
+		    height: 0;
+		    overflow: hidden;
+			}
+		}
 	}
 
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
 		padding: 7px 5px;
 		height: 35px;
+		white-space: nowrap;
 	}
 
 }

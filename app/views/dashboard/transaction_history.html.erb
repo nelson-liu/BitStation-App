@@ -30,13 +30,38 @@
             <%= entry['sender']['id'] == @coinbase_id ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%></td>
           <% end %>
         <td>
-        <% unless entry['transfer_type'] %>
-          <% if entry['sender']['id'] == @coinbase_id %>
-            <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
-          <% else %>
-            <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).user.name rescue entry['sender']['name']) : 'External Account' %>
+          <div class="td-truncate">
+            <div class="td-a">
+              <% unless entry['transfer_type'] %>
+                <% if entry['sender']['id'] == @coinbase_id %>
+                  <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
+                <% else %>
+                  <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).user.name rescue entry['sender']['name']) : 'External Account' %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="td-b">
+              <% unless entry['transfer_type'] %>
+                <% if entry['sender']['id'] == @coinbase_id %>
+                  <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
+                <% else %>
+                  <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).user.name rescue entry['sender']['name']) : 'External Account' %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </td>
+        <td class="td-badge">
+          <% unless entry['transfer_type'] %>
+            <% if entry['sender']['id'] == @coinbase_id %>
+              <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).nil? ? '<span title="This person is a Coinbase user" class="badge alert-primary">C</span>'.html_safe : '<span title="This person is a MIT user" class="badge alert-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="badge alert-success">E</span>'.html_safe %>
+            <% else %>
+              <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).nil? ? '<span title="This person is a Coinbase user" class="badge alert-primary">C</span>'.html_safe : '<span title="This person is a MIT user" class="badge alert-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="badge alert-success">E</span>'.html_safe %>
+            <% end %>
           <% end %>
-        <% end %>
+          <% if entry['status'] == 'pending' %>
+            <span title="This transaction is pending" class="badge alert-warning">P</span>
+          <% end %>
         </td>
       </tr>
       <% @previous_date = DateTime.parse(entry['created_at']) %>
