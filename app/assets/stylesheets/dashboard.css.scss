@@ -24,7 +24,7 @@
 		background-color: transparent;
 		border-radius: 0;
 
-		h5 {
+		>h5 {
 			text-align: center;
 	    margin: 0;
 	    padding: 8px;
@@ -198,6 +198,20 @@
 		padding: 7px 5px;
 		height: 35px;
 		white-space: nowrap;
+	}
+
+	#bitstation_feed_module {
+		.media-object {
+			width: 64px;
+		}
+		.media-body {
+			p {
+				margin-bottom: 0;
+			}
+			.media-heading {
+				font-weight: bold;
+			}
+		}
 	}
 
 }
