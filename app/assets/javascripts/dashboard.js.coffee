@@ -23,12 +23,12 @@ ready = ->
     $("#mask").show().fadeTo(300, 0.5)
 
   $("#mask").click ->
-  	$("#detailed-wrapper>div>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+  	$("#detailed-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
   	$("#detailed-wrapper, #mask").hide()
   	$("#mask").css("opacity", 0)
 
   $("#mask2").click ->
-    $("#popup-card-wrapper>div>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+    $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
     $("#popup-card-wrapper, #mask2").hide()
     $("#mask2").css("opacity", 0)
 

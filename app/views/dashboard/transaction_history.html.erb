@@ -1,57 +1,51 @@
-<% if has_coinbase_account_linked? %>
-  <% unless @current_page == 1 %>
-    <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
-      <i class="fa fa-lg fa-chevron-circle-left paging paging-left"></i>
-    <% end %>
+<% unless @current_page == 1 %>
+  <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
+    <i class="fa fa-lg fa-chevron-circle-left paging paging-left"></i>
   <% end %>
+<% end %>
 
-  <% if @might_have_next_page %>
-    <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
-      <i class="fa fa-lg fa-chevron-circle-right paging paging-right"></i>
-    <% end %>
+<% if @might_have_next_page %>
+  <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
+    <i class="fa fa-lg fa-chevron-circle-right paging paging-right"></i>
   <% end %>
-  <% if @history.empty? %>
-    <div class="panel-body">
-      <p>No more transaction history to show.</p>
-    </div>
-  <% end %>
-  <table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
-    <tbody>
-      <% @history.each do |entry| %>
-        <!-- TODO ignore request transactions for now -->
-        <% next if entry['request'] %>
-        <!-- TODO put data-load attr in tr for popup card ajax load -->
-        <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" data-load="<%= dashboard_transaction_details_path(id: entry['id']) %>" >
-          <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
-          <td><%= friendly_amount_from_money(entry['amount']) %></td>
-          <td>
-            <% if entry['transfer_type'] %>
-              <%= entry['transfer_type'] %>
-            <% else %>
-              <%= entry['sender']['id'] == @coinbase_id ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%></td>
-            <% end %>
-          <td>
-          <% unless entry['transfer_type'] %>
-            <% if entry['sender']['id'] == @coinbase_id %>
-              <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
-            <% else %>
-              <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).user.name rescue entry['sender']['name']) : 'External Account' %>
-            <% end %>
-          <% end %>
-          </td>
-        </tr>
-        <% @previous_date = DateTime.parse(entry['created_at']) %>
-      <% end %>
-    </tbody>
-  </table>
-
-  <!-- FIXME this too is ugly -->
-  <script>
-    window.setup_transaction_history_paging_links();
-    window.bind_popup_card();
-  </script>
-<% else %>
+<% end %>
+<% if @history.empty? %>
   <div class="panel-body">
-    <p>Click <%= link_to 'here', link_coinbase_account_path %> to link a Coinbase account first. </p>
+    <p>No more transaction history to show.</p>
   </div>
 <% end %>
+<table id="transaction-history-table" class="table table-responsive table-hover table-condensed">
+  <tbody>
+    <% @history.each do |entry| %>
+      <!-- TODO ignore request transactions for now -->
+      <% next if entry['request'] %>
+      <!-- TODO put data-load attr in tr for popup card ajax load -->
+      <tr class="<%= entry['sender']['id'] == @coinbase_id ? 'danger' : 'success' %> popuppable" data-load="<%= dashboard_transaction_details_path(id: entry['id']) %>" >
+        <td><%= (DateTime.parse(entry['created_at']).to_date == @previous_date.to_date rescue false) ? '' : DateTime.parse(entry['created_at']).strftime('%b %d') %></td>
+        <td><%= friendly_amount_from_money(entry['amount']) %></td>
+        <td>
+          <% if entry['transfer_type'] %>
+            <%= entry['transfer_type'] %>
+          <% else %>
+            <%= entry['sender']['id'] == @coinbase_id ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%></td>
+          <% end %>
+        <td>
+        <% unless entry['transfer_type'] %>
+          <% if entry['sender']['id'] == @coinbase_id %>
+            <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
+          <% else %>
+            <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).user.name rescue entry['sender']['name']) : 'External Account' %>
+          <% end %>
+        <% end %>
+        </td>
+      </tr>
+      <% @previous_date = DateTime.parse(entry['created_at']) %>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- FIXME this too is ugly -->
+<script>
+  window.setup_transaction_history_paging_links();
+  window.bind_popup_card();
+</script>
