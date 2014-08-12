@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
           redirect_to root_url, flash: {error: 'Access code already used. '}
           return
         else
-          sign_in_user.update({access_code_redeemed: true})
+          sign_in_user.update!({access_code_redeemed: true})
 
           sign_in_with_access_code code
           redirect_to dashboard_url, flash: {success: "You have successfully logged in as #{sign_in_user.name}. "}
