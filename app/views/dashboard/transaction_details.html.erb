@@ -1,4 +1,4 @@
-<div class="panel-body">
+<div class="panel-body transaction_details">
 	<h4>Transaction <%= @transaction_id %></h4>
 	<p><%= DateTime.parse(@transaction_date).strftime('%b %d, %Y at %I:%M %p') %></p>
 	<p><span class="label label-<%= @transaction['amount'] > 0 ? 'success' : 'danger' %>"><%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %></span>
@@ -15,18 +15,18 @@
 	</p>
 </div>
 <hr>
-<div class="panel-body">
+<div class="panel-body transaction_details">
 	<h4>Sender</h4>
 	<p>Name: <%= @transaction_sender_name %></p>
 	<p>Coinbase email: <%= @transaction_sender_email %></p>
 </div>
 <hr>
-<div class="panel-body">
+<div class="panel-body transaction_details">
 	<h4>Recipient</h4>
 	<p>Name: <%= @transaction_recipient_name %></p>
 	<p>Coinbase email: <%= @transaction_recipient_email %></p>
 </div>
 <hr>
-<div class="panel-body">
+<div class="panel-body transaction_details">
 	<p><%= @footer.html_safe %><p>
 </div>
