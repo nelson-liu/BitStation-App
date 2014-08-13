@@ -20,13 +20,17 @@
 </div>
 
 <hr>
-
-<div class="panel-body">
+<div class="panel-body" id="sellprice" style="display: none;">
   <p><label>Current BitCoin Sell Price</label></p>
   <p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_sell_price.round(2) %></span> USD</span></p>
 </div>
+<hr id="sellpricehr" style="display: none;">
 
-<hr>
+<div class="panel-body" id="buyprice">
+  <p><label>Current BitCoin Buy Price</label></p>
+  <p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_buy_price.round(2) %></span> USD</span></p>
+</div>
+<hr id="buypricehr">
 
 <div class="panel-body">
   <%= submit_tag 'Buy', class: 'btn btn-primary' %>

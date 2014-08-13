@@ -36,6 +36,16 @@ ready = ->
     from = if $(this).text() == 'Buy' then 'USD' else 'BTC'
     to = if $(this).text() == 'Buy' then 'BTC' else 'USD'
 
+    if from == 'USD'
+      do $('#sellprice').hide
+      do $('#buyprice').show
+      do $('#sellpricehr').hide
+      do $('#buypricehr').show
+    if from == 'BTC'
+      do $('#sellprice').show
+      do $('#buyprice').hide
+      do $('#sellpricehr').show
+      do $('#buypricehr').hide
     $(this).closest('form').find('input[name=amount]').attr('placeholder', from + ' amount')
     $(this).closest('form').find('input[name=preview_amount]').attr('placeholder', to + ' amount')
     $(this).closest('form').find('.input-group-addon').html(from + ' <i class="fa fa-long-arrow-right"></i> ' + to)
