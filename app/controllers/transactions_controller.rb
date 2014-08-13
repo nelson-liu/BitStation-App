@@ -5,13 +5,14 @@ class TransactionsController < ApplicationController
   CURRENCIES = ["USD", "BTC"]
 
   MINIMUM_TRANSACTION_AMOUNT = {
-    "BTC" => 0.001,
-    "USD" => 0.5
+    "BTC" => 0,#.001,
+    "USD" => 0#.5
   }
 
   def transact
     recipient = params[:kerberos]
     amount = params[:amount].to_f
+    fee_amount = params[:fee_amount].to_f rescue 0
     currency = params[:currency]
     message = params[:message] || ''
 
@@ -65,8 +66,8 @@ class TransactionsController < ApplicationController
     end
 
     pt = is_kerberos ?
-      PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message}) :
-      PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message})
+      PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
+      PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
 
     # FIXME ugh
     redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'

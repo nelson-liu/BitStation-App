@@ -1,5 +1,6 @@
 <div>
   <%= form_tag transact_path, id: 'transfer_form', 'data-send-path' => transact_path, 'data-request-path' => request_money_path %>
+    <%= hidden_field_tag 'fee_amount', (@send_money[:fee_amount] rescue 0) %>
     <div class="form-group">
       <%= label_tag 'action' %>
       <div class="btn-group btn-group-justified" id="transfer_action_btn_group">
