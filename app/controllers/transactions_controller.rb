@@ -79,49 +79,37 @@ class TransactionsController < ApplicationController
     currency = params[:currency]
     message = params[:message]
 
-    unless CURRENCIES.include?(currency)
-      flash[:error] = 'Invalid currency. '
-      redirect_to dashboard_url
-      return
-    end
+    error = nil
+    success = nil
 
-    if requestee.nil?
-      flash[:error] = 'The designated requestee hasn\'t joined BitStation yet. '
-      redirect_to dashboard_url
-      return
-    end
-
-    if requestee.coinbase_account.nil?
-      flash[:error] = 'The designated requestee hasn\'t linked a Coinbase account yet. '
-      redirect_to dashboard_url
-      return
-    end
-
-    if requestee == current_user
-      flash[:error] = 'Why requesting money from yourself...? '
-      redirect_to dashboard_url
-      return
-    end
-
-    if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
-      flash[:error] = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC."
-      redirect_to dashboard_url
-      return
-    end
-
-    amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
-
-    # FIXME more specific rescue here
     begin
-      TransactionMailer.request_money(current_user, requestee, amount, message, dashboard_url(send_money: {
-        recipient: current_user.kerberos,
-        amount: amount,
-        currency: 'BTC'
-      })).deliver
-
-      redirect_to dashboard_url, flash: {success: "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "}
+      (error = 'Invalid currency. ' and raise) unless CURRENCIES.include?(currency)
+      (error = 'The designated requestee hasn\'t joined BitStation yet. ' and raise) if requestee.nil?
+      (error = 'The designated requestee hasn\'t linked a Coinbase account yet. ' and raise) if requestee.coinbase_account.nil?
+      (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
+      (error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
     rescue
-      redirect_to dashboard_url, flash: {error: 'Failed to send the request. '} and return
+    end
+
+    unless error
+      amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
+
+      # FIXME more specific rescue here
+      begin
+        TransactionMailer.request_money(current_user, requestee, amount, message, dashboard_url(send_money: {
+          recipient: current_user.kerberos,
+          amount: amount,
+          currency: 'BTC'
+        })).deliver
+
+        success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
+      rescue
+        error = 'Failed to send the request. '
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to dashboard_url, flash: {success: success, error: error}.delete_if { |k, v| v.nil? } }
     end
   end
 
