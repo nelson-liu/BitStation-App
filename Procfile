@@ -1,1 +1,1 @@
-web: cd /home/bitstation/app && bundle exec unicorn -p 8080
+web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
