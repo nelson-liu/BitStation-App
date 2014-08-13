@@ -23,6 +23,7 @@ ready = ->
     $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
     $(this).closest('form').find('label[for=recipient]').text(if $(this).text() == 'Send' then 'Recipient' else 'Requestee')
     $(this).closest('form').attr('action', $(this).closest('form').attr('data-' + $(this).text().toLowerCase() + '-path'))
+    $(this).closest('form').attr('data-remote', if $(this).text().toLowerCase() == 'send' then false else true)
     $(this).closest('form').find('input[type=submit]').val($(this).text() + ' Money')
     false
 
@@ -113,12 +114,29 @@ ready = ->
       }
     })
 
+  # FIXME find a better place for it
+  window.capitalize_string = (string) ->
+    string.substring(0, 1).toUpperCase() + string.substring(1, string.length);
+
   window.setup_transaction_history_paging_links = ->
     $('.paging').parent().bind('ajax:beforeSend', ->
       # FIXME ugly ugly ugly
       html = '<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>'
 
       $('#transaction_history_module').html(html)
+    );
+
+  window.setup_transfer_button = ->
+    $('#transfer_form').bind('ajax:beforeSend', ->
+      action = $(this).find('input[name=action]').val()
+      $(this).find('input[type=submit]').prop('disabled', true)
+      $(this).find('input[type=submit]').val(window.capitalize_string(action) + 'ing Money...')
+    );
+
+    $('#transfer_form').bind('ajax:complete', ->
+      action = $(this).find('input[name=action]').val()
+      $(this).find('input[type=submit]').prop('disabled', false)
+      $(this).find('input[type=submit]').val(window.capitalize_string(action) + ' Money')
     );
 
   window.bind_popup_card = ->
