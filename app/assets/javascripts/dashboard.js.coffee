@@ -123,5 +123,13 @@ ready = ->
       $("#mask2").show().fadeTo(300, 0.5)
       return false
 
+  window.trigger_popup_alert = (message, type) ->
+      $("#popup-card-wrapper h5").html(type)
+      $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
+      $("#popup-card-wrapper").show()
+      $("#mask2").show().fadeTo(300, 0.5)
+    return
+
+
 $(document).ready(ready)
 $(document).on('page:load', ready)
