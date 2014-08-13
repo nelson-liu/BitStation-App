@@ -1,5 +1,5 @@
-# source 'https://ruby.taobao.org/'
-source 'https://rubygems.org/'
+source 'https://ruby.taobao.org/'
+# source 'https://rubygems.org/'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
@@ -30,12 +30,12 @@ gem 'spring',        group: :development
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Use Capistrano for deployment
-gem 'capistrano-rvm'
-gem 'capistrano-bundler'
-gem 'capistrano-rails', group: :development
+# gem 'capistrano-rvm'
+# gem 'capistrano-bundler'
+# gem 'capistrano-rails', group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
@@ -59,3 +59,6 @@ gem 'twitter-typeahead-rails'
 
 # BitCoin gem
 gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
+
+# Recap
+gem 'recap'
