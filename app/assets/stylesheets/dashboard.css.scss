@@ -204,6 +204,18 @@
 		.media-object {
 			width: 64px;
 		}
+		a.pull-left {
+			position: relative;
+			:after {
+				border: 1px solid rgba(0, 0, 0, .10);
+				bottom: 0;
+				content: '';
+				left: 0;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+		}
 		.media-body {
 			p {
 				margin-bottom: 0;
