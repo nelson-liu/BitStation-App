@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
   before_filter :ensure_signed_in, only: []
-  before_filter :ensure_coinbase_account_linked, only: [:transact, :request, :history, :exchange]
+  before_filter :ensure_coinbase_account_linked, only: [:transact, :request_money, :history, :exchange]
 
   CURRENCIES = ["USD", "BTC"]
 
@@ -108,7 +108,11 @@ class TransactionsController < ApplicationController
       end
     end
 
+    @error = error
+    @success = success
+
     respond_to do |format|
+      format.js {}
       format.html { redirect_to dashboard_url, flash: {success: success, error: error}.delete_if { |k, v| v.nil? } }
     end
   end
