@@ -138,10 +138,12 @@ class SessionsController < ApplicationController
             flash[:success] = "You have successfully given #{pt.recipient.name rescue 'an external account'} #{pt.amount} BTC. "
             redirect_to dashboard_url
           else
+            pt.failed!
             raise
           end
         rescue
           flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
+          pt.failed!
           redirect_to dashboard_url
         end
       end
@@ -159,7 +161,7 @@ class SessionsController < ApplicationController
 
     def process_pending_transaction(pt, critical_client)
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message)
-      pt.destroy!
+      pt.completed! if r.success?
       r.success?
     end
 end
