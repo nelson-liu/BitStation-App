@@ -28,7 +28,7 @@ body {
   margin: 10px 0;
 }
 
-#main-wrapper>.row>.alert-success {
+#wrapper-main>.row>.alert-success {
   position: fixed;
   z-index: 100;
   margin: 0;
