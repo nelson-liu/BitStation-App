@@ -61,6 +61,11 @@ hr {
   color: #428bca;
 }
 
+.navbar-brand.text-hide {
+  background-image: url(/assets/brand.png);
+  width: 196px;
+}
+
 /* Our footer */
 
 footer {
