@@ -23,8 +23,13 @@ ready = ->
     $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
     $(this).closest('form').find('label[for=recipient]').text(if $(this).text() == 'Send' then 'Recipient' else 'Requestee')
     $(this).closest('form').attr('action', $(this).closest('form').attr('data-' + $(this).text().toLowerCase() + '-path'))
-    $(this).closest('form').attr('data-remote', if $(this).text().toLowerCase() == 'send' then false else true)
     $(this).closest('form').find('input[type=submit]').val($(this).text() + ' Money')
+
+    if $(this).text().toLowerCase() == 'send'
+      $(this).closest('form').removeAttr('data-remote')
+    else
+      $(this).closest('form').attr('data-remote', true)
+
     false
 
   # action selecting for buy_sell form
