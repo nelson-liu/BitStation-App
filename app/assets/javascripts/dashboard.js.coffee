@@ -4,7 +4,7 @@
 
 ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
-  if $(".expandable h5").html().indexOf("<i ") == -1 
+  if $(".expandable h5").html().indexOf("<i>") == -1
     $(".expandable h5").append('<i class="fa fa-arrows-alt"></i>');
 
   #dropdown menu for sending
@@ -27,6 +27,34 @@ ready = ->
     $(this).closest('form').attr('action', $(this).closest('form').attr('data-' + $(this).text().toLowerCase() + '-path'))
     $(this).closest('form').find('input[type=submit]').val($(this).text() + ' Money')
     false
+
+  # action selecting for buy_sell form
+  $(document.body).on "click", "#buy_sell_form #buy_sell_action_btn_group a", (event) ->
+    return if $(this).parent().find('btn-primary').first().text() == $(this).text()
+    $(this).parent().children().removeClass('btn-primary')
+    $(this).addClass('btn-primary')
+    $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
+
+    from = if $(this).text() == 'Buy' then 'USD' else 'BTC'
+    to = if $(this).text() == 'Buy' then 'BTC' else 'USD'
+
+    $(this).closest('form').find('input[name=amount]').attr('placeholder', from + ' amount')
+    $(this).closest('form').find('input[name=preview_amount]').attr('placeholder', to + ' amount')
+    $(this).closest('form').find('.input-group-addon').html(from + ' <i class="fa fa-long-arrow-right"></i> ' + to)
+
+    t = $(this).closest('form').find('input[name=amount]').val()
+    $(this).closest('form').find('input[name=amount]').val($(this).closest('form').find('input[name=preview_amount]').val())
+    $(this).closest('form').find('input[name=preview_amount]').val(t)
+
+  # calculate estimated exchange price
+  $(document.body).on 'keyup', '#buy_sell_form input[name=amount], #buy_sell_form input[name=preview_amount]', (event) ->
+    other = $(this).parent().find('input[name!=' + $(this).attr('name') + ']').first()
+    from_to = (other.attr('name') == 'preview_amount')
+    action = $(this).closest('form').find('input[name=action]').val()
+    rate = parseFloat($('#buy_sell_current_rate').text())
+    console.log action
+    conversion = if (from_to ^ (action == 'buy')) then rate else 1.0 / rate
+    other.val($(this).val() * conversion)
 
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
