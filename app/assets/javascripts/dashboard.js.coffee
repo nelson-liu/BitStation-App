@@ -156,8 +156,24 @@ ready = ->
       $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)
-    return
 
+  window.setup_address_book = ->
+    jQuery.expr[":"].Contains = jQuery.expr.createPseudo((arg) ->
+      (elem) ->
+        jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0
+    )
+    $("#address-book-table td").wrapInner("<div></div>")
+    $("#address-book-filter").change(->
+      filter = $(this).val()
+      if filter
+        $("#address-book-table").find(".address-book-contact:not(:Contains(" + filter + "))").siblings().addBack().children('div').slideUp()
+        $("#address-book-table").find(".address-book-contact:Contains(" + filter + ")").siblings().addBack().children('div').slideDown()
+      else
+        $("#address-book-table").find("td>div").slideDown()
+      false
+    ).keyup ->
+      $(this).change()
+      return
 
 $(document).ready(ready)
 $(document).on('page:load', ready)

@@ -201,6 +201,35 @@
 		white-space: nowrap;
 	}
 
+	#address_book_module {
+		section {
+			height: 386px;
+			overflow: auto;
+		}
+		#address-book-filter {
+			border-radius: 0;
+			border: none;
+			border-bottom: 1px solid #AAA;
+		}
+		#address-book-table {
+			margin-bottom: 0;
+			.address-book-contact {
+				padding-left: 10px;
+			}
+			td {
+				height: auto;
+				padding: 0;
+				border: none;
+			}
+			td>div {
+				height:35px;
+				padding: 7px 5px;
+				height: 35px;
+				border-top: 1px solid #dddddd;
+			}
+		}
+	}
+
 	#bitstation_feed_module {
 		.media-object {
 			width: 64px;
