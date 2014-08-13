@@ -1,1 +1,1 @@
-web: /var/opt/rbenv/shims/bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+web: sh -c "/var/opt/rbenv/shims/bundle exec unicorn -p $PORT -c ./config/unicorn.rb"
