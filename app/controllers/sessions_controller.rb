@@ -5,6 +5,8 @@ class SessionsController < ApplicationController
 
   before_filter :ensure_signed_in, only: [:oauth]
 
+  FEE_ERROR_MESSAGE_REGEX = /This transaction requires a (.*?) BTC fee to be accepted by the bitcoin network./
+
   def new
     @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token
     @nelly_auth_link = sessions_authenticate_path(auth_token: 'nelly') if Rails.env.development?
@@ -141,9 +143,21 @@ class SessionsController < ApplicationController
             pt.failed!
             raise
           end
-        rescue
-          flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
+        rescue => e
           pt.failed!
+
+          if e.is_a?(Coinbase::Client::Error) && FEE_ERROR_MESSAGE_REGEX =~ e.message
+            fee_amount = FEE_ERROR_MESSAGE_REGEX.match(e.message)[1].to_f
+
+            redirect_to(dashboard_url(send_money: {
+              recipient: (pt.recipient.kerberos rescue pt.recipient_address),
+              amount: pt.amount,
+              currency: 'BTC',
+              fee_amount: fee_amount
+            }), flash: {warning: FEE_ERROR_MESSAGE_REGEX.match(e.message)[0] + ' Press the send button again to confirm that fee. '}) and return
+          end
+
+          flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
           redirect_to dashboard_url
         end
       end
@@ -160,7 +174,7 @@ class SessionsController < ApplicationController
     end
 
     def process_pending_transaction(pt, critical_client)
-      r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message)
+      r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
       pt.completed! if r.success?
       r.success?
     end
