@@ -62,3 +62,7 @@ gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master
 
 # Recap
 gem 'recap'
+
+
+# Foreman
+gem 'foreman'
