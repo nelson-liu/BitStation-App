@@ -5,8 +5,8 @@ class TransactionsController < ApplicationController
   CURRENCIES = ["USD", "BTC"]
 
   MINIMUM_TRANSACTION_AMOUNT = {
-    "BTC" => 0,#.001,
-    "USD" => 0#.5
+    "BTC" => 0.001,
+    "USD" => 0.5
   }
 
   def transact

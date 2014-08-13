@@ -65,6 +65,12 @@ ready = ->
     conversion = if (from_to ^ (action == 'buy')) then rate else 1.0 / rate
     other.val($(this).val() * conversion)
 
+  $.fn.clear_transfer_form = ->
+    $(this).find('input[name=amount]').val('')
+    $(this).find('input[name=kerberos]').val('')
+    $(this).find('input[name=fee_amount]').val('')
+    $(this).find('input[name=message]').val('')
+
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
     name = $(this).html().split("<i", 1)[0]
@@ -133,10 +139,13 @@ ready = ->
       $(this).find('input[type=submit]').val(window.capitalize_string(action) + 'ing Money...')
     );
 
-    $('#transfer_form').bind('ajax:complete', ->
+    $('#transfer_form').bind('ajax:complete', (event, request, ajaxOptions) ->
       action = $(this).find('input[name=action]').val()
       $(this).find('input[type=submit]').prop('disabled', false)
       $(this).find('input[type=submit]').val(window.capitalize_string(action) + ' Money')
+
+      if request.responseText.indexOf('"success"') != -1
+        $('#transfer_form').clear_transfer_form()
     );
 
   window.bind_popup_card = ->
