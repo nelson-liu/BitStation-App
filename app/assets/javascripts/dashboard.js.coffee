@@ -1,11 +1,9 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
 ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
-  if $(".expandable h5").html().indexOf("<i>") == -1
-    $(".expandable h5").append('<i class="fa fa-arrows-alt"></i>');
+  $(".expandable h5:not(:has(i))").append('<i class="fa fa-arrows-alt"></i>')
 
   #dropdown menu for sending
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
