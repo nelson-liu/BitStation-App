@@ -51,16 +51,16 @@
             </div>
           </div>
         </td>
-        <td class="td-badge">
+        <td class="td-label">
           <% unless entry['transfer_type'] %>
             <% if entry['sender']['id'] == @coinbase_id %>
-              <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).nil? ? '<span title="This person is a Coinbase user" class="badge alert-primary">C</span>'.html_safe : '<span title="This person is a MIT user" class="badge alert-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="badge alert-success">E</span>'.html_safe %>
+              <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).nil? ? '<span title="This person is a Coinbase user" class="label label-info">C</span>'.html_safe : '<span title="This person is a MIT user" class="label label-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="label label-success">E</span>'.html_safe %>
             <% else %>
-              <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).nil? ? '<span title="This person is a Coinbase user" class="badge alert-primary">C</span>'.html_safe : '<span title="This person is a MIT user" class="badge alert-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="badge alert-success">E</span>'.html_safe %>
+              <%= entry['sender'] ? (CoinbaseAccount.find_by_email(entry['sender']['email']).nil? ? '<span title="This person is a Coinbase user" class="label label-info">C</span>'.html_safe : '<span title="This person is a MIT user" class="label label-danger">M</span>'.html_safe) : '<span title="This person is an external user" class="label label-success">E</span>'.html_safe %>
             <% end %>
           <% end %>
           <% if entry['status'] == 'pending' %>
-            <span title="This transaction is pending" class="badge alert-warning">P</span>
+            <span title="This transaction is pending" class="label label-warning">P</span>
           <% end %>
         </td>
       </tr>
