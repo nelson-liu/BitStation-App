@@ -1,41 +1,37 @@
 <div class="panel-body">
-  <%= form_tag '#', id: 'exchange_bitcoin_form' %>
+  <%= form_tag '#', id: 'buy_sell_form' %>
+  <div class="form-group">
+    <%= label_tag 'action' %>
+    <div class="btn-group btn-group-justified" id="buy_sell_action_btn_group">
+      <a class="btn btn-default btn-primary">Buy</a>
+      <a class="btn btn-default">Sell</a>
+    </div>
+    <%= hidden_field_tag 'action', 'buy' %>
+  </div>
+
   <div class="form-group">
     <%= label_tag 'amount' %>
     <div class="input-group">
-      <%= text_field_tag 'amount', '', placeholder: 'The amount of USD', class: 'form-control' %>
-      <div class="btn-group input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-          <span data-bind="label" id="sendlabel">USD</span> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">USD</a></li>
-          <li><a href="#">BTC</a></li>
-        </ul>
-        <input type="hidden" name="currency" value="USD">
-      </div><!-- /btn-group -->
+      <%= text_field_tag 'amount', '', placeholder: 'USD amount', class: 'form-control' %>
+      <span class="input-group-addon">USD <i class="fa fa-long-arrow-right"></i> BTC</span>
+      <%= text_field_tag 'preview_amount', '', placeholder: 'BTC amount', class: 'form-control' %>
     </div><!-- /input-group -->
   </div>
 </div>
+
 <hr>
 
 <div class="panel-body">
-  <label>Current BitCoin Sell Price</label>
-  <div id="balances">
-    <br><span class="well well-sm"> 1 BTC = <%= @current_sell_price %></span>
-  </div>
+  <p><label>Current BitCoin Sell Price</label></p>
+  <p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_sell_price.round(2) %></span> USD</span></p>
 </div>
-<br>
+
 <hr>
 
 <div class="panel-body">
-  <%= submit_tag 'Authorize Transaction', class: 'btn btn-default' %>
+  <%= submit_tag 'Buy', class: 'btn btn-primary' %>
 </div>
 
 </form>
 
-<script>
-    // FIXME This is ugly...
-    // window.setup_recipient_autocomplete();
-    </script>
-  </div>
+</div>

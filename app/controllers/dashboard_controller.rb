@@ -111,7 +111,7 @@ class DashboardController < ApplicationController
   end
 
   def buy_sell_bitcoin
-    @current_sell_price = current_coinbase_client.sell_price(1).format
+    @current_sell_price = current_coinbase_client.sell_price(1).to_d
     render layout: false
   end
 
