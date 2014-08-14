@@ -16,6 +16,10 @@ ready = ->
     $(this).parents('form').find('input[name=currency]').val($(this).text()).trigger('change')
     false
 
+  # Reset fee to 0 on currency, amount, or recipient change
+  $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=amount], #transfer_form input[name=kerberos]', (evenet) ->
+    $("#fee_amount").val(0)
+
   # action selecting for transfer form
   $(document.body).on "click", "#transfer_form #transfer_action_btn_group a", (event) ->
     $(this).parent().children().removeClass('btn-primary')
