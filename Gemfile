@@ -1,5 +1,5 @@
-# source 'https://ruby.taobao.org/'
-source 'https://rubygems.org/'
+source 'https://ruby.taobao.org/'
+# source 'https://rubygems.org/'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
@@ -66,3 +66,12 @@ gem 'recap'
 
 # Foreman
 gem 'foreman'
+
+# Testing gems
+gem 'rspec-rails'
+gem 'factory_girl_rails'
+gem 'faker'
+gem 'capybara'
+gem 'database_cleaner'
+gem 'launchy'
+gem 'selenium-webdriver'

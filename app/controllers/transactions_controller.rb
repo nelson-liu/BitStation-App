@@ -9,14 +9,17 @@ class TransactionsController < ApplicationController
     "USD" => 0.5
   }
 
+  class TransactionParameterError < StandardError; end
+
   def transact
     recipient = params[:kerberos]
     amount = params[:amount].to_f
     fee_amount = params[:fee_amount].to_f rescue 0
     currency = params[:currency]
     message = params[:message] || ''
-    error = nil
     pt = nil
+
+    @error = nil
 
     is_kerberos = (!recipient.nil?) && (recipient.length <= 10)
     is_btc = !is_kerberos
@@ -24,26 +27,26 @@ class TransactionsController < ApplicationController
     user = User.find_by(kerberos: recipient) if is_kerberos
 
     begin
-      (error = 'Invalid currency. ' && raise) unless CURRENCIES.include?(currency)
-      (error = 'Invalid BTC address. ' && raise) if is_btc && (!Bitcoin::valid_address?(recipient))
-      (error = 'The designated recipient hasn\'t joined BitStation yet. ' && raise) if is_kerberos && user.nil?
-      (error = 'The designated recipient hasn\'t linked a Coinbase account yet. ' && raise) if is_kerberos && user.coinbase_account.nil?
-      (error = 'Why sending yourself money...? ' && raise) if is_kerberos && user == current_user
-      (error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC." && raise) if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
+      (@error = 'Invalid currency. ' and raise TransactionParameterError) unless CURRENCIES.include?(currency)
+      (@error = 'Invalid BTC address. ' and raise TransactionParameterError) if is_btc && (!Bitcoin::valid_address?(recipient))
+      (@error = 'The designated recipient hasn\'t joined BitStation yet. ' and raise TransactionParameterError) if is_kerberos && user.nil?
+      (@error = 'The designated recipient hasn\'t linked a Coinbase account yet. ' and raise TransactionParameterError) if is_kerberos && user.coinbase_account.nil?
+      (@error = 'Why sending yourself money...? ' and raise TransactionParameterError) if is_kerberos && user == current_user
+      (@error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise TransactionParameterError) if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
 
       amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
-      (error = "You do not have enough funds in your Coinbase account. " && raise) if amount > current_coinbase_client.balance.to_d
+      (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d
 
       pt = is_kerberos ?
         PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
         PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
-    rescue
+    rescue TransactionParameterError
     end
 
     respond_to do |format|
       format.html do
-        if error
-          redirect_to dashboard_url, flash: {error: error}
+        if @error
+          redirect_to dashboard_url, flash: {error: @error}
         else
           # FIXME ugh
           redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
@@ -66,7 +69,7 @@ class TransactionsController < ApplicationController
       (error = 'The designated requestee hasn\'t joined BitStation yet. ' and raise) if requestee.nil?
       (error = 'The designated requestee hasn\'t linked a Coinbase account yet. ' and raise) if requestee.coinbase_account.nil?
       (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
-      (error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
+      (error = "Invalid request amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
     rescue
     end
 

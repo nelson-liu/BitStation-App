@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   before_filter :warn_unlinked_coinbase_account
   after_filter :check_for_refreshed_token
   before_filter :check_for_unauthenticated_coinbase_account, except: [:link_coinbase_account, :oauth]
-  around_filter :rescue_oauth_exception
-  around_filter :rescue_unhandled_exception unless Rails.env.development?
+  # around_filter :rescue_oauth_exception
+  around_filter :rescue_unhandled_exception if Rails.env.production?
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
   COINBASE_CLIENT_SECRET = '72bbe98c81e7b02765812e0c3c059d453cdf28bb45e6e6067dea9363ba618b74'
@@ -20,15 +20,15 @@ class ApplicationController < ActionController::Base
   private
 
     def coinbase_client_id
-      Rails.env.development? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
+      !Rails.env.production? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
     end
 
     def coinbase_client_secret
-      Rails.env.development? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
+      !Rails.env.production? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
     end
 
     def coinbase_callback_uri
-      Rails.env.development? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
+      !Rails.env.production? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
     end
 
     def check_for_refreshed_token
