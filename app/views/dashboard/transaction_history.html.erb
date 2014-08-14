@@ -30,7 +30,7 @@
             <%= entry['sender']['id'] == @coinbase_id ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%></td>
           <% end %>
         <td class="ellipsis">
-          <div class="td-truncate"> adflkj adkl;f jasdklf jasdfk;lj 
+          <div class="td-truncate">
               <% unless entry['transfer_type'] %>
                 <% if entry['sender']['id'] == @coinbase_id %>
                   <%= entry['recipient'] ? (CoinbaseAccount.find_by_email(entry['recipient']['email']).user.name rescue entry['recipient']['name']) : 'External Account' %>
