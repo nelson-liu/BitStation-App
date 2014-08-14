@@ -207,9 +207,6 @@
 			border-left: 1px solid #BBB
 		}
 		#address-book-table {
-			.address-book-contact-label {
-				width: 1%;
-			}
 			td {
 				height: auto;
 				padding: 0;
@@ -221,13 +218,13 @@
 				height: 35px;
 				border-top: 1px solid #dddddd;
 			}
-			.fit-to-contents>div {
+			.fit-to-contents {
 				width: 1%;
 			}
-			.first-column>div {
+			.first-column {
 				padding-left: 10px;
 			}
-			.last-column>div {
+			.last-column {
 				padding-right: 10px;
 			}
 		}

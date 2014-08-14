@@ -136,10 +136,10 @@ ready = ->
 
       $('#transaction_history_module').html(html)
     );
-    window.recalculate_truncate_width()
+    window.recalculate_truncate_width("#transaction-history-table")
 
-  window.recalculate_truncate_width = ->
-    $(".td-truncate").hide().width($(".td-truncate").parent().width() - 10).show()
+  window.recalculate_truncate_width = (selector) ->
+    $(selector + " .td-truncate").hide().width($(selector + " .td-truncate").parent().width() - 10).show()
 
   window.setup_transfer_button = ->
     $('#transfer_form').bind('ajax:beforeSend', ->
@@ -180,12 +180,13 @@ ready = ->
       (elem) ->
         jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0
     )
-    $("#address-book-table td").wrapInner("<div></div>")
+    $("#address-book-table td:not('.first-column')").wrapInner("<div></div>")
+    $("#address-book-table .first-column").wrapInner("<div class='td-truncate'></div>")
     $("#address-book-filter").change(->
       filter = $(this).val()
       if filter
-        $("#address-book-table").find(".address-book-contact:not(:Contains(" + filter + "))").siblings().addBack().children('div').slideUp()
-        $("#address-book-table").find(".address-book-contact:Contains(" + filter + ")").siblings().addBack().children('div').slideDown()
+        $("#address-book-table").find("tr:not(:Contains(" + filter + "))").find('td>div').slideUp()
+        $("#address-book-table").find("tr:Contains(" + filter + ")").find('td>div').slideDown()
       else
         $("#address-book-table").find("td>div").slideDown()
       $("#address-book-table").css("margin-top", "0")
@@ -199,9 +200,11 @@ ready = ->
     $("#address-book-pagination #next").click( -> 
       if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height() && !$("#address-book-table").is(":animated")
         $("#address-book-table").animate({marginTop: "-=350"}, 150))
+    window.recalculate_truncate_width("#address-book-table")
 
   # Recalculate text overflow width on browser resize
-  $(window).resize( -> window.recalculate_truncate_width())
+  $(window).resize( -> window.recalculate_truncate_width("#transaction-history-table"))
+  $(window).resize( -> window.recalculate_truncate_width("#address-book-table"))
 
 
 $(document).ready(ready)
