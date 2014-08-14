@@ -60,6 +60,9 @@ ready = ->
     $(this).closest('form').find('input[name=amount]').val($(this).closest('form').find('input[name=preview_amount]').val())
     $(this).closest('form').find('input[name=preview_amount]').val(t)
 
+  # Recalculate text overflow width on browser resize
+  $(window).resize( -> $(".td-truncate").hide().width($(".td-truncate").parent().width() - 10).show() )
+
   # calculate estimated exchange price
   $(document.body).on 'keyup', '#buy_sell_form input[name=amount], #buy_sell_form input[name=preview_amount]', (event) ->
     other = $(this).parent().find('input[name!=' + $(this).attr('name') + ']').first()
@@ -136,6 +139,7 @@ ready = ->
 
       $('#transaction_history_module').html(html)
     );
+    $(window).resize();
 
   window.setup_transfer_button = ->
     $('#transfer_form').bind('ajax:beforeSend', ->
