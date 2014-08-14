@@ -29,10 +29,6 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
-  def address_book_detailed
-    render layout: false
-  end
-
   def transaction_history
     client = current_coinbase_client
     page = params[:page] || 1
