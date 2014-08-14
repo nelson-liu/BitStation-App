@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get 'dashboard/account_summary'
   get 'dashboard/transfer'
   get 'dashboard/address_book'
+  get 'dashboard/contact_details'
+  get 'dashboard/add_contact'
   get 'dashboard/transaction_history'
   get 'dashboard/transaction_details'
   get 'dashboard/transaction_history_detailed'

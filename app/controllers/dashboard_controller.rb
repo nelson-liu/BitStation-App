@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
-  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :transaction_history, :transaction_details, :buy_sell_bitcoin, :access_qrcode_details]
-  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :transaction_history, :transaction_details, :buy_sell_bitcoin]
+  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :contact_details, :add_contact, :transaction_history, :transaction_details, :buy_sell_bitcoin, :access_qrcode_details]
+  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :transaction_history, :address_book, :contact_details, :add_contact, :transaction_details, :buy_sell_bitcoin]
   # before_filter :disable_module, except: [:dashboard, :transfer]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
@@ -26,6 +26,14 @@ class DashboardController < ApplicationController
   end
 
   def address_book
+    render layout: false
+  end
+
+  def contact_details
+    render layout: false
+  end
+
+  def add_contact
     render layout: false
   end
 
