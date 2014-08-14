@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :warn_unlinked_coinbase_account
   after_filter :check_for_refreshed_token
   before_filter :check_for_unauthenticated_coinbase_account, except: [:link_coinbase_account, :oauth]
-  # around_filter :rescue_oauth_exception
+  around_filter :rescue_oauth_exception
   around_filter :rescue_unhandled_exception if Rails.env.production?
 
   COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
