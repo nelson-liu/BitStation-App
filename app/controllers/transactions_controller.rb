@@ -15,62 +15,41 @@ class TransactionsController < ApplicationController
     fee_amount = params[:fee_amount].to_f rescue 0
     currency = params[:currency]
     message = params[:message] || ''
+    error = nil
+    pt = nil
 
     is_kerberos = (!recipient.nil?) && (recipient.length <= 10)
     is_btc = !is_kerberos
 
     user = User.find_by(kerberos: recipient) if is_kerberos
 
-    unless CURRENCIES.include?(currency)
-      flash[:error] = 'Invalid currency. '
-      redirect_to dashboard_url
-      return
+    begin
+      (error = 'Invalid currency. ' && raise) unless CURRENCIES.include?(currency)
+      (error = 'Invalid BTC address. ' && raise) if is_btc && (!Bitcoin::valid_address?(recipient))
+      (error = 'The designated recipient hasn\'t joined BitStation yet. ' && raise) if is_kerberos && user.nil?
+      (error = 'The designated recipient hasn\'t linked a Coinbase account yet. ' && raise) if is_kerberos && user.coinbase_account.nil?
+      (error = 'Why sending yourself money...? ' && raise) if is_kerberos && user == current_user
+      (error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC." && raise) if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
+
+      amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
+      (error = "You do not have enough funds in your Coinbase account. " && raise) if amount > current_coinbase_client.balance.to_d
+
+      pt = is_kerberos ?
+        PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
+        PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
+    rescue
     end
 
-    if is_btc && (!Bitcoin::valid_address?(recipient))
-      flash[:error] = 'Invalid BTC address. '
-      redirect_to dashboard_url
-      return
+    respond_to do |format|
+      format.html do
+        if error
+          redirect_to dashboard_url, flash: {error: error}
+        else
+          # FIXME ugh
+          redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
+        end
+      end
     end
-
-    if is_kerberos && user.nil?
-      flash[:error] = 'The designated recipient hasn\'t joined BitStation yet. '
-      redirect_to dashboard_url
-      return
-    end
-
-    if is_kerberos && user.coinbase_account.nil?
-      flash[:error] = 'The designated recipient hasn\'t linked a Coinbase account yet. '
-      redirect_to dashboard_url
-      return
-    end
-
-    if is_kerberos && user == current_user
-      flash[:error] = 'Why sending yourself money...? '
-      redirect_to dashboard_url
-      return
-    end
-
-    if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
-      flash[:error] = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT} BTC."
-      redirect_to dashboard_url
-      return
-    end
-
-    amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
-
-    if amount > current_coinbase_client.balance.to_d
-      flash[:error] = "You do not have enough funds in your Coinbase account. "
-      redirect_to dashboard_url
-      return
-    end
-
-    pt = is_kerberos ?
-      PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
-      PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
-
-    # FIXME ugh
-    redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
   end
 
   def request_money
