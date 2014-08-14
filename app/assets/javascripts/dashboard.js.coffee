@@ -194,11 +194,11 @@ ready = ->
       $(this).change()
       return
     $("#address-book-pagination #previous").click( -> 
-      if parseInt($("#address-book-table").css("margin-top"), 10) < 0
-        $("#address-book-table").css("margin-top", (index, curValue) -> parseInt(curValue, 10) + 350 + 'px'))
+      if parseInt($("#address-book-table").css("margin-top"), 10) < 0 && !$("#address-book-table").is(":animated")
+        $("#address-book-table").animate({marginTop: "+=350"}, 150))
     $("#address-book-pagination #next").click( -> 
-      if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height()
-        $("#address-book-table").css("margin-top", (index, curValue) -> parseInt(curValue, 10) - 350 + 'px'))
+      if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height() && !$("#address-book-table").is(":animated")
+        $("#address-book-table").animate({marginTop: "-=350"}, 150))
 
   # Recalculate text overflow width on browser resize
   $(window).resize( -> window.recalculate_truncate_width())
