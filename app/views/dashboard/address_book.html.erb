@@ -1,6 +1,6 @@
 <input class="form-control" id="address-book-filter" placeholder="Filter Contacts" type="text">
 <section id="address-book-table-wrapper">
-<table id="address-book-table" class="table table-striped table-responsive table-hover table-condensed">
+<table id="address-book-table" class="table transition table-striped table-responsive table-hover table-condensed">
   <tbody>
   	<tr>
   		<td class="address-book-contact first-column">ZOMANA <span class="label label-default pull-right">zaphod@gmail.com</span></td>
@@ -65,4 +65,8 @@
   </tbody>
 </table>
 </section>
+<div id="address-book-pagination" class="btn-group btn-group-justified">
+  <a id="previous" class="btn btn-default"><i class="fa fa-chevron-up"></i></a>
+  <a id="next" class="btn btn-default"><i class="fa fa-chevron-down"></i></a>
+</div>
 <script>window.setup_address_book();</script>

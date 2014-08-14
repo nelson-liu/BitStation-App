@@ -192,13 +192,14 @@
 
 	#address_book_module {
 		section {
-			height: 386px;
-			overflow: auto;
+			height: 350px;
+			overflow: hidden;
 		}
 		#address-book-filter {
 			border-radius: 0;
 			border: none;
 			border-bottom: 1px solid #AAA;
+			height:35px;
 		}
 		#address-book-table {
 			margin-bottom: 0;
@@ -224,6 +225,13 @@
 			}
 			.last-column>div {
 				padding-right: 10px;
+			}
+		}
+		#address-book-pagination {
+			padding: 0;
+			height:35px;
+			#previous, #next {
+				border-radius: 0;
 			}
 		}
 	}

@@ -188,10 +188,17 @@ ready = ->
         $("#address-book-table").find(".address-book-contact:Contains(" + filter + ")").siblings().addBack().children('div').slideDown()
       else
         $("#address-book-table").find("td>div").slideDown()
+      $("#address-book-table").css("margin-top", "0")
       false
     ).keyup ->
       $(this).change()
       return
+    $("#address-book-pagination #previous").click( -> 
+      if parseInt($("#address-book-table").css("margin-top"), 10) < 0
+        $("#address-book-table").css("margin-top", (index, curValue) -> parseInt(curValue, 10) + 350 + 'px'))
+    $("#address-book-pagination #next").click( -> 
+      if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height()
+        $("#address-book-table").css("margin-top", (index, curValue) -> parseInt(curValue, 10) - 350 + 'px'))
 
   # Recalculate text overflow width on browser resize
   $(window).resize( -> window.recalculate_truncate_width())
