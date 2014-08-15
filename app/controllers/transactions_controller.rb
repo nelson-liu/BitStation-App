@@ -12,7 +12,7 @@ class TransactionsController < ApplicationController
     "USD" => 0.5
   }
 
-  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
+  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 11
   DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 100
 
   class TransactionParameterError < StandardError; end

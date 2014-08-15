@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [:create, :index, :show] do
   end
 
-  resources :money_requests, path: 'requests', only: [:show] do
+  resources :money_requests, path: 'requests', only: [:show, :index] do
     member do
       post 'pay'
       post 'deny'

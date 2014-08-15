@@ -1,0 +1,20 @@
+// Place all the styles related to the transaction controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#history_activity_dropdown {
+  // border: none;
+  padding: 0;
+  height: 35px;
+  width: 100%;
+
+  button {
+    height: 35px;
+    width: 100%;
+    border: none;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+  }
+}

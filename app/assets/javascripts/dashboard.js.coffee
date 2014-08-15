@@ -136,14 +136,14 @@ ready = ->
   window.capitalize_string = (string) ->
     string.substring(0, 1).toUpperCase() + string.substring(1, string.length);
 
-  window.setup_transaction_history_paging_links = ->
-    $('.paging').parent().bind('ajax:beforeSend', ->
+  window.setup_paging_links = (table_name) ->
+    $('.paging').parent().add('#history_activity_dropdown a').bind('ajax:beforeSend', ->
       # FIXME ugly ugly ugly
       html = '<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>'
 
       $('#transaction_history_module').html(html)
     );
-    window.recalculate_truncate_width("#transaction-history-table")
+    window.recalculate_truncate_width(table_name)
 
   window.recalculate_truncate_width = (selector) ->
     $(selector + " .td-truncate").hide().width($(selector + " .td-truncate").parent().width() - 10).show()
@@ -202,10 +202,10 @@ ready = ->
     ).keyup ->
       $(this).change()
       return
-    $("#address-book-pagination #previous").click( -> 
+    $("#address-book-pagination #previous").click( ->
       if parseInt($("#address-book-table").css("margin-top"), 10) < 0 && !$("#address-book-table").is(":animated")
         $("#address-book-table").animate({marginTop: "+=350"}, 150))
-    $("#address-book-pagination #next").click( -> 
+    $("#address-book-pagination #next").click( ->
       if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height() && !$("#address-book-table").is(":animated")
         $("#address-book-table").animate({marginTop: "-=350"}, 150))
     window.recalculate_truncate_width("#address-book-table")
