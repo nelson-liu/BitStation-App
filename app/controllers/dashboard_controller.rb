@@ -7,6 +7,10 @@ class DashboardController < ApplicationController
     @subtitle = "Dashboard"
   end
 
+  def transfer
+    render layout: false
+  end
+
   def account_summary
     if has_coinbase_account_linked?
       @current_balance = current_coinbase_client.balance.to_d

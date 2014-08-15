@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'contacts/index'
-
-  get 'contacts/create'
-
   get 'search_suggestions/user/:query', to: 'search_suggestions#user'
 
   get 'users/require_coinbase_account', as: :require_coinbase_account
@@ -18,14 +14,12 @@ Rails.application.routes.draw do
   get 'sessions/fail'
   get 'sessions/oauth', as: :oauth
 
-
   post 'transactions/request_money', as: :request_money
 
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/account_summary'
   get 'dashboard/transfer'
   get 'dashboard/buy_sell_bitcoin'
-  get 'dashboard/overview'
   get 'dashboard/access_qrcode_details'
   get 'dashboard/bitstation_feed'
 
