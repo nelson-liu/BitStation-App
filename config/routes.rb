@@ -24,12 +24,6 @@ Rails.application.routes.draw do
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/account_summary'
   get 'dashboard/transfer'
-  get 'dashboard/address_book'
-  get 'dashboard/contact_details'
-  get 'dashboard/add_contact'
-  get 'dashboard/transaction_history'
-  get 'dashboard/transaction_details'
-  get 'dashboard/transaction_history_detailed'
   get 'dashboard/buy_sell_bitcoin'
   get 'dashboard/overview'
   get 'dashboard/access_qrcode_details'
@@ -56,6 +50,9 @@ Rails.application.routes.draw do
       post 'pay'
       post 'deny'
     end
+  end
+
+  resources :contacts, only: [:create, :index, :show, :new] do
   end
 
   # Example of regular route:

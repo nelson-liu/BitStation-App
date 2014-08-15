@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
   before_filter :ensure_signed_in, only: [:dashboard, :overview]
-  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :address_book, :contact_details, :add_contact, :transaction_history, :transaction_details, :buy_sell_bitcoin, :access_qrcode_details]
-  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :address_book, :contact_details, :add_contact, :transaction_details, :buy_sell_bitcoin]
+  before_filter :ensure_signed_in_without_redirect, only: [:account_summary, :transfer, :transaction_history, :transaction_details, :buy_sell_bitcoin, :access_qrcode_details]
+  before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :address_book, :transaction_details, :buy_sell_bitcoin]
 
   def dashboard
     @subtitle = "Dashboard"
@@ -19,18 +19,6 @@ class DashboardController < ApplicationController
   def transfer
     @send_money = params[:send_money]
     @default_currency = (params[:send_money][:currency] rescue 'USD')
-    render layout: false
-  end
-
-  def address_book
-    render layout: false
-  end
-
-  def contact_details
-    render layout: false
-  end
-
-  def add_contact
     render layout: false
   end
 
