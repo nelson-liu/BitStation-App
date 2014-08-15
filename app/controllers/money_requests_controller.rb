@@ -47,11 +47,22 @@ class MoneyRequestsController < ApplicationController
     rescue
     end
 
-    if error
-      redirect_to dashboard_url, flash: {error: error}
-    else
-      request.denied!
-      redirect_to dashboard_url, flash: {success: "You have successfully denied #{request.sender.name}'s money request. "}
+    success = "You have successfully denied #{request.sender.name}'s money request. " unless error
+    request.denied! unless error
+
+    @error = error
+    @success = success
+
+    respond_to do |format|
+      format.js {}
+
+      format.html do
+        if error
+          redirect_to dashboard_url, flash: {error: error}
+        else
+          redirect_to dashboard_url, flash: {success: success}
+        end
+      end
     end
   end
 

@@ -175,10 +175,11 @@ ready = ->
       return false
 
   window.trigger_popup_alert = (message, type) ->
-      $("#popup-card-wrapper h5").html(type)
-      $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
-      $("#popup-card-wrapper").show()
-      $("#mask2").show().fadeTo(300, 0.5)
+    window.dismiss_popup()
+    $("#popup-card-wrapper h5").html(type)
+    $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
+    $("#popup-card-wrapper").show()
+    $("#mask2").show().fadeTo(300, 0.5)
 
   window.dismiss_popup = ->
     $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
