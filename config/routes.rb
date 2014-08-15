@@ -14,10 +14,8 @@ Rails.application.routes.draw do
   get 'sessions/fail'
   get 'sessions/oauth', as: :oauth
 
-  post 'transactions/transact', as: :transact
+
   post 'transactions/request_money', as: :request_money
-  get 'transactions/history'
-  get 'transactions/exchange'
 
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/account_summary'
@@ -45,6 +43,9 @@ Rails.application.routes.draw do
   match '/faq', to: 'static_pages#faq', via: :get, as: :faq
   match '/team', to: 'static_pages#team', via: :get, as: :team
   match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
+
+  resources :transactions, only: [:create] do
+  end
 
   resources :money_requests, path: 'requests', only: [:show] do
     member do

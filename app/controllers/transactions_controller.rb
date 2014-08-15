@@ -11,7 +11,7 @@ class TransactionsController < ApplicationController
 
   class TransactionParameterError < StandardError; end
 
-  def transact
+  def create
     recipient = params[:kerberos]
     amount = params[:amount].to_f
     fee_amount = params[:fee_amount].to_f rescue 0

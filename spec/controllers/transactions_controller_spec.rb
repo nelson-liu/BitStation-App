@@ -15,7 +15,7 @@ RSpec.describe TransactionsController, type: :controller do
       let(:transaction) { {kerberos: @user_2.kerberos, amount: '1', currency: 'BTC'} }
 
       context "with valid transaction" do
-        before :each do post :transact, transaction end
+        before :each do post :create, transaction end
 
         it "should redirect the user to oauth path" do
           expect(response.location).to match("https://coinbase.com/oauth/authorize")
@@ -24,39 +24,39 @@ RSpec.describe TransactionsController, type: :controller do
 
       context "with invalid transactions" do
         it "should report error an unknown recipient" do
-          post :transact, transaction.merge(kerberos: 'nonexist')
+          post :create, transaction.merge(kerberos: 'nonexist')
           expect(response).to redirect_to_dashboard_with_error('The designated recipient hasn\'t joined BitStation yet.')
         end
 
         it "should report error without an unknown currency " do
-          post :transact, transaction.merge(currency: "WTF")
+          post :create, transaction.merge(currency: "WTF")
           expect(response).to redirect_to_dashboard_with_error('Invalid currency')
         end
 
         it "should report error without an amount" do
-          post :transact, transaction.except(:amount)
+          post :create, transaction.except(:amount)
           expect(response).to redirect_to_dashboard_with_error('Invalid transfer amount')
         end
 
         it "should report error with invalid BTC address" do
-          post :transact, transaction.merge(kerberos: 'a' * 30)
+          post :create, transaction.merge(kerberos: 'a' * 30)
           expect(response).to redirect_to_dashboard_with_error('Invalid BTC address')
         end
 
         it "should report error with unlinked recipient" do
           unlinked = create(:unlinked_user)
-          post :transact, transaction.merge(kerberos: unlinked.kerberos)
+          post :create, transaction.merge(kerberos: unlinked.kerberos)
           expect(response).to redirect_to_dashboard_with_error('recipient hasn\'t linked a Coinbase account yet')
         end
 
         it "should report error with below-minimum amount" do
-          post :transact, transaction.merge(amount: 0.000001, currency: 'USD')
+          post :create, transaction.merge(amount: 0.000001, currency: 'USD')
           expect(response).to redirect_to_dashboard_with_error(/minimum transaction amount is [0-9.]* USD/)
         end
 
         it "should report error in case of insufficient balance" do
           allow_any_instance_of(Coinbase::OAuthClient).to receive(:balance).and_return(0.5)
-          post :transact, transaction
+          post :create, transaction
           expect(response).to redirect_to_dashboard_with_error('do not have enough funds')
         end
       end
