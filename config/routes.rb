@@ -46,6 +46,13 @@ Rails.application.routes.draw do
   match '/team', to: 'static_pages#team', via: :get, as: :team
   match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
 
+  resources :money_requests, path: 'requests', only: [:show] do
+    member do
+      post 'pay'
+      post 'deny'
+    end
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

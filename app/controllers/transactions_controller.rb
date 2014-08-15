@@ -78,11 +78,14 @@ class TransactionsController < ApplicationController
 
       # FIXME more specific rescue here
       begin
-        TransactionMailer.request_money(current_user, requestee, amount, message, dashboard_url(send_money: {
-          recipient: current_user.kerberos,
+        mr = MoneyRequest.create!({
+          sender: current_user,
+          requestee: requestee,
           amount: amount,
-          currency: 'BTC'
-        })).deliver
+          message: message
+        })
+
+        TransactionMailer.request_money(current_user, requestee, amount, message, money_request_path(mr)).deliver
 
         success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
       rescue

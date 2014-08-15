@@ -1,0 +1,15 @@
+<% if @should_show %>
+  <p><%= @from %> requested <%= @request.amount %> BTC from <%= @to %>. </p>
+
+  <% if @request.message && !@request.message.strip.empty? %>
+    <p>Here is the message attached: </p>
+    <p><%= @request.message %></p>
+  <% end %>
+
+  <% if @to == 'you' %>
+    <%= link_to 'Pay', pay_money_request_path(@request) %>
+    <%= link_to 'Deny', deny_money_request_path(@request) %>
+  <% end %>
+<% else %>
+  <div class="panel-body">You can only view requests that are either sent by you or to you. </div>
+<% end %>

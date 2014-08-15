@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140813082708) do
+ActiveRecord::Schema.define(version: 20140815024346) do
 
   create_table "coinbase_accounts", force: true do |t|
     t.string   "email"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 20140813082708) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "oauth_credentials"
+  end
+
+  create_table "money_requests", force: true do |t|
+    t.integer  "sender_id"
+    t.integer  "requestee_id"
+    t.integer  "status"
+    t.decimal  "amount"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "pending_transactions", force: true do |t|
