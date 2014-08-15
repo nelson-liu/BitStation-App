@@ -102,10 +102,12 @@ ready = ->
     $("#popup-card-wrapper").css "bottom", "initial"
     $("#mask2").css("opacity", 0)
 
-  $("div[data-load]").filter(":visible").each ->
-    path = $(this).attr('data-load')
-    # passes the query string to sub-modules for fields pre-filling
-    $(this).load(path + '?' + window.location.search.substring(1))
+  for i in [1..3]
+    console.log "[data-load-order=" + i + "]"
+    $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
+      path = $(this).attr('data-load')
+      # passes the query string to sub-modules for fields pre-filling
+      $(this).load(path + '?' + window.location.search.substring(1))
 
   # FIXME I do NOT want to pollute global namespace...
   window.setup_recipient_autocomplete = (formID) ->

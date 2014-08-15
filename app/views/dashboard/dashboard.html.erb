@@ -17,10 +17,10 @@
 	</section>
 	<div id="mask" class="transition"></div>
 	<div id="mask2" class="transition"></div>
-	<%= render('module', name: 'account_summary', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
-	<%= render('module', name: 'transfer', title: 'Send & Request Money', content_path: dashboard_transfer_path, expandable: false) %>
-	<%= render('module', name: 'address_book', title: 'Address Book', content_path: contacts_path, expandable: false) %>
-	<%= render('module', name: 'transaction_history', title: 'Transaction History', content_path: money_requests_path, expandable: true) %>
-	<%= render('module', name: 'buy_sell_bitcoin', title: 'Buy & Sell Bitcoin', content_path: dashboard_buy_sell_bitcoin_path, expandable: false) %>
-	<%= render('module', name: 'bitstation_feed', title: 'BitStation Feed', content_path: dashboard_bitstation_feed_path, expandable: false) %>
+	<%= render('module', load_order: 2, name: 'account_summary', title: 'Account Summary', content_path: dashboard_account_summary_path, expandable: false) %>
+	<%= render('module', load_order: 1, name: 'transfer', title: 'Send & Request Money', content_path: dashboard_transfer_path, expandable: false) %>
+	<%= render('module', load_order: 1, name: 'address_book', title: 'Address Book', content_path: contacts_path, expandable: false) %>
+	<%= render('module', load_order: 1, name: 'transaction_history', title: 'Transaction History', content_path: money_requests_path, expandable: true) %>
+	<%= render('module', load_order: 3, name: 'buy_sell_bitcoin', title: 'Buy & Sell Bitcoin', content_path: dashboard_buy_sell_bitcoin_path, expandable: false) %>
+	<%= render('module', load_order: 1, name: 'bitstation_feed', title: 'BitStation Feed', content_path: dashboard_bitstation_feed_path, expandable: false) %>
 </div>
