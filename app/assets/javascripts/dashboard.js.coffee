@@ -83,18 +83,21 @@ ready = ->
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
     name = $(this).html().split("<i", 1)[0]
-    $("#detailed-wrapper>div").load(path + "_detailed")
+    $("#detailed-wrapper>div").load(path + "?detailed=true")
     $("#detailed-wrapper h5").html(name + " Detailed View")
+    $("body").toggleClass("bodylock1")
     $("#detailed-wrapper").show()
     $("#mask").show().fadeTo(300, 0.5)
 
   $("#mask").click ->
   	$("#detailed-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+  	$("body").toggleClass("bodylock1")
   	$("#detailed-wrapper, #mask").hide()
-  	$("#mask").css("opacity", 0)
+		$("#mask").css("opacity", 0)
 
   $("#mask2").click ->
     $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+    $("body").toggleClass("bodylock2")
     $("#popup-card-wrapper, #mask2").hide()
     $("#popup-card-wrapper").css "bottom", "initial"
     $("#mask2").css("opacity", 0)
@@ -169,6 +172,7 @@ ready = ->
           $(this).parent().css "bottom", "40px"
         return
       $("#popup-card-wrapper h5").html("Detailed View")
+      $("body").toggleClass("bodylock2")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)
       return false

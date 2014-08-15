@@ -100,6 +100,7 @@
 		z-index: 1000;
 		top: 40px;
 		left: 0px;
+		bottom: 40px;
 		display: none;
 		>div {
 			height: 100%;
@@ -123,6 +124,10 @@
     }
 	}
 
+	#popup-card-wrapper {
+		z-index: 2000;
+	}
+
 	#mask, #mask2 {
 		position: fixed;
 		top: 0;
@@ -133,6 +138,10 @@
 		background-color: black;
 		opacity: 0;
 		display: none;
+	}
+	
+	#mask2 {
+		z-index: 1999;
 	}
 
 	#account_summary_module {
@@ -273,7 +282,10 @@
 			}
 		}
 	}
+}
 
+.bodylock1, .bodylock2 {
+	overflow: hidden;
 }
 
 @media (min-width: 768px) {

@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
   # before_filter :disable_module, except: [:dashboard, :transfer]
 
   TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
+  DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 100
 
   def dashboard
     @subtitle = "Dashboard"
@@ -42,11 +43,12 @@ class DashboardController < ApplicationController
     page = params[:page] || 1
     page = page.to_i
     @current_page = page
+    @entries_per_page = params[:detailed] ? DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE : TRANSACTION_HISTORY_ENTRIES_PER_PAGE
 
-    @transactions = client.transactions(page, limit: TRANSACTION_HISTORY_ENTRIES_PER_PAGE)
+    @transactions = client.transactions(page, limit: @entries_per_page)
     @num_pages = @transactions['num_pages'].to_i
     # FIXME assuming the user has no more than 1000 transfers
-    @transfers = client.transfers(limit: [1000, page * TRANSACTION_HISTORY_ENTRIES_PER_PAGE].min)
+    @transfers = client.transfers(limit: [1000, page * @entries_per_page].min)
     @transfers = @transfers['transfers'].map { |t| t['transfer'] }
     @history = @transactions['transactions'].map { |t| t['transaction'] }
 
@@ -58,15 +60,19 @@ class DashboardController < ApplicationController
     @coinbase_id = @transactions['current_user']['id']
     @might_have_next_page = (@current_page < @num_pages)
 
-    respond_to do |format|
-      format.js do
-        @rendered_html = render_to_string(formats: [:html]).lines.map { |l| l.strip }.join('').html_safe
-        # raise @rendered_html.lines.count.to_s
-        render formats: [:js]
-      end
+    if params[:detailed]
+      render layout:false
+    else
+      respond_to do |format|
+        format.js do
+          @rendered_html = render_to_string(formats: [:html]).lines.map { |l| l.strip }.join('').html_safe
+          # raise @rendered_html.lines.count.to_s
+          render formats: [:js]
+        end
 
-      format.html do
-        render layout: false
+        format.html do
+          render layout: false
+        end
       end
     end
   end
@@ -108,10 +114,6 @@ class DashboardController < ApplicationController
     # TODO: Get full names from our user database if possible, not coinbase
     @transaction_json = @transaction.to_json
 
-    render layout: false
-  end
-
-  def transaction_history_detailed
     render layout: false
   end
 
