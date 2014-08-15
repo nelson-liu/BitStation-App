@@ -13,7 +13,7 @@ class MoneyRequestsController < ApplicationController
     @from = @request.sender == current_user ? 'You' : @request.sender.name
     @to = @request.requestee == current_user ? 'you' : @request.requestee.name
 
-    render
+    render layout: false
   end
 
   def pay
@@ -66,12 +66,13 @@ class MoneyRequestsController < ApplicationController
         display_time: r.updated_at.strftime('%b %d'),
         amount: friendly_amount(r.amount, 'BTC'),
         direction: r.sender == current_user ? :to : :from,
+        money_direction: r.requestee == current_user ? :to : :from,
         pending: r.pending?,
         success: r.paid? ? 'paid' : nil,
         failure: r.denied? ? 'denied' : nil,
         target: (r.sender == current_user ? r.requestee : r.sender).name,
         target_type: :bitstation,
-        load: '#'
+        load: money_request_path(r)
       }
     end.sort_by { |r| r[:time] }.drop((page - 1) * MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE).first(MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE)
 

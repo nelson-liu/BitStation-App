@@ -32,13 +32,13 @@
     <% data.each_with_index do |e, i| %>
       <tr class="popuppable" data-load="<%= e[:load] %>" >
         <td class="fit-to-contents first-column">
-          <% unless ((e[:time].to_date == data[i - 1][:time].to_date) rescue false)  %>
+          <% unless i != 0 and (e[:time].to_date == data[i - 1][:time].to_date)  %>
             <%= e[:display_time] %>
           <% end %>
         </td>
 
         <td class="fit-to-contents">
-          <span class="label label-<%= e[:direction] == :to ? 'danger' : 'success' %> amount"><%= e[:amount] %></span>
+          <span class="label label-<%= (e[:money_direction] || e[:direction]) == :to ? 'danger' : 'success' %> amount"><%= e[:amount] %></span>
         </td>
 
         <td class="fit-to-contents">
