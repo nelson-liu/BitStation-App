@@ -127,7 +127,10 @@ class ApplicationController < ActionController::Base
     def rescue_unhandled_exception
       begin
         yield
-      rescue
+      rescue => e
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
+
         flash[:error] = 'An unknown error happened. '
         redirect_to root_url
       end

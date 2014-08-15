@@ -38,8 +38,8 @@ class TransactionsController < ApplicationController
       (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d
 
       pt = is_kerberos ?
-        PendingTransaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
-        PendingTransaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
+        Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
+        Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
     rescue TransactionParameterError
     end
 
@@ -78,11 +78,16 @@ class TransactionsController < ApplicationController
 
       # FIXME more specific rescue here
       begin
-        TransactionMailer.request_money(current_user, requestee, amount, message, dashboard_url(send_money: {
-          recipient: current_user.kerberos,
+        mr = MoneyRequest.create!({
+          sender: current_user,
+          requestee: requestee,
           amount: amount,
-          currency: 'BTC'
-        })).deliver
+          message: message,
+        })
+
+        mr.pending!
+
+        TransactionMailer.request_money(current_user, requestee, amount, message, money_request_url(mr)).deliver
 
         success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
       rescue

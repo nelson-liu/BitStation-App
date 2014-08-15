@@ -125,7 +125,7 @@ class SessionsController < ApplicationController
         end
       elsif pending_action == 'transact'
         # It's a pending transaction
-        pt = PendingTransaction.find(pending_action_id)
+        pt = Transaction.find(pending_action_id)
         cc = coinbase_client_with_oauth_credentials(token.to_hash)
         email = cc.get('/users').users[0].user.email
 
@@ -176,6 +176,7 @@ class SessionsController < ApplicationController
     def process_pending_transaction(pt, critical_client)
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
       pt.completed! if r.success?
+      pt.money_request.paid! if r.success? && !pt.money_request.nil?
       r.success?
     end
 end
