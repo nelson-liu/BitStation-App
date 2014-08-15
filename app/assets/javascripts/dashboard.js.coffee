@@ -96,11 +96,7 @@ ready = ->
 		$("#mask").css("opacity", 0)
 
   $("#mask2").click ->
-    $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
-    $("body").toggleClass("bodylock2")
-    $("#popup-card-wrapper, #mask2").hide()
-    $("#popup-card-wrapper").css "bottom", "initial"
-    $("#mask2").css("opacity", 0)
+    window.dismiss_popup()
 
   for i in [1..3]
     $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
@@ -183,6 +179,13 @@ ready = ->
       $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
       $("#popup-card-wrapper").show()
       $("#mask2").show().fadeTo(300, 0.5)
+
+  window.dismiss_popup = ->
+    $("#popup-card-wrapper>div").html('<div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div>')
+    $("body").toggleClass("bodylock2")
+    $("#popup-card-wrapper, #mask2").hide()
+    $("#popup-card-wrapper").css "bottom", "initial"
+    $("#mask2").css("opacity", 0)
 
   window.setup_address_book = ->
     jQuery.expr[":"].Contains = jQuery.expr.createPseudo((arg) ->
