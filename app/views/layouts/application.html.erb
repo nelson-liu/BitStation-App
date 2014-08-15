@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>
+    <% if Rails.env.development? %>
+      [Dev]
+    <% end %>
     BitStation
     <% if @subtitle %>
       <%= " - #{@subtitle}" %>
