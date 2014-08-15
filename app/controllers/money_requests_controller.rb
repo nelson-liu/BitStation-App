@@ -74,7 +74,7 @@ class MoneyRequestsController < ApplicationController
         target_type: :bitstation,
         load: money_request_path(r)
       }
-    end.sort_by { |r| r[:time] }.drop((page - 1) * MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE).first(MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE)
+    end.sort_by { |r| r[:time] }.reverse.drop((page - 1) * MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE).first(MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE)
 
     respond_to do |format|
       format.js do
