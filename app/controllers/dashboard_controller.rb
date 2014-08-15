@@ -16,12 +16,6 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
-  def transfer
-    @send_money = params[:send_money]
-    @default_currency = (params[:send_money][:currency] rescue 'USD')
-    render layout: false
-  end
-
   def access_qrcode_details
     @qr_path = access_qrcode_path(current_user, r: Time.now.to_f.to_s)
     render layout: false
@@ -36,13 +30,4 @@ class DashboardController < ApplicationController
   def bitstation_feed
     render layout: false
   end
-
-  def overview
-  end
-
-  private
-
-    def disable_module
-      render inline: ''
-    end
 end
