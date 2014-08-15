@@ -8,6 +8,8 @@ class DashboardController < ApplicationController
   end
 
   def transfer
+    @default_currency = 'USD'
+
     render layout: false
   end
 
