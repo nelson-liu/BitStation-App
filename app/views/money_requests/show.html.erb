@@ -2,7 +2,7 @@
   <% if @should_show %>
     <div class="panel-body">
       <h4>Money Request Details</h4>
-      <p>Sent at <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %></p>
+      <p>Sent at <%= @request.created_at.strftime('%b %d, %Y at %I:%M %p') %></p>
 
       <p>
         <span class="label label-<%= @from.downcase == 'you' ? 'primary' : 'warning' %>"><%= @from %></span>
