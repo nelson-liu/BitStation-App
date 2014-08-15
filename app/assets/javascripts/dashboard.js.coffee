@@ -83,7 +83,8 @@ ready = ->
   $(".module.expandable h5").click ->
     path = $(this).next().attr('data-load')
     name = $(this).html().split("<i", 1)[0]
-    $("#detailed-wrapper>div").load(path + "?detailed=true")
+    # TODO Revisit following line in case more modules are expandable (path doesn't quite work for account activity)
+    $("#detailed-wrapper>div").load("/transactions/?detailed=true")
     $("#detailed-wrapper h5").html(name + " Detailed View")
     $("body").toggleClass("bodylock1")
     $("#detailed-wrapper").show()
@@ -217,6 +218,7 @@ ready = ->
 
   # Recalculate text overflow width on browser resize
   $(window).resize( -> window.recalculate_truncate_width("#transaction-history-table"))
+  $(window).resize( -> window.recalculate_truncate_width("#transaction-history-table-detailed"))
   $(window).resize( -> window.recalculate_truncate_width("#address-book-table"))
 
 

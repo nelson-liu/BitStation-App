@@ -100,7 +100,6 @@
 		z-index: 1000;
 		top: 40px;
 		left: 0px;
-		bottom: 40px;
 		display: none;
 		>div {
 			height: 100%;
@@ -122,6 +121,10 @@
 			max-height: 87%;
 			width: auto;
     }
+	}
+
+	#detailed-wrapper {
+		bottom: 40px;
 	}
 
 	#popup-card-wrapper {
@@ -169,7 +172,7 @@
 	}
 
 	/***** TRANSACTION HISTORY STYLES *****/
-	#transaction-history-table, #money-requests-history-table {
+	#transaction-history-table, #transaction-history-table-detailed, #money-requests-history-table {
 		text-align: center;
 		i.fa {
 			font-size: 20px;
@@ -246,7 +249,7 @@
 		}
 	}
 
-	#transaction-history-table, #address-book-table {
+	#transaction-history-table, #transaction-history-table-detailed, #address-book-table {
 		margin-bottom: 0;
 		border-bottom: 1px solid #BBB;
 		.td-truncate {

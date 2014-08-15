@@ -117,7 +117,7 @@ class TransactionsController < ApplicationController
     @prev_page = (current_page != 1) ? transactions_path(page: current_page - 1) : nil
 
     if params[:detailed]
-      render layout:false
+      render "index_detailed", layout:false
     else
       respond_to do |format|
         format.js do
