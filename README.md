@@ -32,4 +32,9 @@ The Kerberos-integrated social wallet
 - [ ] Add transaction labels for user organization
 
 #### Requests
-- [ ] Save requests in db and display them as pending or satisfied.
+- [*] Save requests in db and display them as pending or satisfied.
+- [ ] Use AJAX to respond to money requests.
+
+#### Miscellaneous
+- [ ] Fix login filter redirect.
+- [ ] Redirect back to last GET request after login.
