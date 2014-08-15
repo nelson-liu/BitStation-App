@@ -176,6 +176,7 @@ class SessionsController < ApplicationController
     def process_pending_transaction(pt, critical_client)
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
       pt.completed! if r.success?
+      pt.money_request.paid! if r.success? && !pt.money_request.nil?
       r.success?
     end
 end

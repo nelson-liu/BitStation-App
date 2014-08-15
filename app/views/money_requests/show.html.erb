@@ -1,15 +1,27 @@
-<% if @should_show %>
-  <p><%= @from %> requested <%= @request.amount %> BTC from <%= @to %>. </p>
+<% if @request %>
+  <% if @should_show %>
+    <p><%= @from %> requested <%= @request.amount %> BTC from <%= @to %>. </p>
 
-  <% if @request.message && !@request.message.strip.empty? %>
-    <p>Here is the message attached: </p>
-    <p><%= @request.message %></p>
-  <% end %>
+    <% if @request.message && !@request.message.strip.empty? %>
+      <p>Here is the message attached: </p>
+      <p><%= @request.message %></p>
+    <% end %>
 
-  <% if @to == 'you' %>
-    <%= link_to 'Pay', pay_money_request_path(@request) %>
-    <%= link_to 'Deny', deny_money_request_path(@request) %>
+    <% if @to == 'you' && @request.pending? %>
+      <%= link_to 'Pay', pay_money_request_path(@request), method: :post %>
+      <%= link_to 'Deny', deny_money_request_path(@request), method: :post %>
+    <% end %>
+
+    <% if @request.paid? %>
+      <p>The request has already been paid. </p>
+    <% end %>
+
+    <% if @request.denied? %>
+      <p>The request is denied by the requestee. </p>
+    <% end %>
+  <% else %>
+    <div class="panel-body">You can only view requests that are either sent by you or to you. </div>
   <% end %>
 <% else %>
-  <div class="panel-body">You can only view requests that are either sent by you or to you. </div>
+  <p>No such request. </p>
 <% end %>

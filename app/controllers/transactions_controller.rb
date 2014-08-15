@@ -82,10 +82,12 @@ class TransactionsController < ApplicationController
           sender: current_user,
           requestee: requestee,
           amount: amount,
-          message: message
+          message: message,
         })
 
-        TransactionMailer.request_money(current_user, requestee, amount, message, money_request_path(mr)).deliver
+        mr.pending!
+
+        TransactionMailer.request_money(current_user, requestee, amount, message, money_request_url(mr)).deliver
 
         success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
       rescue
