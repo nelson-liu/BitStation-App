@@ -86,15 +86,20 @@ class DashboardController < ApplicationController
     end
 
     if @transaction[:sender].nil?
-      @transaction_sender_name = "External Account"
+      @transaction_sender_name = "External BTC Address"
       @transaction_sender_email = "N/A"
     else
       @transaction_sender_name = @transaction[:sender][:name]
       @transaction_sender_email = @transaction[:sender][:email]
     end
     if @transaction[:recipient].nil?
-      @transaction_recipient_name = "External Account"
-      @transaction_recipient_email = "N/A"
+      if @transaction[:sender][:email] == current_user.coinbase_account.email
+        @transaction_recipient_name = "External BTC Address"
+        @transaction_recipient_email = "N/A"
+      else
+        @transaction_recipient_name = current_user.name
+        @transaction_recipient_email = "Sent to your receiving BTC Address"
+      end
     else
       @transaction_recipient_name = @transaction[:recipient][:name]
       @transaction_recipient_email = @transaction[:recipient][:email]
@@ -106,12 +111,12 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
-  def access_qrcode_details
-    @qr_path = access_qrcode_path(current_user, r: Time.now.to_f.to_s)
+  def transaction_history_detailed
     render layout: false
   end
 
-  def transaction_history_detailed
+  def access_qrcode_details
+    @qr_path = access_qrcode_path(current_user, r: Time.now.to_f.to_s)
     render layout: false
   end
 
