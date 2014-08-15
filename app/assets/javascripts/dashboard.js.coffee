@@ -103,7 +103,6 @@ ready = ->
     $("#mask2").css("opacity", 0)
 
   for i in [1..3]
-    console.log "[data-load-order=" + i + "]"
     $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
       path = $(this).attr('data-load')
       # passes the query string to sub-modules for fields pre-filling
@@ -143,7 +142,7 @@ ready = ->
       # FIXME ugly ugly ugly
       html = '<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>'
 
-      $('#transaction_history_module').html(html)
+      $('#account_activity_history_module').html(html)
     );
     window.recalculate_truncate_width(table_name)
 

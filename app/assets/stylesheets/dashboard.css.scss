@@ -139,7 +139,7 @@
 		opacity: 0;
 		display: none;
 	}
-	
+
 	#mask2 {
 		z-index: 1999;
 	}
@@ -169,7 +169,7 @@
 	}
 
 	/***** TRANSACTION HISTORY STYLES *****/
-	#transaction-history-table {
+	#transaction-history-table, #money-requests-history-table {
 		text-align: center;
 		i.fa {
 			font-size: 20px;
@@ -247,7 +247,7 @@
 	}
 
 	#transaction-history-table, #address-book-table {
-		margin-bottom: 0;	
+		margin-bottom: 0;
 		border-bottom: 1px solid #BBB;
 		.td-truncate {
 			display: none;
