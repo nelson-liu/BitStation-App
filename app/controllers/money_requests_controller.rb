@@ -73,8 +73,8 @@ class MoneyRequestsController < ApplicationController
 
     @display = rs.map do |r|
       {
-        time: r.updated_at,
-        display_time: r.updated_at.strftime('%b %d'),
+        time: r.created_at,
+        display_time: r.created_at.strftime('%b %d'),
         amount: friendly_amount(r.amount, 'BTC'),
         direction: r.sender == current_user ? :to : :from,
         money_direction: r.requestee == current_user ? :to : :from,

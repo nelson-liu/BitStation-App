@@ -2,7 +2,7 @@
   <% if @should_show %>
     <div class="panel-body">
       <h4>Money Request Details</h4>
-      <p><%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %></p>
+      <p>Sent at <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %></p>
 
       <p>
         <span class="label label-<%= @from.downcase == 'you' ? 'primary' : 'warning' %>"><%= @from %></span>
@@ -33,11 +33,11 @@
 
     <div class="panel-body">
       <% if @request.paid? %>
-        <p>The request has already been paid. </p>
+        <p>The request has already been paid on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
       <% end %>
 
       <% if @request.denied? %>
-        <p>The request is denied by the requestee. </p>
+        <p>The request has been denied by the requestee on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
       <% end %>
 
       <% if @request.pending? %>
