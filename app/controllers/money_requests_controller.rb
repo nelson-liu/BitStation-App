@@ -26,7 +26,7 @@ class MoneyRequestsController < ApplicationController
     if error
       redirect_to dashboard_url, flash: {error: error}
     else
-      pt = PendingTransaction.create!({sender: current_user, recipient: request.sender, amount: request.amount, money_request: request})
+      pt = Transaction.create!({sender: current_user, recipient: request.sender, amount: request.amount, money_request: request})
       redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
     end
   end

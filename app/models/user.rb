@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   has_one :coinbase_account
 
-  has_many :pending_outgoing_transactions, class_name: 'PendingTransaction', foreign_key: 'sender_id'
-  has_many :pending_incoming_transactions, class_name: 'PendingTransaction', foreign_key: 'recipient_id'
+  has_many :pending_outgoing_transactions, class_name: 'Transaction', foreign_key: 'sender_id'
+  has_many :pending_incoming_transactions, class_name: 'Transaction', foreign_key: 'recipient_id'
 
   has_many :outgoing_money_requests, class_name: 'MoneyRequest', foreign_key: 'sender_id'
   has_many :incoming_money_requests, class_name: 'MoneyRequest', foreign_key: 'requestee_id'

@@ -125,7 +125,7 @@ class SessionsController < ApplicationController
         end
       elsif pending_action == 'transact'
         # It's a pending transaction
-        pt = PendingTransaction.find(pending_action_id)
+        pt = Transaction.find(pending_action_id)
         cc = coinbase_client_with_oauth_credentials(token.to_hash)
         email = cc.get('/users').users[0].user.email
 
