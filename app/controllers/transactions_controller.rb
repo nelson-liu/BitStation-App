@@ -164,7 +164,7 @@ class TransactionsController < ApplicationController
 
     if @transaction[:sender].nil?
       @transaction_sender_name = "External BTC Address"
-      @transaction_sender_email = "N/A"
+      @transaction_sender_email = @transaction[:sender_address]
     else
       @transaction_sender_name = @transaction[:sender][:name]
       @transaction_sender_email = @transaction[:sender][:email]
@@ -172,7 +172,7 @@ class TransactionsController < ApplicationController
     if @transaction[:recipient].nil?
       if @transaction[:sender][:email] == current_user.coinbase_account.email
         @transaction_recipient_name = "External BTC Address"
-        @transaction_recipient_email = "N/A"
+        @transaction_recipient_email = @transaction[:recipient_address]
       else
         @transaction_recipient_name = current_user.name
         @transaction_recipient_email = "Sent to your receiving BTC Address"
