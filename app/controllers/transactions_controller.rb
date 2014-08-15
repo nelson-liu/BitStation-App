@@ -1,6 +1,7 @@
 class TransactionsController < ApplicationController
   before_filter :ensure_signed_in, only: []
-  before_filter :ensure_coinbase_account_linked, only: [:transact, :request_money, :history, :exchange]
+  before_filter :ensure_coinbase_account_linked, only: [:create, :index, :request_money, :history, :exchange]
+  before_filter :check_for_unlinked_coinbase_account, only: [:index]
 
   CURRENCIES = ["USD", "BTC"]
 
@@ -8,6 +9,9 @@ class TransactionsController < ApplicationController
     "BTC" => 0.001,
     "USD" => 0.5
   }
+
+  TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 12
+  DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE = 100
 
   class TransactionParameterError < StandardError; end
 
@@ -50,6 +54,45 @@ class TransactionsController < ApplicationController
         else
           # FIXME ugh
           redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
+        end
+      end
+    end
+  end
+
+  def index
+    client = current_coinbase_client
+    page = params[:page] || 1
+    page = page.to_i
+    @current_page = page
+    @entries_per_page = params[:detailed] ? DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE : TRANSACTION_HISTORY_ENTRIES_PER_PAGE
+
+    @transactions = client.transactions(page, limit: @entries_per_page)
+    @num_pages = @transactions['num_pages'].to_i
+    # FIXME assuming the user has no more than 1000 transfers
+    @transfers = client.transfers(limit: [1000, page * @entries_per_page].min)
+    @transfers = @transfers['transfers'].map { |t| t['transfer'] }
+    @history = @transactions['transactions'].map { |t| t['transaction'] }
+
+    @history.each do |e|
+      ts = @transfers.select { |t| t['transaction_id'] == e['id'] }
+      e['transfer_type'] = ts.first['type'].downcase unless ts.empty?
+    end
+
+    @coinbase_id = @transactions['current_user']['id']
+    @might_have_next_page = (@current_page < @num_pages)
+
+    if params[:detailed]
+      render layout:false
+    else
+      respond_to do |format|
+        format.js do
+          @rendered_html = render_to_string(formats: [:html]).lines.map { |l| l.strip }.join('').html_safe
+          # raise @rendered_html.lines.count.to_s
+          render formats: [:js]
+        end
+
+        format.html do
+          render layout: false
         end
       end
     end

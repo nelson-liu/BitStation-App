@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   match '/team', to: 'static_pages#team', via: :get, as: :team
   match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
 
-  resources :transactions, only: [:create] do
+  resources :transactions, only: [:create, :index] do
   end
 
   resources :money_requests, path: 'requests', only: [:show] do

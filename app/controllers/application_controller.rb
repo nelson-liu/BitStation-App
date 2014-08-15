@@ -163,5 +163,9 @@ class ApplicationController < ActionController::Base
       session[:access_code] && signed_in?
     end
 
+    def check_for_unlinked_coinbase_account
+      render 'dashboard/unlinked_coinbase_account', layout: false unless has_coinbase_account_linked?
+    end
+
     helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?, :sign_in_with_access_code, :signed_in_with_access_code?
 end

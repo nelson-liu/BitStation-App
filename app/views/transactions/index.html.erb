@@ -1,11 +1,11 @@
 <% unless @current_page == 1 %>
-  <%= link_to dashboard_transaction_history_path(page: @current_page - 1), remote: true do %>
+  <%= link_to transactions_path(page: @current_page - 1), remote: true do %>
     <i class="fa fa-lg fa-chevron-circle-left paging paging-left"></i>
   <% end %>
 <% end %>
 
 <% if @might_have_next_page %>
-  <%= link_to dashboard_transaction_history_path(page: @current_page + 1), remote: true do %>
+  <%= link_to transactions_path(page: @current_page + 1), remote: true do %>
     <i class="fa fa-lg fa-chevron-circle-right paging paging-right"></i>
   <% end %>
 <% end %>
