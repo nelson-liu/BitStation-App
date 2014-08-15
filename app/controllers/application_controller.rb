@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_filter :store_location
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
@@ -43,7 +44,7 @@ class ApplicationController < ActionController::Base
     def ensure_signed_in
       unless signed_in?
         flash[:error] = "Please sign in first. "
-        redirect_to sign_in_url
+        redirect_to root_url
       end
     end
 
@@ -165,6 +166,14 @@ class ApplicationController < ActionController::Base
 
     def check_for_unlinked_coinbase_account
       render 'dashboard/unlinked_coinbase_account', layout: false unless has_coinbase_account_linked?
+    end
+
+    def store_location
+      session[:return_to] = request.fullpath if request.get? and controller_name != "sessions" and action_name != 'homepage'
+    end
+
+    def redirect_back_or_default(default)
+      redirect_to(session[:return_to] || default)
     end
 
     helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?, :sign_in_with_access_code, :signed_in_with_access_code?
