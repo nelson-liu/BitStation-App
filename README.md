@@ -36,5 +36,5 @@ The Kerberos-integrated social wallet
 - [ ] Use AJAX to respond to money requests.
 
 #### Miscellaneous
-- [ ] Fix login filter redirect.
-- [ ] Redirect back to last GET request after login.
+- [*] Fix login filter redirect.
+- [*] Redirect back to last GET request after login.
