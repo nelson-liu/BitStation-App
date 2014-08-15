@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'contacts/index'
+
+  get 'contacts/create'
+
   get 'search_suggestions/user/:query', to: 'search_suggestions#user'
 
   get 'users/require_coinbase_account', as: :require_coinbase_account
@@ -44,7 +48,7 @@ Rails.application.routes.draw do
   match '/team', to: 'static_pages#team', via: :get, as: :team
   match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
 
-  resources :transactions, only: [:create, :index] do
+  resources :transactions, only: [:create, :index, :show] do
   end
 
   resources :money_requests, path: 'requests', only: [:show] do
