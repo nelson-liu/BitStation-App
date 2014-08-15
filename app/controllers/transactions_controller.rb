@@ -3,6 +3,8 @@ class TransactionsController < ApplicationController
   before_filter :ensure_coinbase_account_linked, only: [:create, :index, :request_money, :show]
   before_filter :check_for_unlinked_coinbase_account, only: [:index]
 
+  include ApplicationHelper
+
   CURRENCIES = ["USD", "BTC"]
 
   MINIMUM_TRANSACTION_AMOUNT = {
@@ -63,23 +65,56 @@ class TransactionsController < ApplicationController
     client = current_coinbase_client
     page = params[:page] || 1
     page = page.to_i
-    @current_page = page
-    @entries_per_page = params[:detailed] ? DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE : TRANSACTION_HISTORY_ENTRIES_PER_PAGE
+    current_page = page
+    entries_per_page = params[:detailed] ? DETAILED_TRANSACTION_HISTORY_ENTRIES_PER_PAGE : TRANSACTION_HISTORY_ENTRIES_PER_PAGE
 
-    @transactions = client.transactions(page, limit: @entries_per_page)
-    @num_pages = @transactions['num_pages'].to_i
+    cb_response = client.transactions(page, limit: entries_per_page)
+    coinbase_id = cb_response['current_user']['id']
+    num_pages = cb_response['num_pages'].to_i
     # FIXME assuming the user has no more than 1000 transfers
-    @transfers = client.transfers(limit: [1000, page * @entries_per_page].min)
-    @transfers = @transfers['transfers'].map { |t| t['transfer'] }
-    @history = @transactions['transactions'].map { |t| t['transaction'] }
+    transfers = client.transfers(limit: [1000, page * entries_per_page].min)
+    transfers = transfers['transfers'].map { |t| t['transfer'] }
+    cb_transactions = cb_response['transactions'].map { |t| t['transaction'] }
 
-    @history.each do |e|
-      ts = @transfers.select { |t| t['transaction_id'] == e['id'] }
+    cb_transactions.each do |e|
+      ts = transfers.select { |t| t['transaction_id'] == e['id'] }
       e['transfer_type'] = ts.first['type'].downcase unless ts.empty?
     end
 
-    @coinbase_id = @transactions['current_user']['id']
-    @might_have_next_page = (@current_page < @num_pages)
+    @display = cb_transactions.map do |t|
+      # TODO ignore request transactions for now
+      next if t['request']
+
+      r = {
+        time: DateTime.parse(t['created_at']),
+        display_time: DateTime.parse(t['created_at']).strftime('%b %d'),
+        amount: friendly_amount_from_money(t['amount']),
+        direction: (t['sender']['id'] == coinbase_id) ? :to : :from,
+        pending: t['status'] == 'pending',
+        load: transaction_path(id: t['id'])
+      }
+
+      if t['transfer_type']
+        r[:transfer_type] = t['transfer_type']
+      else
+        if r[:direction] == :to
+          r[:target] = t['recipient'] ? (CoinbaseAccount.find_by_email(t['recipient']['email']).user.name rescue t['recipient']['name']) : 'External Account'
+          r[:target_type] = t['recipient'] ?
+            (CoinbaseAccount.find_by_email(t['recipient']['email']) ? :bitstation : :coinbase) :
+            :external
+        else
+          r[:target] = t['sender'] ? (CoinbaseAccount.find_by_email(t['sender']['email']).user.name rescue t['sender']['name']) : 'External Account'
+          r[:target_type] = t['sender'] ?
+            (CoinbaseAccount.find_by_email(t['sender']['email']) ? :bitstation : :coinbase) :
+            :external
+        end
+      end
+
+      r
+    end
+
+    @next_page = (current_page < num_pages) ? transactions_path(page: current_page + 1) : nil
+    @prev_page = (current_page != 1) ? transactions_path(page: current_page - 1) : nil
 
     if params[:detailed]
       render layout:false
