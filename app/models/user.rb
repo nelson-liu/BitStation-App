@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :outgoing_money_requests, class_name: 'MoneyRequest', foreign_key: 'sender_id'
   has_many :incoming_money_requests, class_name: 'MoneyRequest', foreign_key: 'requestee_id'
 
+  has_many :contacts
+
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
 

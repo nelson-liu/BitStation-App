@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_filter :store_location
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account

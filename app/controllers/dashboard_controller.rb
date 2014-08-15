@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
   before_filter :check_for_unlinked_coinbase_account, only: [:transfer, :address_book, :transaction_details, :buy_sell_bitcoin]
 
   def dashboard
+    store_location
     @subtitle = "Dashboard"
   end
 

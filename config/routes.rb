@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   end
 
   resources :contacts, only: [:create, :index, :show, :new] do
+    collection do
+      post 'import', as: :import
+    end
   end
 
   # Example of regular route:
