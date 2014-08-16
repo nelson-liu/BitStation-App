@@ -1,1 +1,34 @@
-<div>Add New Contact</div>
+<div>
+  <%= form_tag transactions_path, id: 'transfer_form', 'data-send-path' => transactions_path, 'data-request-path' => request_money_path %>
+    <%= hidden_field_tag 'fee_amount', (@send_money[:fee_amount] rescue 0) %>
+
+    <div class="form-group">
+      <%= label_tag 'Name' %>
+      <%= text_field_tag 'contactname', '', placeholder: 'Name of Contact', class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'Email' %>
+      <%= text_field_tag 'contactemail', '', placeholder: "Kerberos email or Coinbase email if non-MIT", class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'BitCoin Address' %>
+      <%= text_field_tag 'contactaddress', '', placeholder: "Contact's Public BitCoin Address", class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'Note' %>
+      <%= text_field_tag 'contactnote', '', placeholder: "A private note about the contact (visible only to you)", class: 'form-control' %>
+    </div>
+    <span style="color:red;">You must provide either an email or a BitCoin address</span>
+
+    <%= submit_tag 'Add Contact', class: 'btn btn-primary' %>
+  </form>
+
+  <script>
+    // FIXME This is ugly...
+    window.setup_recipient_autocomplete("transfer_form");
+    window.setup_transfer_button();
+  </script>
+</div>
