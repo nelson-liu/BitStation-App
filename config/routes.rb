@@ -46,7 +46,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :contacts, only: [:create, :index, :show, :new] do
+  resources :contacts, only: [:create, :index, :show, :new, :destroy] do
     collection do
       post 'import', as: :import
     end

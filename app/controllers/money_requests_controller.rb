@@ -71,21 +71,7 @@ class MoneyRequestsController < ApplicationController
 
     rs = current_user.outgoing_money_requests.to_a + current_user.incoming_money_requests.to_a
 
-    @display = rs.map do |r|
-      {
-        time: r.created_at,
-        display_time: r.created_at.strftime('%b %d'),
-        amount: friendly_amount(r.amount, 'BTC'),
-        direction: r.sender == current_user ? :to : :from,
-        money_direction: r.requestee == current_user ? :to : :from,
-        pending: r.pending?,
-        success: r.paid? ? 'paid' : nil,
-        failure: r.denied? ? 'denied' : nil,
-        target: (r.sender == current_user ? r.requestee : r.sender).name,
-        target_type: :bitstation,
-        load: money_request_path(r)
-      }
-    end.sort_by { |r| r[:time] }.reverse.drop((page - 1) * MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE).first(MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE)
+    @display = rs.map { |r| r.to_display_data(current_user) }.sort_by { |r| r[:time] }.reverse.drop((page - 1) * MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE).first(MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE)
 
     respond_to do |format|
       format.js do

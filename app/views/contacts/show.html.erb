@@ -1,1 +1,34 @@
-<div>Contact Details</div>
+<div class="panel-body">
+  <h4><%= @contact.name %></h4>
+  <span class="label label-default"><%= @contact.address %></span>
+
+  <% if @contact.bitstation?  %>
+    <span class="label label-danger">MIT</span>
+  <% end %>
+
+  <% if @contact.coinbase? %>
+    <span class="label label-primary">Coinbase</span>
+  <% end %>
+
+  <% if @contact.external? %>
+    <span class="label label-warning">External</span>
+  <% end %>
+</div>
+
+<% if @contact.bitstation? %>
+  <hr>
+
+  <div class="panel-table-header">
+    <h5>Recent money requests</h5>
+  </div>
+
+  <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+<% end %>
+
+<div>
+  <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
+</div>
+
+<script>
+  window.recalculate_truncate_width('#contact-details-money-requests-history-table');
+</script>

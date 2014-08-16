@@ -67,6 +67,11 @@
 			padding: 15px 20px;
 		}
 
+    >div.panel-table-header {
+      padding: 0 20px;
+      text-align: center
+    }
+
     .dashboard-module-spinner-container {
       text-align: center;
       i {
@@ -167,7 +172,7 @@
 		}
 	}
 
-	/***** TABLE STYLES *****/	
+	/***** TABLE STYLES *****/
 	/* took this selector from bootstrap */
 	.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
 		padding: 7px 5px;
@@ -175,7 +180,7 @@
 		white-space: nowrap;
 	}
 
-	#transaction-history-table, #transaction-history-table-detailed, #address-book-table {
+	#transaction-history-table-detailed, #address-book-table, .account-activity-history-table {
 		margin-bottom: 0;
 		border-bottom: 1px solid #BBB;
 		.td-truncate {

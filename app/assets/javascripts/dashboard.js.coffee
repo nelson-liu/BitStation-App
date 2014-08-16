@@ -140,6 +140,12 @@ ready = ->
       }
     })
 
+  $.fn.reload_module = ->
+    $(this).html('<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')
+    path = $(this).attr('data-load')
+    # passes the query string to sub-modules for fields pre-filling
+    $(this).load(path + '?' + window.location.search.substring(1))
+
   # FIXME find a better place for it
   window.capitalize_string = (string) ->
     string.substring(0, 1).toUpperCase() + string.substring(1, string.length);

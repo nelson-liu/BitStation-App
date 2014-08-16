@@ -1,11 +1,13 @@
 class ContactsController < ApplicationController
-  before_filter :ensure_signed_in_without_redirect, only: [:index, :create, :show, :create]
+  before_filter :ensure_signed_in_without_redirect, only: [:index, :create, :show, :create, :delete]
   before_filter :ensure_coinbase_account_linked, only: [:import]
   before_filter :check_for_unlinked_coinbase_account, only: [:index, :show, :create]
 
   include ActionView::Helpers::TextHelper
 
   LOAD_CONTACTS_PAGE_LIMIT = 500
+
+  SHOW_CONTACT_RECENT_REQUEST_LIMIT = 10
 
   def index
     @contacts = current_user.contacts.order('name ASC')
@@ -62,6 +64,35 @@ class ContactsController < ApplicationController
   end
 
   def show
+    @contact = Contact.find(params[:id])
+
+    if @contact && @contact.bitstation?
+      @requests = current_user.outgoing_money_requests.where(requestee_id: @contact.to_user.id).to_a + current_user.incoming_money_requests.where(sender_id: @contact.to_user.id).to_a
+      @requests = @requests.map { |r| r.to_display_data(current_user) }.first(SHOW_CONTACT_RECENT_REQUEST_LIMIT)
+    end
+
     render layout: false
+  end
+
+  def destroy
+    @contact = Contact.find(params[:id])
+
+    @error = nil
+    @success = nil
+
+    if @contact
+      if @contact.user == current_user
+        @contact.destroy!
+        @success = "You have successfully deleted #{@contact.name} from your contacts. "
+      else
+        @error = 'You can only delete your own contact. '
+      end
+    else
+      @error = 'No such contact. '
+    end
+
+    respond_to do |format|
+      format.js {}
+    end
   end
 end
