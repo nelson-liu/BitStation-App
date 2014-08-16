@@ -146,7 +146,7 @@ class TransactionsController < ApplicationController
       (error = 'Invalid currency. ' and raise) unless CURRENCIES.include?(currency)
       (error = 'The designated requestee hasn\'t joined BitStation yet. ' and raise) if requestee.nil?
       (error = 'The designated requestee hasn\'t linked a Coinbase account yet. ' and raise) if requestee.coinbase_account.nil?
-      # (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
+      (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
       (error = "Invalid request amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
     rescue
     end
