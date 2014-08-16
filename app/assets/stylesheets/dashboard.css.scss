@@ -190,6 +190,29 @@
 			text-overflow: ellipsis;
 		}
 	}
+	
+	#transaction-history-table-detailed, #address-book-table {
+		td {
+			height: auto;
+			padding: 0;
+			border: none;
+		}
+		td>div {
+			height:35px;
+			padding: 9px 5px;
+			height: 35px;
+			border-top: 1px solid #dddddd;
+		}
+		.fit-to-contents {
+			width: 1%;
+		}
+		.first-column {
+			padding-left: 10px;
+		}
+		.last-column {
+			padding-right: 10px;
+		}
+	}
 
 	/***** BITSTATION FEED STYLES *****/
 	#bitstation_feed_module {

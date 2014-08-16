@@ -3,38 +3,36 @@
   <tbody>
     <tr>
       <td><input class="form-control" id="filter-date" placeholder="Date" type="text"></td>
-      <td><input class="form-control" id="filter-date" placeholder="Amount" type="text"></td>
+      <td><input class="form-control" id="filter-amount" placeholder="Amount" type="text"></td>
       <td></td>
-      <td><input class="form-control" id="filter-date" placeholder="Filter by Contact Name" type="text"></td>
+      <td><input class="form-control" id="filter-name" placeholder="Filter by Contact Name" type="text"></td>
       <td></td>
     </tr>
     <% @display.each_with_index do |e, i| %>
       <tr class="popuppable" data-load="<%= e[:load] %>" >
-        <td class="fit-to-contents first-column">
-          <% unless i != 0 and (e[:time].to_date == @display[i - 1][:time].to_date)  %>
+        <td class="fit-to-contents first-column"><div>
             <%= e[:display_time] %>
-          <% end %>
-        </td>
+        </div></td>
 
-        <td class="fit-to-contents">
+        <td class="fit-to-contents"><div>
           <span class="label label-<%= (e[:money_direction] || e[:direction]) == :to ? 'danger' : 'success' %> amount"><%= e[:amount] %></span>
-        </td>
+        </div></td>
 
-        <td class="fit-to-contents">
+        <td class="fit-to-contents"><div>
           <% if e[:transfer_type] %>
             <%= e[:transfer_type] %>
           <% else %>
             <%= e[:direction] == :to ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%>
           <% end %>
-        </td>
+        </div></td>
 
-        <td class="ellipsis">
+        <td class="ellipsis"><div>
           <div class="td-truncate">
           <%= e[:target] %>
           </div>
-        </td>
+        </div></td>
 
-        <td class="fit-to-contents last-column">
+        <td class="fit-to-contents last-column"><div>
           <%=
             case e[:target_type]
             when :bitstation
@@ -57,10 +55,17 @@
           <% if e[:failure] %>
             <span title="This <%= activity %> is <%= e[:failure] %>" class="label label-danger"><%= e[:failure][0].upcase %></span>
           <% end %>
-        </td>
+        </div></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<script>window.recalculate_truncate_width("#transaction-history-table-detailed")</script>
+<script>
+  window.recalculate_truncate_width("#transaction-history-table-detailed")
+  $("#filter-name").change(function() {
+    return $("#transaction-history-table-detailed").filterTable($("#filter-name").val());
+  }).keyup(function() {
+    return $(this).change();
+  });
+</script>
