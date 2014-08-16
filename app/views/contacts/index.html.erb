@@ -19,6 +19,9 @@
     <% end %>
     </tbody>
   </table>
+  <% if @contacts.blank? %>
+    <p style="text-align:center;">No contacts here, why don't you add or import (2nd section of account summary) some?</p>
+  <% end %>
 </section>
 <div id="address-book-pagination" class="btn-group btn-group-justified">
   <a id="previous" class="btn btn-default"><i class="fa fa-chevron-up"></i></a>
