@@ -16,3 +16,7 @@
 //= require twitter/typeahead.min
 //= require bootstrap-sprockets
 //= require_tree .
+
+$(document).ready(function() 	{
+  $(".alert-success").delay(2000).fadeOut(2000);
+});
