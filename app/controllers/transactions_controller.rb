@@ -146,13 +146,15 @@ class TransactionsController < ApplicationController
       (error = 'Invalid currency. ' and raise) unless CURRENCIES.include?(currency)
       (error = 'The designated requestee hasn\'t joined BitStation yet. ' and raise) if requestee.nil?
       (error = 'The designated requestee hasn\'t linked a Coinbase account yet. ' and raise) if requestee.coinbase_account.nil?
-      (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
+      # (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
       (error = "Invalid request amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
     rescue
     end
 
     unless error
-      amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
+      exchange_rate = current_coinbase_client.spot_price(currency).to_d
+      amount /= exchange_rate unless currency == 'BTC'
+      dollar_amount = amount * exchange_rate
 
       # FIXME more specific rescue here
       begin
@@ -165,7 +167,9 @@ class TransactionsController < ApplicationController
 
         mr.pending!
 
-        TransactionMailer.request_money(current_user, requestee, amount, message, money_request_url(mr)).deliver
+        TransactionMailer.request_money(current_user, requestee, amount, dollar_amount, message, dashboard_url({
+          popup: money_request_path(mr)
+        })).deliver
 
         success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
       rescue

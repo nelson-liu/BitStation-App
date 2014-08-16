@@ -5,9 +5,21 @@ ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
   $(".expandable h5:not(:has(i))").append('<i class="fa fa-arrows-alt"></i>')
 
-  $.urlParam = (name) ->
-      results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href)
-      results[1] || 0
+  $.extend
+    getUrlVars: ->
+      vars = []
+      hash = undefined
+      hashes = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&")
+      i = 0
+
+      while i < hashes.length
+        hash = hashes[i].split("=")
+        vars.push hash[0]
+        vars[hash[0]] = decodeURIComponent(hash[1])
+        i++
+      vars
+    getUrlVar: (name) ->
+      $.getUrlVars()[name]
 
   #dropdown menu for sending
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
@@ -218,10 +230,10 @@ ready = ->
     window.recalculate_truncate_width("#address-book-table")
 
   # Load init popup
-  if $.urlParam('popup')
-    window.load_popup($.urlParam('popup'))
+  if $.getUrlVar('popup')
+    window.load_popup($.getUrlVar('popup'))
 
-  for i in [1..3]
+  for i in [1..1]
     $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
       path = $(this).attr('data-load')
       # passes the query string to sub-modules for fields pre-filling

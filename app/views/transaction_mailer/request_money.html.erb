@@ -1,6 +1,52 @@
-<p><%= @sender_name %> is requesting <%= friendly_amount(@amount, 'BTC') %> from you<%= @has_message ? ' saying:' : '.' %> </p>
-<% if @has_message %>
-  <p>"<%= @message %>"</p>
-<% end %>
-<p>Click <%= link_to 'here', @respond_link %> to send money to <%= @sender_name %>. </p>
+  <table border="0" cellpadding="24" cellspacing="0" width="480" id="templateBody" style="padding:0 16px 10px">
+    <tr>
+      <td valign="top" style="background-color: #FFFFFF;"> <font style="font-size:16px; color:#444; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; line-height:1.35;">
 
+        <p>Hey <%= @requestee_name %>,</p>
+
+        <p><%= @sender_name %> is requesting from you </p>
+
+        <table style="border: none; width: 100%; ">
+          <tbody><tr><td style="width: 45%; text-align: right; ">
+          <span style="font-size:24px; color: green;font-family: 'Courier New';font-weight: bold; min-height: 20px; margin-bottom; 20px; padding: 9px;
+          border-radius: 3px; background-color: WhiteSmoke; border: 1px solid #e3e3e3; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);"><%= @amount %></span>
+          </td><td style="width: 10%; text-align: center; ">
+          <span style="font-size:24px;">=</span>
+          </td><td style="width: 45%; text-align: left; ">
+
+          <span style="font-size:24px; color: green;font-family: 'Courier New';font-weight: bold; min-height: 20px; margin-bottom; 20px; padding: 9px;
+          border-radius: 3px; background-color: WhiteSmoke; border: 1px solid #e3e3e3; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);"><%= @dollar_amount %></span>
+          </td></tr></tbody>
+        </table>
+
+        <% if @has_messge %>
+          <p>Here is the message <%= @sender_name %> left: </p>
+          <p style="padding: 0 50px; "><%= @message %></p>
+        <% end %>
+
+        <p>You can respond to the request here: </p>
+
+        <p style="text-align:center;">
+          <a href="<%= @respond_link %>" style="color: white;
+          background-color: #428bca;
+          border-color: #357ebd; display: inline-block;
+          margin-bottom: 0;
+          font-weight: normal;
+          text-align: center;
+          vertical-align: middle;
+          cursor: pointer;
+          background-image: none;
+          border: 1px solid transparent;
+          white-space: nowrap;
+          padding: 6px 12px;
+          font-size: 14px;
+          line-height: 1.428571429;
+          border-radius: 4px;
+          -webkit-user-select: none; text-decoration: none; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Respond to the Request</a>
+        </p>
+        <p>Best,<br>The BitStation Team</p>
+      </font>
+
+    </td>
+  </tr>
+</table>
