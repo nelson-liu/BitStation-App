@@ -194,7 +194,7 @@ class TransactionsController < ApplicationController
     if @transaction['hsh'].nil?
       @footer = "This transaction occurred within the Coinbase network and off the blockchain with zero fees."
     else
-      @footer = '<a target=“\_blank” href="https://coinbase.com/network/transactions/' + @transaction['hsh'] + '">View this transaction on the blockchain</a>'
+      @footer = '<a target=“_blank” href="https://coinbase.com/network/transactions/' + @transaction['hsh'] + '">View this transaction on the blockchain</a>'
     end
 
     if @transaction[:sender].nil?
