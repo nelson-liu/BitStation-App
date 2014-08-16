@@ -5,6 +5,10 @@ ready = ->
   $(".alert-success").delay(2000).fadeOut 2000
   $(".expandable h5:not(:has(i))").append('<i class="fa fa-arrows-alt"></i>')
 
+  $.urlParam = (name) ->
+      results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href)
+      results[1] || 0
+
   #dropdown menu for sending
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
     action = $(this).closest('form').find('input[name=action]').val()
@@ -99,12 +103,6 @@ ready = ->
   $("#mask2").click ->
     window.dismiss_popup()
 
-  for i in [1..3]
-    $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
-      path = $(this).attr('data-load')
-      # passes the query string to sub-modules for fields pre-filling
-      $(this).load(path + '?' + window.location.search.substring(1))
-
   # FIXME I do NOT want to pollute global namespace...
   window.setup_recipient_autocomplete = (formID) ->
     suggestion_engine = new Bloodhound({
@@ -165,20 +163,23 @@ ready = ->
   window.bind_popup_card = ->
     $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
       path = $(this).closest(".popuppable").attr('data-load')
-      $("#popup-card-wrapper>div").load path, ->
-        if $(this).height() + 80 > $(window).height()
-          $(this).parent().css "bottom", "40px"
-        return
-      $("#popup-card-wrapper h5").html("Detailed View")
-      $("body").toggleClass("bodylock2")
-      $("#popup-card-wrapper").show()
-      $("#mask2").show().fadeTo(300, 0.5)
+      window.load_popup(path)
       return false
 
   window.trigger_popup_alert = (message, type) ->
     window.dismiss_popup()
     $("#popup-card-wrapper h5").html(type)
     $("#popup-card-wrapper>div").html("<div>" + message + "</div>")
+    $("#popup-card-wrapper").show()
+    $("#mask2").show().fadeTo(300, 0.5)
+
+  window.load_popup = (path) ->
+    $("#popup-card-wrapper>div").load path, ->
+      if $(this).height() + 80 > $(window).height()
+        $(this).parent().css "bottom", "40px"
+      return
+    $("#popup-card-wrapper h5").html("Detailed View")
+    $("body").toggleClass("bodylock2")
     $("#popup-card-wrapper").show()
     $("#mask2").show().fadeTo(300, 0.5)
 
@@ -215,6 +216,16 @@ ready = ->
       if Math.abs(parseInt($("#address-book-table").css("margin-top"), 10) - 350) < $("#address-book-table").height() && !$("#address-book-table").is(":animated")
         $("#address-book-table").animate({marginTop: "-=350"}, 150))
     window.recalculate_truncate_width("#address-book-table")
+
+  # Load init popup
+  if $.urlParam('popup')
+    window.load_popup($.urlParam('popup'))
+
+  for i in [1..3]
+    $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
+      path = $(this).attr('data-load')
+      # passes the query string to sub-modules for fields pre-filling
+      $(this).load(path + '?' + window.location.search.substring(1))
 
   # Recalculate text overflow width on browser resize
   $(window).resize( -> window.recalculate_truncate_width("#transaction-history-table"))

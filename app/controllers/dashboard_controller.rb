@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
   def dashboard
     store_location
     @subtitle = "Dashboard"
+    @popup = params[:popup]
   end
 
   def transfer
