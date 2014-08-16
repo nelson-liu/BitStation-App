@@ -233,7 +233,7 @@ ready = ->
   if $.getUrlVar('popup')
     window.load_popup($.getUrlVar('popup'))
 
-  for i in [1..1]
+  for i in [1..3]
     $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
       path = $(this).attr('data-load')
       # passes the query string to sub-modules for fields pre-filling
