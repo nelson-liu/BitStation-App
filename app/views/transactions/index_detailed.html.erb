@@ -1,5 +1,13 @@
+
 <table id="transaction-history-table-detailed" class="table table-striped table-responsive table-hover table-condensed">
   <tbody>
+    <tr>
+      <td><input class="form-control" id="filter-date" placeholder="Date" type="text"></td>
+      <td><input class="form-control" id="filter-date" placeholder="Amount" type="text"></td>
+      <td></td>
+      <td><input class="form-control" id="filter-date" placeholder="Filter by Contact Name" type="text"></td>
+      <td></td>
+    </tr>
     <% @display.each_with_index do |e, i| %>
       <tr class="popuppable" data-load="<%= e[:load] %>" >
         <td class="fit-to-contents first-column">
