@@ -20,6 +20,21 @@ ready = ->
       vars
     getUrlVar: (name) ->
       $.getUrlVars()[name]
+  
+  $.fn.filterTable = (filter) ->
+      if filter
+        $(this).find("tr:not(:Contains(" + filter + "))").find('td>div').slideUp()
+        $(this).find("tr:Contains(" + filter + ")").find('td>div').slideDown()
+      else
+        $(this).find("td>div").slideDown()
+      $(this).css("margin-top", "0")
+      false
+
+  $.fn.reload_module = ->
+    $(this).html('<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')
+    path = $(this).attr('data-load')
+    # passes the query string to sub-modules for fields pre-filling
+    $(this).load(path + '?' + window.location.search.substring(1))
 
   # Open detailed view on expandable module click
   $(".module.expandable h5").click ->
@@ -86,12 +101,6 @@ ready = ->
       path = $(this).attr('data-load')
       # passes the query string to sub-modules for fields pre-filling
       $(this).load(path + '?' + window.location.search.substring(1))
-
-  $.fn.reload_module = ->
-    $(this).html('<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')
-    path = $(this).attr('data-load')
-    # passes the query string to sub-modules for fields pre-filling
-    $(this).load(path + '?' + window.location.search.substring(1))
 
   # Setup AJAX Pagination Links
   window.setup_paging_links = (table_name) ->
