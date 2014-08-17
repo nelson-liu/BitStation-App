@@ -189,6 +189,22 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 		}
+	  .amount.label {
+	    width: 100%;
+	    display: inline-block;
+	  }
+	  .fit-to-contents {
+	    width: 1%;
+	  }
+	}
+
+	#address-book-table, .account-activity-history-table {
+		.first-column {
+			padding-left: 10px;
+		}
+		.last-column {
+			padding-right: 10px;
+		}
 	}
 	
 	#transaction-history-table-detailed, #address-book-table {
@@ -202,15 +218,6 @@
 			padding: 9px 5px;
 			height: 35px;
 			border-top: 1px solid #dddddd;
-		}
-		.fit-to-contents {
-			width: 1%;
-		}
-		.first-column {
-			padding-left: 10px;
-		}
-		.last-column {
-			padding-right: 10px;
 		}
 	}
 

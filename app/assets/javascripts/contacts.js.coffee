@@ -11,7 +11,7 @@ ready = ->
     )
     $("#address-book-table td:not('.first-column')").wrapInner("<div></div>")
     $("#address-book-table .first-column").wrapInner("<div class='td-truncate'></div>")
-    $("#address-book-filter").change(-> $("#address-book-table").filterTable($("#address-book-filter").val())).keyup -> $(this).change()
+    $("#address-book-filter").change(-> $("#address-book-table").filterTable([[".address-book-contact", $("#address-book-filter").val()]])).keyup -> $(this).change()
     $("#address-book-pagination #previous").click( ->
       if parseInt($("#address-book-table").css("margin-top"), 10) < 0 && !$("#address-book-table").is(":animated")
         $("#address-book-table").animate({marginTop: "+=350"}, 150))

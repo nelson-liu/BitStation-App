@@ -67,6 +67,9 @@ gem 'recap'
 # Foreman
 gem 'foreman'
 
+# Bootstrap Datepicker
+gem 'bootstrap-datepicker-rails'
+
 # Testing gems
 gem 'rspec-rails'
 gem 'factory_girl_rails'
@@ -75,4 +78,3 @@ gem 'capybara'
 gem 'database_cleaner'
 gem 'launchy'
 gem 'selenium-webdriver'
-

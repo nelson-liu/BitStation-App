@@ -32,23 +32,20 @@
 }
 
 /***** TRANSACTION HISTORY STYLES *****/
-#transaction-history-table-detailed, .account-activity-history-table {
+.account-activity-history-table {
   text-align: center;
   i.fa {
     font-size: 20px;
     line-height: 50%;
   }
-  .amount.label {
-    width: 100%;
-    display: inline-block;
+}
+
+#transaction-history-table-detailed {
+  text-align: center;
+  #filter-date {
+    min-width: 75px;
   }
-  .fit-to-contents {
-    width: 1%;
-  }
-  .first-column {
-    padding-left: 10px;
-  }
-  .last-column {
-    padding-right: 10px;
+  #filter-amount {
+    min-width: 100px;
   }
 }

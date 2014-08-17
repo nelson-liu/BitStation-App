@@ -21,14 +21,19 @@ ready = ->
     getUrlVar: (name) ->
       $.getUrlVars()[name]
   
-  $.fn.filterTable = (filter) ->
-      if filter
-        $(this).find("tr:not(:Contains(" + filter + "))").find('td>div').slideUp()
-        $(this).find("tr:Contains(" + filter + ")").find('td>div').slideDown()
-      else
+  $.fn.filterTable = (filters) ->
+    $(this).find("tr:not(.filter-exclude)").each( ->
+      j = 1
+      i = 0
+      while i < filters.length
+        if filters[i][1]
+          j *= $(this).find(filters[i][0] + ":Contains(" + filters[i][1] + ")").length
+        i++
+      if j > 0
         $(this).find("td>div").slideDown()
-      $(this).css("margin-top", "0")
-      false
+      else
+        $(this).find("td>div").slideUp())
+    false
 
   $.fn.reload_module = ->
     $(this).html('<div><div class="dashboard-module-spinner-container"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')
