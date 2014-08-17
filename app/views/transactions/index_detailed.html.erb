@@ -6,6 +6,8 @@
       <th><input class="form-control" id="filter-amount" placeholder="Amount" type="text"></th>
       <th></th>
       <th><input class="form-control" id="filter-name" placeholder="Filter by Contact Name" type="text"></th>
+      <th><input class="form-control" id="filter-message" placeholder="Filter by Message" type="text"></th>
+      <th><input class="form-control" id="filter-note" placeholder="Filter by Note" type="text"></th>
       <th></th>
     </tr>
     <% @display.each_with_index do |e, i| %>
@@ -29,6 +31,18 @@
         <td class="ellipsis transaction-detailed-name"><div>
           <div class="td-truncate">
           <%= e[:target] %>
+          </div>
+        </div></td>
+
+        <td class="ellipsis transaction-detailed-message"><div>
+          <div class="td-truncate">
+            Sample Transaction Message
+          </div>
+        </div></td>
+
+        <td class="ellipsis transaction-detailed-note"><div>
+          <div class="td-truncate">
+            Sample Transaction Note
           </div>
         </div></td>
 
@@ -64,8 +78,8 @@
 <script>
   window.recalculate_truncate_width("#transaction-history-table-detailed");
   window.bind_popup_card();
-  $("#filter-name, #filter-date").change(function() {
-    $("#transaction-history-table-detailed").filterTable([[".transaction-detailed-date", $("#filter-date").val()], [".transaction-detailed-name", $("#filter-name").val()]]);
+  $("#filter-name, #filter-date, #filter-amount, #filter-message, #filter-note").change(function() {
+    $("#transaction-history-table-detailed").filterTable([[".transaction-detailed-date", $("#filter-date").val()], [".transaction-detailed-amount", $("#filter-amount").val()], [".transaction-detailed-name", $("#filter-name").val()], [".transaction-detailed-message", $("#filter-message").val()], [".transaction-detailed-note", $("#filter-note").val()]]);
   }).keyup(function() {
     return $(this).change();
   });
