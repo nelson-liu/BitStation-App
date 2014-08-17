@@ -5,7 +5,7 @@
     <% @contacts.each do |c| %>
       <tr class="popuppable" data-load="<%= contact_path(c) %>">
         <td class="address-book-contact first-column"><%= c.name %></td>
-        <td class="fit-to-contents address-book-contact-email">
+        <td class="fit-to-contents address-book-contact">
           <span class="label label-default pull-right">
             <%= c.external? ? 'external' : c.address %>
           </span>

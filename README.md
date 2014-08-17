@@ -25,8 +25,8 @@ The Kerberos-integrated social wallet
 - [ ] implement contact entry popup with past transactions and receiving addresses
 
 #### Detailed transaction history view
-- [ ] Display detailed table
-- [ ] Transaction filtering in detailed view
+- [x] Display detailed table
+- [x] Transaction filtering in detailed view
 - [ ] Add messages and annotation to transaction db entries
 - [ ] Add messages and annotation in transaction popup
 - [ ] Add transaction labels for user organization
