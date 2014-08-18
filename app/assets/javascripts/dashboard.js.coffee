@@ -136,36 +136,27 @@ ready = ->
     $(this).addClass('btn-primary')
     $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
 
-    from = if $(this).text() == 'Buy' then 'USD' else 'BTC'
-    to = if $(this).text() == 'Buy' then 'BTC' else 'USD'
-
-    if from == 'USD'
+    if $(this).text() == 'Buy'
       do $('#sellprice').hide
       do $('#buyprice').show
       do $('#sellpricehr').hide
       do $('#buypricehr').show
-    if from == 'BTC'
+    if $(this).text() == 'Sell'
       do $('#sellprice').show
       do $('#buyprice').hide
       do $('#sellpricehr').show
       do $('#buypricehr').hide
-    $(this).closest('form').find('input[name=amount]').attr('placeholder', from + ' amount')
-    $(this).closest('form').find('input[name=preview_amount]').attr('placeholder', to + ' amount')
-    $(this).closest('form').find('.input-group-addon').html(from + ' <i class="fa fa-long-arrow-right"></i> ' + to)
-
-    t = $(this).closest('form').find('input[name=amount]').val()
-    $(this).closest('form').find('input[name=amount]').val($(this).closest('form').find('input[name=preview_amount]').val())
-    $(this).closest('form').find('input[name=preview_amount]').val(t)
+    $("#buy_sell_form input[name=amount], #buy_sell_form input[name=preview_amount]").val("")
 
   # calculate estimated exchange price
   $(document.body).on 'keyup', '#buy_sell_form input[name=amount], #buy_sell_form input[name=preview_amount]', (event) ->
     other = $(this).parent().find('input[name!=' + $(this).attr('name') + ']').first()
     from_to = (other.attr('name') == 'preview_amount')
     action = $(this).closest('form').find('input[name=action]').val()
-    rate = parseFloat($('#buy_sell_current_rate').text())
-    console.log action
-    conversion = if (from_to ^ (action == 'buy')) then rate else 1.0 / rate
+    if action == "buy" then rate = parseFloat($('#buy_current_rate').text()) else rate = parseFloat($('#sell_current_rate').text())
+    conversion = if (from_to) then rate else 1.0 / rate
     other.val($(this).val() * conversion)
+    $.get("/dashboard/get_price", {type: action, amount: $("#buy_sell_form input[name=amount]").val()}).done( (data) -> alert("success" + data))
 
 $(document).ready(ready)
 $(document).on('page:load', ready)

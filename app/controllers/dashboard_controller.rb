@@ -35,6 +35,10 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
+  def get_price
+    render json: [1, 2, 3, 4].to_json
+  end
+
   def bitstation_feed
     render layout: false
   end
