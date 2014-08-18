@@ -33,6 +33,7 @@
       <hr>
       <div class="panel-body">
         <%= link_to 'Resend', resend_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true %>
+        <%= link_to 'Cancel', cancel_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true, data: {confirm: 'Do you really want to cancel this money request? '} %>
       </div>
     <% end %>
 
@@ -49,6 +50,10 @@
 
       <% if @request.pending? %>
         <p>The requestee hasn't responded to the request yet. </p>
+      <% end %>
+
+      <% if @request.cancelled? %>
+        <p>The request has been cancelled by the sender on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
       <% end %>
     </div>
   <% else %>

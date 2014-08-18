@@ -84,6 +84,7 @@ class MoneyRequestsController < ApplicationController
 
     begin
       (error = 'Invalid request to pay. ' and raise) if request.nil?
+      (error = 'Request already cancelled. ' and raise) if request.cancelled?
       (error = 'Request already paid or denied. ' and raise) unless request.pending?
       (error = 'Insufficient balance. ' and raise) if request.amount > current_coinbase_client.balance.to_d
     rescue
@@ -104,12 +105,43 @@ class MoneyRequestsController < ApplicationController
 
     begin
       (error = 'Invalid request to pay. ' and raise) if request.nil?
+      (error = 'Request already cancelled. ' and raise) if request.cancelled?
       (error = 'Request already paid or denied. ' and raise) unless request.pending?
     rescue
     end
 
     success = "You have successfully denied #{request.sender.name}'s money request. " unless error
     request.denied! unless error
+
+    @error = error
+    @success = success
+
+    respond_to do |format|
+      format.js {}
+
+      format.html do
+        if error
+          redirect_to dashboard_url, flash: {error: error}
+        else
+          redirect_to dashboard_url, flash: {success: success}
+        end
+      end
+    end
+  end
+
+  def cancel
+    request = (MoneyRequest.find(params[:id].to_i) rescue nil)
+
+    error = nil
+
+    begin
+      (error = 'Invalid request to cancel. ' and raise) if request.nil?
+      (error = 'Request already cancelled. ' and raise) if request.cancelled?
+    rescue
+    end
+
+    success = "You have successfully cancelled #{request.sender.name}'s money request. " unless error
+    request.cancelled! unless error
 
     @error = error
     @success = success

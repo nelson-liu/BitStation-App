@@ -4,7 +4,7 @@ class MoneyRequest < ActiveRecord::Base
 
   has_one :associated_transaction, class_name: 'Transaction'
 
-  enum status: [:pending, :paid, :denied]
+  enum status: [:pending, :paid, :denied, :cancelled]
 
   include ApplicationHelper
 
@@ -17,7 +17,9 @@ class MoneyRequest < ActiveRecord::Base
       money_direction: requestee == current_user ? :to : :from,
       pending: pending?,
       success: paid? ? 'paid' : nil,
-      failure: denied? ? 'denied' : nil,
+      failure: denied? || cancelled? ?
+        (denied? ? 'denied' : 'cancelled') :
+        nil,
       target: (sender == current_user ? requestee : sender).name,
       target_type: :bitstation,
       load: Rails.application.routes.url_helpers.money_request_path(self)

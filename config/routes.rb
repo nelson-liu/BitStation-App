@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       post 'pay'
       post 'deny'
       post 'resend'
+      post 'cancel'
     end
   end
 
