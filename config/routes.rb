@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     member do
       post 'pay'
       post 'deny'
+      post 'resend'
     end
   end
 

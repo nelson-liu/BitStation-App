@@ -29,6 +29,13 @@
       </div>
     <% end %>
 
+    <% if @from == 'You' && @request.pending? %>
+      <hr>
+      <div class="panel-body">
+        <%= link_to 'Resend', resend_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true %>
+      </div>
+    <% end %>
+
     <hr>
 
     <div class="panel-body">

@@ -136,7 +136,8 @@ class TransactionsController < ApplicationController
           sender: current_user,
           requestee: requestee,
           amount: amount,
-          message: message,
+          dollar_amount: dollar_amount,
+          message: message
         })
 
         mr.pending!

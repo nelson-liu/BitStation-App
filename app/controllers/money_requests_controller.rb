@@ -85,4 +85,44 @@ class MoneyRequestsController < ApplicationController
       end
     end
   end
+
+  def resend
+    request = (MoneyRequest.find(params[:id].to_i) rescue nil)
+
+    begin
+      (@error = 'No such request. ' and raise) if request.nil?
+      (@error = 'Request already responded to. ' and raise) unless request.pending?
+
+      begin
+        TransactionMailer.request_money(
+          request.sender,
+          request.requestee,
+          request.amount,
+          request.dollar_amount,
+          request.message,
+          dashboard_url({
+            popup: money_request_path(request)
+          }),
+          true
+        ).deliver
+
+        @success = "You have successfully resent the request to #{request.requestee.name}. "
+      rescue
+        @error = 'Resending request email failed. '
+      end
+    rescue
+    end
+
+    respond_to do |format|
+      format.js {}
+
+      format.html do
+        if @error
+          redirect_to dashboard_url, flash: {error: @error}
+        else
+          redirect_to dashboard_url, flash: {success: @success}
+        end
+      end
+    end
+  end
 end

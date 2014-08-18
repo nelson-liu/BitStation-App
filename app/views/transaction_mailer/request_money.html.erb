@@ -4,6 +4,10 @@
 
         <p>Hey <%= @requestee_name %>,</p>
 
+        <% if @is_resend %>
+          <p>We notice that you haven't responded to the following request yet, so we figured we might send a friendly reminder. :) </p>
+        <% end %>
+
         <p><%= @sender_name %> is requesting from you </p>
 
         <table style="border: none; width: 100%; ">
