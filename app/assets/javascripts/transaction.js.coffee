@@ -35,6 +35,11 @@ ready = ->
 
     false
 
+  $(document.body).on "click", "#clearfilter", (event) ->
+    $('#filter-date').val('')
+    $('#filter-date').keyup()
+    false
+
   # FIXME I do NOT want to pollute global namespace...
   window.setup_recipient_autocomplete = (formID) ->
     suggestion_engine = new Bloodhound({
