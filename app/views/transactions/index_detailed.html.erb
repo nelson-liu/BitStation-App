@@ -2,9 +2,14 @@
 <table id="transaction-history-table-detailed" class="table table-striped table-responsive table-hover table-condensed">
   <tbody>
     <tr>
-      <th><input class="form-control" id="filter-date" placeholder="Date" type="text"></th>
-      <th><button type="button" id="clearfilter" class="btn btn-default">Clear Date</button></th>
+      <th>
+      <div style="position:relative;width:50px; padding-right:70px">
+      <input class="form-control" id="filter-date" placeholder="Date" type="text" style="width:50px;">
+      <i class="fa fa-times-circle" id="clearfilter" style="position:absolute; right:-2px;top:2px;"></i>
+      </div>
+      </th>
       <th><input class="form-control" id="filter-amount" placeholder="Amount" type="text"></th>
+      <th></th>
       <th><input class="form-control" id="filter-name" placeholder="Filter by Contact Name" type="text"></th>
       <th><input class="form-control" id="filter-message" placeholder="Filter by Message" type="text"></th>
       <th><input class="form-control" id="filter-note" placeholder="Filter by Note" type="text"></th>
