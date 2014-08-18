@@ -1,11 +1,72 @@
 class MoneyRequestsController < ApplicationController
   before_filter :ensure_signed_in, only: [:show, :pay, :deny]
-  before_filter :ensure_signed_in_without_redirect, only: [:index]
-  before_filter :ensure_coinbase_account_linked, only: [:pay]
+  before_filter :ensure_signed_in_without_redirect, only: [:index, :create]
+  before_filter :ensure_coinbase_account_linked, only: [:pay, :create]
 
   include ApplicationHelper
 
   MONEY_REQUEST_HISTORY_ENTRIES_PER_PAGE = 11
+
+  CURRENCIES = ["USD", "BTC"]
+
+  MINIMUM_TRANSACTION_AMOUNT = {
+    "BTC" => 0.001,
+    "USD" => 0.5
+  }
+
+  def create
+    requestee = User.find_by(kerberos: params[:kerberos])
+    amount = params[:amount].to_f rescue nil
+    currency = params[:currency]
+    message = params[:message]
+
+    error = nil
+    success = nil
+
+    begin
+      (error = 'Invalid currency. ' and raise) unless CURRENCIES.include?(currency)
+      (error = 'The designated requestee hasn\'t joined BitStation yet. ' and raise) if requestee.nil?
+      (error = 'The designated requestee hasn\'t linked a Coinbase account yet. ' and raise) if requestee.coinbase_account.nil?
+      (error = 'Why requesting money from yourself...? ' and raise) if requestee == current_user
+      (error = "Invalid request amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise) if (amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency])
+    rescue
+    end
+
+    unless error
+      exchange_rate = current_coinbase_client.spot_price(currency).to_d
+      amount /= exchange_rate unless currency == 'BTC'
+      dollar_amount = amount * exchange_rate
+
+      # FIXME more specific rescue here
+      begin
+        mr = MoneyRequest.create!({
+          sender: current_user,
+          requestee: requestee,
+          amount: amount,
+          dollar_amount: dollar_amount,
+          message: message
+        })
+
+        mr.pending!
+
+        TransactionMailer.request_money(current_user, requestee, amount, dollar_amount, message, dashboard_url({
+          popup: money_request_path(mr)
+        })).deliver
+
+        success = "You successfully sent the money request to #{requestee.name} at #{requestee.coinbase_account.email}. "
+      rescue
+        error = 'Failed to send the request. '
+      end
+    end
+
+    @error = error
+    @success = success
+
+    respond_to do |format|
+      format.js {}
+      format.html { redirect_to dashboard_url, flash: {success: success, error: error}.delete_if { |k, v| v.nil? } }
+    end
+  end
 
   def show
     @request = (MoneyRequest.find(params[:id].to_i) rescue nil)

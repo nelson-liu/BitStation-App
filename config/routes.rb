@@ -14,8 +14,6 @@ Rails.application.routes.draw do
   get 'sessions/fail'
   get 'sessions/oauth', as: :oauth
 
-  post 'transactions/request_money', as: :request_money
-
   match '/dashboard', to: 'dashboard#dashboard', via: :get, as: :dashboard
   get 'dashboard/account_summary'
   get 'dashboard/transfer'
@@ -40,7 +38,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [:create, :index, :show] do
   end
 
-  resources :money_requests, path: 'requests', only: [:show, :index] do
+  resources :money_requests, path: 'requests', only: [:show, :index, :create] do
     member do
       post 'pay'
       post 'deny'

@@ -1,5 +1,5 @@
 <div>
-  <%= form_tag transactions_path, id: 'transfer_form', 'data-send-path' => transactions_path, 'data-request-path' => request_money_path %>
+  <%= form_tag transactions_path, id: 'transfer_form', 'data-send-path' => transactions_path, 'data-request-path' => money_requests_path %>
     <%= hidden_field_tag 'fee_amount', (@send_money[:fee_amount] rescue 0) %>
     <div class="form-group">
       <%= label_tag 'action' %>
