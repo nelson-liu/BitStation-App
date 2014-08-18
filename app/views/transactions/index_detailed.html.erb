@@ -3,11 +3,14 @@
   <tbody>
     <tr>
       <th>
-      <div style="position:relative;width:50px; padding-right:70px">
-      <input class="form-control" id="filter-date" placeholder="Date" type="text" style="width:50px;">
-      <i class="fa fa-times-circle" id="clearfilter" style="position:absolute; right:-2px;top:2px;"></i>
-      </div>
+        <div id="cleardate"style="">
+          <input class="form-control" id="filter-date" placeholder="Date" type="text">
+            <span class="fa-stack fa-lg" id="clearfilterspan">
+              <i class="fa fa-times-circle" id="clearfilter"></i>
+            </span>
+       </div>
       </th>
+           
       <th><input class="form-control" id="filter-amount" placeholder="Amount" type="text"></th>
       <th></th>
       <th><input class="form-control" id="filter-name" placeholder="Filter by Contact Name" type="text"></th>

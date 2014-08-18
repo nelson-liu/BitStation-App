@@ -19,6 +19,42 @@
   }
 }
 
+#clearfilter{
+  position:absolute; 
+  right: 6px;
+  top: 4px;
+  font-size: 19px;
+}
+
+#clearfilterspan{
+  position:absolute; 
+  right: 6px;
+  top: 4px;
+  font-size: 19px;
+}
+
+.fa-lg > i {
+  color: #888;
+}
+
+.fa-lg:hover {
+  color: #000000
+}
+
+.fa-lg:hover > i {
+  color: #000000; 
+}
+
+#cleardate{
+  position:relative;
+  width:90px;
+  padding-right:70px
+}
+
+#filter-date{
+  width:90px;
+}
+
 /***** TRANSACTION DETAILS POPUP STYLES *****/
 .transaction_details {
   padding: 5px 20px;
