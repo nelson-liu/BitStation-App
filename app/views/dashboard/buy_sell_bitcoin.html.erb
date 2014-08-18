@@ -1,13 +1,20 @@
+<%= form_tag '#', id: 'buy_sell_form' %>
 <div class="panel-body">
-  <%= form_tag '#', id: 'buy_sell_form' %>
   <div class="form-group">
-    <%= label_tag 'action' %>
     <div class="btn-group btn-group-justified" id="buy_sell_action_btn_group">
       <a class="btn btn-default btn-primary">Buy</a>
       <a class="btn btn-default">Sell</a>
     </div>
     <%= hidden_field_tag 'action', 'buy' %>
   </div>
+
+<div id="sellprice" style="display: none;">
+  <label>Sell Price:</label><p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_sell_price.round(2) %></span> USD</span></p>
+</div>
+
+<div id="buyprice">
+  <label>Buy Price:</label><p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_buy_price.round(2) %></span> USD</span></p>
+</div>
 
   <div class="form-group">
     <%= label_tag 'amount' %>
@@ -17,25 +24,29 @@
       <%= text_field_tag 'preview_amount', '', placeholder: 'BTC amount', class: 'form-control' %>
     </div><!-- /input-group -->
   </div>
-</div>
 
-<hr>
-<div class="panel-body" id="sellprice" style="display: none;">
-  <p><label>Current BitCoin Sell Price</label></p>
-  <p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_sell_price.round(2) %></span> USD</span></p>
-</div>
-<hr id="sellpricehr" style="display: none;">
+  <table class="table buy-sell-table">
+    <tbody>
+      <tr>
+        <td>Subtotal</td>
+        <td class="table-amount">$100.00</td>
+      </tr>
+      <tr>
+        <td>Coinbase Fees</td>
+        <td class="table-amount">$1.63</td>
+      </tr>
+      <tr>
+        <td>Bank Fees</td>
+        <td class="table-amount">$0.14</td>
+      </tr>
+      <tr class="table-total">
+        <td>Total</td>
+        <td class="table-amount">$101.77</td>
+      </tr>
+    </tbody>
+  </table>
 
-<div class="panel-body" id="buyprice">
-  <p><label>Current BitCoin Buy Price</label></p>
-  <p><span class="well well-sm"> 1 BTC = <span id='buy_sell_current_rate'><%= @current_buy_price.round(2) %></span> USD</span></p>
-</div>
-<hr id="buypricehr">
-
-<div class="panel-body">
   <%= submit_tag 'Buy', class: 'btn btn-primary' %>
 </div>
 
 </form>
-
-</div>

@@ -18,8 +18,8 @@ The Kerberos-integrated social wallet
 - [ ] Implement buy/sell bitcoin back-end
 
 #### Contacts
-- [ ] Create contacts db table
-- [ ] Initialize new user with past coinbase contacts
+- [x] Create contacts db table
+- [x] Initialize new user with past coinbase contacts
 - [ ] Record new contacts from transactions
 - [ ] implement add new contact form
 - [ ] implement contact entry popup with past transactions and receiving addresses
