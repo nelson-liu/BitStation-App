@@ -84,33 +84,7 @@ class TransactionsController < ApplicationController
     @display = cb_transactions.map do |t|
       # TODO ignore request transactions for now
       next if t['request']
-
-      r = {
-        time: DateTime.parse(t['created_at']),
-        display_time: DateTime.parse(t['created_at']).strftime('%b %d'),
-        amount: friendly_amount_from_money(t['amount']),
-        direction: (t['sender']['id'] == coinbase_id) ? :to : :from,
-        pending: t['status'] == 'pending',
-        load: transaction_path(id: t['id'])
-      }
-
-      if t['transfer_type']
-        r[:transfer_type] = t['transfer_type']
-      else
-        if r[:direction] == :to
-          r[:target] = t['recipient'] ? (CoinbaseAccount.find_by_email(t['recipient']['email']).user.name rescue t['recipient']['name']) : 'External Account'
-          r[:target_type] = t['recipient'] ?
-            (CoinbaseAccount.find_by_email(t['recipient']['email']) ? :bitstation : :coinbase) :
-            :external
-        else
-          r[:target] = t['sender'] ? (CoinbaseAccount.find_by_email(t['sender']['email']).user.name rescue t['sender']['name']) : 'External Account'
-          r[:target_type] = t['sender'] ?
-            (CoinbaseAccount.find_by_email(t['sender']['email']) ? :bitstation : :coinbase) :
-            :external
-        end
-      end
-
-      r
+      Transaction.display_data_from_cb_transaction(t, coinbase_id)
     end
 
     @next_page = (current_page < num_pages) ? transactions_path(page: current_page + 1) : nil

@@ -23,6 +23,12 @@
   </div>
 
   <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+
+  <div class="panel-table-header">
+    <h5>Recent transactions</h5>
+  </div>
+
+  <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
 <% end %>
 
 <div>
@@ -31,4 +37,5 @@
 
 <script>
   window.recalculate_truncate_width('#contact-details-money-requests-history-table');
+  window.recalculate_truncate_width('#contact-details-transactions-history-table');
 </script>
