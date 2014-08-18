@@ -23,6 +23,10 @@
   </div>
 
   <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+<% end %>
+
+<% unless @contact.external? %>
+  <hr>
 
   <div class="panel-table-header">
     <h5>Recent transactions</h5>
@@ -30,6 +34,8 @@
 
   <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
 <% end %>
+
+<hr>
 
 <div>
   <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>

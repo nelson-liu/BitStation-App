@@ -19,6 +19,27 @@ class Contact < ActiveRecord::Base
     (!external?) && to_user.nil?
   end
 
+  def source
+    if external?
+      :external
+    elsif bitstation?
+      :bitstation
+    else
+      :coinbase
+    end
+  end
+
+  def email
+    case source
+    when :external
+      nil
+    when :bitstation
+      to_user.coinbase_account.email
+    when :coinbase
+      address
+    end
+  end
+
   private
     def is_valid_email?(e)
       begin

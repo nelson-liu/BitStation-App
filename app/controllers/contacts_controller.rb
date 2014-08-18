@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
 
   SHOW_CONTACT_RECENT_REQUEST_LIMIT = 10
   SHOW_CONTACT_RECENT_TRANSACTIONS_FETCH_LIMIT = 500
-  SHOW_CONTACT_RECENT_TRANSACTIONS_DISPLAY_LIMIT = 15
+  SHOW_CONTACT_RECENT_TRANSACTIONS_DISPLAY_LIMIT = 10
 
   def index
     @contacts = current_user.contacts.order('name ASC')
@@ -70,14 +70,20 @@ class ContactsController < ApplicationController
 
     if @contact && @contact.bitstation?
       @requests = current_user.outgoing_money_requests.where(requestee_id: @contact.to_user.id).to_a + current_user.incoming_money_requests.where(sender_id: @contact.to_user.id).to_a
+      @requests.sort_by! { |r| r.created_at }.reverse!
       @requests = @requests.map { |r| r.to_display_data(current_user) }.first(SHOW_CONTACT_RECENT_REQUEST_LIMIT)
+    end
 
+    unless @contact.external?
       @transactions = current_coinbase_client.transactions(limit: SHOW_CONTACT_RECENT_TRANSACTIONS_FETCH_LIMIT)
       coinbase_id = @transactions['current_user']['id']
       @transactions = @transactions['transactions'].map { |x| x['transaction'] }
 
-
-      @transactions.select! { |t| ((t['sender']['email'] == @contact.to_user.coinbase_account.email) || (t['recipient']['email'] == @contact.to_user.coinbase_account.email)) rescue false }
+      @transactions.select! do |t|
+        puts @contact.email
+        ((t['sender']['email'] == @contact.email) rescue false) ||
+        ((t['recipient']['email'] == @contact.email) rescue false)
+      end
       @transactions = @transactions.first(SHOW_CONTACT_RECENT_TRANSACTIONS_DISPLAY_LIMIT)
 
       @transactions.map! { |t| Transaction.display_data_from_cb_transaction(t, coinbase_id) }
