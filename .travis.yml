@@ -1,0 +1,7 @@
+deploy:
+  provider: heroku
+  api_key:
+    secure: Jgh898in5MxyTNVDXxlicWWpLmKrDXFqvu3vqAxH02ZweR/vLddoCvNLHJOI9qBGk/23FFLOn1MSkl57XPReMJBNJE76P21BMJEDqfCDHxFGBIy92MZLlo75Iur04e9mpnhBqdduDP0qsBhF7XMUJGB7HojzmqnH0FMjqqC9M9g=
+  app: bitstation
+  on:
+    repo: isundaylee/BitStation-App
