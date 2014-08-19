@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   around_filter :rescue_oauth_exception
   around_filter :rescue_unhandled_exception if Rails.env.production?
 
-  COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
-  COINBASE_CLIENT_SECRET = '72bbe98c81e7b02765812e0c3c059d453cdf28bb45e6e6067dea9363ba618b74'
+  COINBASE_CLIENT_ID = '79f0065ed5a3965a821fb7b07c4f6b76b7b01ee2107ea5dcbae6196b7514fefc'
+  COINBASE_CLIENT_SECRET = '7145e2bf5218970928fbaca9cbfb045ae024579559c4f899a774ddbdaa6e70e6'
   COINBASE_CALLBACK_URI = 'http://localhost:3000/sessions/oauth'
 
   # FIXME must be a better way
