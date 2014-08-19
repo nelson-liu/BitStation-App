@@ -19,10 +19,10 @@ class TransactionsController < ApplicationController
 
   def create
     recipient = params[:kerberos]
-    amount = params[:amount].to_f
+    amount = params[:amount_btc].to_f
     fee_amount = params[:fee_amount].to_f rescue 0
-    currency = params[:currency]
     message = params[:message] || ''
+    currency = 'BTC'
     pt = nil
 
     @error = nil

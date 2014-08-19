@@ -1,5 +1,6 @@
 <div>
   <%= form_tag transactions_path, id: 'transfer_form', 'data-send-path' => transactions_path, 'data-request-path' => money_requests_path %>
+    <%= hidden_field_tag 'exchange_rate', @exchange_rate %>
     <%= hidden_field_tag 'fee_amount', (@send_money[:fee_amount] rescue 0) %>
     <div class="form-group">
       <%= label_tag 'action' %>
@@ -13,17 +14,11 @@
     <div class="form-group">
       <%= label_tag 'amount' %>
       <div class="input-group">
-        <%= text_field_tag 'amount', (@send_money[:amount] rescue nil), placeholder: "The amount of #{@default_currency} to send", class: 'form-control' %>
-        <div class="btn-group input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-            <span data-bind="label" id="sendlabel"><%= @default_currency %></span> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" id="currency_dropdown" role="menu">
-            <li><a href="#">USD</a></li>
-            <li><a href="#">BTC</a></li>
-          </ul>
-          <%= hidden_field_tag 'currency', @default_currency %>
-        </div><!-- /btn-group -->
+        <div class="input-group">
+          <%= text_field_tag 'amount_usd', '', placeholder: 'USD amount', class: 'form-control' %>
+          <span class="input-group-addon">USD = BTC</span>
+          <%= text_field_tag 'amount_btc', '', placeholder: 'BTC amount', class: 'form-control' %>
+        </div><!-- /input-group -->
       </div><!-- /input-group -->
     </div>
 

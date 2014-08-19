@@ -11,6 +11,7 @@ class DashboardController < ApplicationController
 
   def transfer
     @default_currency = 'USD'
+    @exchange_rate = current_coinbase_client.spot_price("USD").to_d
 
     render layout: false
   end

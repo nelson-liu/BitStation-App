@@ -16,8 +16,8 @@ class MoneyRequestsController < ApplicationController
 
   def create
     requestee = User.find_by(kerberos: params[:kerberos])
-    amount = params[:amount].to_f rescue nil
-    currency = params[:currency]
+    amount = params[:amount_btc].to_f rescue nil
+    currency = 'BTC'
     message = params[:message]
 
     error = nil

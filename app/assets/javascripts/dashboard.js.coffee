@@ -20,7 +20,7 @@ ready = ->
       vars
     getUrlVar: (name) ->
       $.getUrlVars()[name]
-  
+
   $.fn.filterTable = (filters) ->
     $(this).find("tr:not(.filter-exclude)").each( ->
       j = 1

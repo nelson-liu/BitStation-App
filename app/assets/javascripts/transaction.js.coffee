@@ -4,16 +4,13 @@
 
 ready = ->
 
-	#dropdown menu for sending
-  $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=action]', (event) ->
-    action = $(this).closest('form').find('input[name=action]').val()
-    currency = $(this).closest('form').find('input[name=currency]').val()
-    $(this).closest('form').find('input[name=amount]').attr('placeholder', "The amount of #{currency} to #{action}")
-
-  $(document.body).on "click", "#transfer_form #currency_dropdown li", (event) ->
-    $(this).closest(".input-group-btn").find("[id=\"sendlabel\"]").text($(this).text()).end().children(".dropdown-toggle").dropdown "toggle"
-    $(this).parents('form').find('input[name=currency]').val($(this).text()).trigger('change')
-    false
+  $(document.body).on 'keyup', '#transfer_form input[name=amount_usd], #transfer_form input[name=amount_btc]', (event) ->
+    exchange_rate = parseFloat($('#transfer_form input[name=exchange_rate]').val())
+    usd_to_btc = ($(this).attr('name') == 'amount_usd')
+    rate = (if usd_to_btc then (1.0 / exchange_rate) else exchange_rate)
+    other = $(this).parent().find('input[name!=' + $(this).attr('name') + ']').first()
+    console.log $('#transfer_form input[name=amount_usd], #transfer_form input[name=amount_btc]').remove($(this))
+    other.val(parseFloat($(this).val()) * rate)
 
   # Reset fee to 0 on currency, amount, or recipient change
   $(document.body).on 'change', '#transfer_form input[name=currency], #transfer_form input[name=amount], #transfer_form input[name=kerberos]', (evenet) ->
@@ -64,7 +61,7 @@ ready = ->
             result += '<p class="autocomplete-coinbase-link-status text-danger">No Coinbase account linked</p>'
       }
     })
-    
+
   window.setup_transfer_button = ->
     $('#transfer_form').bind('ajax:beforeSend', ->
       action = $(this).find('input[name=action]').val()
