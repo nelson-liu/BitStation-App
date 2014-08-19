@@ -20,3 +20,5 @@ vendor
 /.tags
 /.tags_sorted_by_file
 /.gemtags
+bfg.jar
+set_env_for_heroku.sh
