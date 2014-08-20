@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'transfers/create'
+
+  get 'transfers/index'
+
   get 'search_suggestions/user/:query', to: 'search_suggestions#user'
 
   get 'users/require_coinbase_account', as: :require_coinbase_account
