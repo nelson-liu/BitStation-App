@@ -84,5 +84,15 @@ ready = ->
     $(this).find('input[name=fee_amount]').val('')
     $(this).find('input[name=message]').val('')
 
+  $(document).on 'click', '#transfer_form #toggle_publicity_button', ->
+    new_text = if $(this).text().toLowerCase() == 'private' then 'Public' else 'Private'
+    active = (new_text == 'Public')
+    is_public = if new_text == 'Public' then 'true' else 'false'
+    $(this).text(new_text)
+    $(this).removeClass('btn-primary')
+    $(this).addClass('btn-primary') if active
+    $('#transfer_form input[name=is_public]').val(is_public)
+    return false
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

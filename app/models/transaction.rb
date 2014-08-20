@@ -5,6 +5,8 @@ class Transaction < ActiveRecord::Base
 
   enum status: [:pending, :completed, :failed]
 
+  scope :public_transactions, -> { where(is_public: true) }
+
   extend ApplicationHelper
 
   def self.display_data_from_cb_transaction(t, current_coinbase_id)

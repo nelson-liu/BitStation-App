@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818142021) do
+ActiveRecord::Schema.define(version: 20140820041307) do
 
   create_table "coinbase_accounts", force: true do |t|
     t.string   "email"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140818142021) do
     t.integer  "status"
     t.decimal  "fee_amount"
     t.integer  "money_request_id"
+    t.boolean  "is_public"
   end
 
   create_table "users", force: true do |t|

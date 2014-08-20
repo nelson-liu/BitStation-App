@@ -23,6 +23,7 @@ class TransactionsController < ApplicationController
     fee_amount = params[:fee_amount].to_f rescue 0
     message = params[:message] || ''
     currency = 'BTC'
+    is_public = params[:is_public].to_bool rescue false
     pt = nil
 
     @error = nil
@@ -44,8 +45,8 @@ class TransactionsController < ApplicationController
       (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d
 
       pt = is_kerberos ?
-        Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount}) :
-        Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount})
+        Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public}) :
+        Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public})
     rescue TransactionParameterError
     end
 

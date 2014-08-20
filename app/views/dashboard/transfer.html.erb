@@ -29,7 +29,14 @@
 
     <div class="form-group">
       <%= label_tag 'Message' %>
-      <%= text_field_tag 'message', '', placeholder: 'A kind word or two', class: 'form-control' %>
+      <div class="input-group">
+        <%= text_field_tag 'message', '', placeholder: 'A kind word or two', class: 'form-control' %>
+        <%= hidden_field_tag 'is_public', false %>
+        <div class="input-group-btn">
+          <button id="toggle_publicity_button" class="btn btn-default">Private</button>
+        </div>
+      </div>
+      <p class="field-explanation pull-right">Click here to make the transaction public <i class="fa fa-arrow-up"></i></p>
     </div>
 
     <%= submit_tag 'Send Money', class: 'btn btn-primary' %>

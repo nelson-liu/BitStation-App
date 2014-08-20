@@ -206,7 +206,7 @@
 			padding-right: 10px;
 		}
 	}
-	
+
 	#transaction-history-table-detailed, #address-book-table {
 		td {
 			height: auto;
@@ -279,4 +279,10 @@
 	}
 }
 
+/*********** Utility form classes *************/
 
+.field-explanation {
+  margin-top: 10px;
+  margin-right: 30px;
+  font-size: 12px;
+}
