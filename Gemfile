@@ -84,3 +84,6 @@ gem 'selenium-webdriver'
 # Heroku
 gem 'rails_12factor'
 gem 'pg'
+
+# Thin server
+gem 'thin'

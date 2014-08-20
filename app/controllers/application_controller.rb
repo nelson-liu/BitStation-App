@@ -10,9 +10,9 @@ class ApplicationController < ActionController::Base
   around_filter :rescue_oauth_exception
   around_filter :rescue_unhandled_exception if Rails.env.production?
 
-  COINBASE_CLIENT_ID = '79f0065ed5a3965a821fb7b07c4f6b76b7b01ee2107ea5dcbae6196b7514fefc'
-  COINBASE_CLIENT_SECRET = '7145e2bf5218970928fbaca9cbfb045ae024579559c4f899a774ddbdaa6e70e6'
-  COINBASE_CALLBACK_URI = 'http://localhost:3000/sessions/oauth'
+  COINBASE_CLIENT_ID = 'e4698a40d15948391bba01e0fd66a292140d9e65623709819267eac4d1f19022'
+  COINBASE_CLIENT_SECRET = '4ffe034c38914e1d0a71aa4153954e2a647e6f9b4a2023fd088db220c96cc548'
+  COINBASE_CALLBACK_URI = 'https://localhost:3000/sessions/oauth'
 
   # FIXME must be a better way
   include ActionView::Helpers::JavaScriptHelper
