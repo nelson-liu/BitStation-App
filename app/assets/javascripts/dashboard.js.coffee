@@ -156,7 +156,11 @@ ready = ->
     if action == "buy" then rate = parseFloat($('#buy_current_rate').text()) else rate = parseFloat($('#sell_current_rate').text())
     conversion = if (from_to) then rate else 1.0 / rate
     other.val($(this).val() * conversion)
-    $.get("/dashboard/get_price", {type: action, amount: $("#buy_sell_form input[name=amount]").val()}).done( (data) -> alert("success" + data))
+    $.get("/dashboard/get_price", {type: action, amount: $("#buy_sell_form input[name=amount]").val()}).done( (data) -> 
+      $("#table-amount-subtotal").html(data[0] + " USD")
+      $("#table-amount-coinbase").html(data[1] + " USD")
+      $("#table-amount-bank").html(data[2] + " USD")
+      $("#table-amount-total").html(data[3] + " USD"))
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
