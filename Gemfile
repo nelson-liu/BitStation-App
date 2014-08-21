@@ -87,3 +87,6 @@ gem 'pg'
 
 # Thin server
 gem 'thin'
+
+# Email validation
+gem 'valid_email'

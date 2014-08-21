@@ -15,33 +15,42 @@
   <% end %>
 </div>
 
-<% if @contact.bitstation? %>
+<% if @is_placeholder %>
+  <hr>
+  <div class="panel-body">
+    <p>The contact hasn't joined BitStation yet. </p>
+  </div>
+<% else %>
+  <% if @contact.bitstation? %>
+    <hr>
+
+    <div class="panel-table-header">
+      <h5>Recent money requests</h5>
+    </div>
+
+    <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+  <% end %>
+
+  <% unless @contact.external? %>
+    <% unless @contact.bitstation? %>
+      <hr>
+    <% end %>
+
+    <div class="panel-table-header">
+      <h5>Recent transactions</h5>
+    </div>
+
+    <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
+  <% end %>
+
   <hr>
 
-  <div class="panel-table-header">
-    <h5>Recent money requests</h5>
+  <div>
+    <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
   </div>
 
-  <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+  <script>
+    window.recalculate_truncate_width('#contact-details-money-requests-history-table');
+    window.recalculate_truncate_width('#contact-details-transactions-history-table');
+  </script>
 <% end %>
-
-<% unless @contact.external? %>
-  <hr>
-
-  <div class="panel-table-header">
-    <h5>Recent transactions</h5>
-  </div>
-
-  <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
-<% end %>
-
-<hr>
-
-<div>
-  <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
-</div>
-
-<script>
-  window.recalculate_truncate_width('#contact-details-money-requests-history-table');
-  window.recalculate_truncate_width('#contact-details-transactions-history-table');
-</script>

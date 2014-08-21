@@ -8,15 +8,36 @@ class Contact < ActiveRecord::Base
   end
 
   def external?
-    !is_valid_email?(address)
+    self.class.source_from_address(address) == :external
   end
 
   def bitstation?
-    (!external?) && !to_user.nil?
+    self.class.source_from_address(address) == :bitstation
   end
 
   def coinbase?
-    (!external?) && to_user.nil?
+    self.class.source_from_address(address) == :coinbase
+  end
+
+  def self.source_from_address(address)
+    return nil if address.nil?
+    address.strip!
+    return :bitstation if address.downcase =~ /@mit.edu/
+    return :bitstation if (!(address =~ /@/) && address.length <= 10 && !address.empty?)
+    return :coinbase if ValidateEmail.valid?(address)
+    return :external if Bitcoin::valid_address?(address)
+    return nil
+  end
+
+  def self.normalize_address(address)
+    return nil if source_from_address(address).nil?
+    address.strip!
+    address = address[0...-8] if source_from_address(address) == :bitstation && address =~ /@/
+    address
+  end
+
+  def address=(address)
+    super self.class.normalize_address(address)
   end
 
   def source
