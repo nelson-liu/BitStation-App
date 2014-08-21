@@ -12,18 +12,15 @@ class ContactsController < ApplicationController
   SHOW_CONTACT_RECENT_TRANSACTIONS_DISPLAY_LIMIT = 10
 
   def create
-    name = params[:name]
-    address = params[:address]
+    name = (params[:name].strip rescue nil)
+    address = (params[:address].strip rescue nil)
 
     @error = nil
     @success = nil
 
-    logger.error '#'*80
-    logger.error Bitcoin::valid_address?('').to_s
-    logger.error Contact.normalize_address(address)
-
     begin
       (@error = 'Invalid name or address. ' and raise) if (name.nil? || name.strip.empty? || Contact.normalize_address(address).nil?)
+      (@error = 'You have already added that contact. ' and raise) if current_user.contacts.where(address: address).any?
 
       c = current_user.contacts.build({name: name})
       c.address = address
@@ -31,8 +28,6 @@ class ContactsController < ApplicationController
 
       @success = "You have successfully added #{name} to your contacts. "
     rescue
-    # rescue => e
-    #   @error = e.message
     end
 
     respond_to do |format|
