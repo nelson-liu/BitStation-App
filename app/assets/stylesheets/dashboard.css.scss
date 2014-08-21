@@ -221,23 +221,6 @@
 		}
 	}
 
-	.buy-sell-table {
-		tbody>tr>td {
-			border: none;
-			padding: 5px;
-			height: auto;
-		}
-		.table-amount {
-			font-family: monospace;
-			text-align: right;
-		}
-
-		.table-total>td {
-			border-top: 1px solid #666;
-			font-weight: bold;
-		}
-	}
-
 	/***** BITSTATION FEED STYLES *****/
 	#bitstation_feed_module {
 		.media-object {

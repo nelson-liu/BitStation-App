@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   get 'dashboard/account_summary'
   get 'dashboard/transfer'
   get 'dashboard/buy_sell_bitcoin'
-  get 'dashboard/get_price'
+  get 'transfers/get_price'
   get 'dashboard/access_qrcode_details'
   get 'dashboard/bitstation_feed'
 
