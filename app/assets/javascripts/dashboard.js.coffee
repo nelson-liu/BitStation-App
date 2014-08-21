@@ -56,7 +56,10 @@ ready = ->
   window.bind_popup_card = ->
     $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
       path = $(this).closest(".popuppable").attr('data-load')
-      $("#popup-card-wrapper>div").load path
+      $("#popup-card-wrapper>div").load(path, -> 
+        if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
+          $("#popup-card-wrapper>div").parent().css "bottom", "40px"
+        )
       $("#popup-card-wrapper h5").html("Detailed View")
       window.show_popup_card()
       return false
@@ -70,8 +73,6 @@ ready = ->
 
   # Show popup card
   window.show_popup_card = ->
-    if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
-      $("#popup-card-wrapper>div").parent().css "bottom", "40px"
     $("body").toggleClass("bodylock2")
     $("#popup-card-wrapper").show()
     $("#mask2").show().fadeTo(300, 0.5)
