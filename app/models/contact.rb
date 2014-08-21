@@ -1,10 +1,17 @@
 class Contact < ActiveRecord::Base
   belongs_to :user
 
+  validates :address, uniqueness: {scope: :user_id}
+
   def to_user
-    external? ?
-      nil :
+    case self.class.source_from_address(address)
+    when :bitstation
+      User.find_by(kerberos: address)
+    when :coinbase
       CoinbaseAccount.user_with_email(address)
+    when :external
+      nil
+    end
   end
 
   def external?

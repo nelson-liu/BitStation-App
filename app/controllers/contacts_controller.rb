@@ -1,7 +1,7 @@
 class ContactsController < ApplicationController
   before_filter :ensure_signed_in_without_redirect, only: [:index, :create, :show, :create, :delete]
   before_filter :ensure_coinbase_account_linked, only: [:import]
-  before_filter :check_for_unlinked_coinbase_account, only: [:index, :show, :create]
+  before_filter :check_for_unlinked_coinbase_account, only: []
 
   include ActionView::Helpers::TextHelper
 
@@ -24,9 +24,12 @@ class ContactsController < ApplicationController
 
       c = current_user.contacts.build({name: name})
       c.address = address
-      c.save!
 
-      @success = "You have successfully added #{name} to your contacts. "
+      if c.save
+        @success = "You have successfully added #{name} to your contacts. "
+      else
+        @error = "Adding contact failed. "
+      end
     rescue
     end
 
@@ -43,6 +46,7 @@ class ContactsController < ApplicationController
 
   def import
     contacts = []
+    old_count = current_user.contacts.count
 
     1.upto(Float::INFINITY) do |p|
       cb_response = current_coinbase_client.transactions(p, limit: LOAD_CONTACTS_PAGE_LIMIT)
@@ -70,16 +74,13 @@ class ContactsController < ApplicationController
       break if transactions.count < LOAD_CONTACTS_PAGE_LIMIT
     end
 
-    count = 0
-
     contacts.uniq! { |c| c[:address] }
     contacts.each do |c|
       next if current_user.contacts.find_by(address: c[:address].to_s)
-      current_user.contacts.create!(c)
-      count += 1
+      current_user.contacts.create(c)
     end
 
-    redirect_to dashboard_url, flash: {success: "#{pluralize(count, 'contact')} have been imported from Coinbase transaction history. "}
+    redirect_to dashboard_url, flash: {success: "#{pluralize(current_user.contacts.count - old_count, 'contact')} have been imported from Coinbase transaction history. "}
   end
 
   def new
@@ -91,20 +92,22 @@ class ContactsController < ApplicationController
     # whether the contact is a mit Kerberos ID that hasn't joined BitStation yet
     @is_placeholder = (@contact.bitstation? && @contact.to_user.nil?)
 
+    @has_money_requests_section = (@contact && @contact.bitstation?)
+    @has_transactions_section = has_coinbase_account_linked? && !@contact.external?
+
     unless @is_placeholder
-      if @contact && @contact.bitstation?
+      if @has_money_requests_section
         @requests = current_user.outgoing_money_requests.where(requestee_id: @contact.to_user.id).to_a + current_user.incoming_money_requests.where(sender_id: @contact.to_user.id).to_a
         @requests.sort_by! { |r| r.created_at }.reverse!
         @requests = @requests.map { |r| r.to_display_data(current_user) }.first(SHOW_CONTACT_RECENT_REQUEST_LIMIT)
       end
 
-      unless @contact.external?
+      if @has_transactions_section
         @transactions = current_coinbase_client.transactions(limit: SHOW_CONTACT_RECENT_TRANSACTIONS_FETCH_LIMIT)
         coinbase_id = @transactions['current_user']['id']
         @transactions = @transactions['transactions'].map { |x| x['transaction'] }
 
         @transactions.select! do |t|
-          puts @contact.email
           ((t['sender']['email'] == @contact.email) rescue false) ||
           ((t['recipient']['email'] == @contact.email) rescue false)
         end

@@ -21,7 +21,7 @@
     <p>The contact hasn't joined BitStation yet. </p>
   </div>
 <% else %>
-  <% if @contact.bitstation? %>
+  <% if @has_money_requests_section %>
     <hr>
 
     <div class="panel-table-header">
@@ -31,8 +31,8 @@
     <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
   <% end %>
 
-  <% unless @contact.external? %>
-    <% unless @contact.bitstation? %>
+  <% if @has_transactions_section %>
+    <% unless @has_money_requests_section %>
       <hr>
     <% end %>
 
