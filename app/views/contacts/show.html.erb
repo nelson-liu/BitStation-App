@@ -43,14 +43,14 @@
     <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
   <% end %>
 
-  <hr>
-
-  <div>
-    <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
-  </div>
-
   <script>
     window.recalculate_truncate_width('#contact-details-money-requests-history-table');
     window.recalculate_truncate_width('#contact-details-transactions-history-table');
   </script>
 <% end %>
+
+<hr>
+
+<div>
+  <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
+</div>
