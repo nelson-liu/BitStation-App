@@ -1,18 +1,33 @@
+<%= form_for @contact, remote: true, html: {id: 'contact_form'} do |f| %>
 <div class="panel-body">
-  <h4><%= @contact.name %></h4>
-  <span class="label label-default"><%= @contact.address %></span>
+  <%= link_to 'Edit', "javascript: $('#contact_form').begin_edit(); ", id: 'edit_contact_btn', class: 'pull-right', data: {display_role: 'begin'} %>
+  <%= link_to 'Submit Changes', "javascript: $('#contact_form').submit(); ", class: 'pull-right', data: {display_role: 'submit'} %>
+  <%= link_to 'Cancel', "javascript: $('#contact_form').end_edit(); ", class: 'pull-right', data: {display_role: 'cancel'} %>
+  <h4 data-display-role="display" data-display-field="name">
+    <%= @contact.name %>
+  </h4>
 
-  <% if @contact.bitstation?  %>
-    <span class="label label-danger">MIT</span>
-  <% end %>
+  <%= f.text_field :name, data: {display_role: 'edit', display_field: 'name'} %>
 
-  <% if @contact.coinbase? %>
-    <span class="label label-primary">Coinbase</span>
-  <% end %>
+  <p>
+    <span class="label label-default" data-display-role="display" data-display-field="address"><%= @contact.address %></span>
 
-  <% if @contact.external? %>
-    <span class="label label-warning">External</span>
-  <% end %>
+    <%= f.text_field :address, data: {display_role: 'edit', display_field: 'address'} %>
+
+    <% if @contact.bitstation?  %>
+      <span class="label label-danger">MIT</span>
+    <% end %>
+
+    <% if @contact.coinbase? %>
+      <span class="label label-primary">Coinbase</span>
+    <% end %>
+
+    <% if @contact.external? %>
+      <span class="label label-warning">External</span>
+    <% end %>
+  </p>
+
+  <p data-display-role="error"></p>
 </div>
 
 <% if @is_placeholder %>
@@ -54,3 +69,8 @@
 <div>
   <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
 </div>
+<% end %>
+
+<script>
+  $('#contact_form').init_edit();
+</script>

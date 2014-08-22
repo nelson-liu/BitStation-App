@@ -96,3 +96,9 @@ footer {
     padding: 0 15px;
   }
 }
+
+/* Display & edit data styles */
+
+[data-display-role=edit], [data-display-role=submit], [data-display-role=error], [data-display-role=cancel] {
+  display: none;
+}

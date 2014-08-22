@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_filter :ensure_signed_in_without_redirect, only: [:index, :create, :show, :create, :delete]
+  before_filter :ensure_signed_in_without_redirect, only: [:index, :create, :show, :create, :delete, :update]
   before_filter :ensure_coinbase_account_linked, only: [:import]
   before_filter :check_for_unlinked_coinbase_account, only: []
 
@@ -35,6 +35,20 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       format.js {}
+    end
+  end
+
+  def update
+    @contact = Contact.find(params[:id])
+    raise unless @contact.user == current_user
+
+    @success = nil
+    @error = nil
+
+    if @contact.update(contact_params)
+      @success = true
+    else
+      @error = 'Invalid name or address. '
     end
   end
 
@@ -141,4 +155,10 @@ class ContactsController < ApplicationController
       format.js {}
     end
   end
+
+  private
+
+    def contact_params
+      params.require(:contact).permit(:name, :address)
+    end
 end

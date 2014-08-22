@@ -1,7 +1,10 @@
 class Contact < ActiveRecord::Base
   belongs_to :user
 
-  validates :address, uniqueness: {scope: :user_id}
+  validates :address, uniqueness: {scope: :user_id}, presence: true
+  validates :name, length: {minimum: 1, maximum: 50}
+
+  validate :address_is_valid
 
   def to_user
     case self.class.source_from_address(address)
@@ -47,6 +50,10 @@ class Contact < ActiveRecord::Base
     super self.class.normalize_address(address)
   end
 
+  def name=(name)
+    super name.strip
+  end
+
   def source
     if external?
       :external
@@ -76,5 +83,9 @@ class Contact < ActiveRecord::Base
       rescue Mail::Field::ParseError => e
         false
       end
+    end
+
+    def address_is_valid
+      errors.add(:address, 'Invalid address. ') if self.class.source_from_address(address).nil?
     end
 end

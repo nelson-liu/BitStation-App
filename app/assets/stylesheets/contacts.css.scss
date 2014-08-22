@@ -28,8 +28,24 @@
 			border-radius: 0;
 		}
 	}
+
 }
 
 .contact-detail-delete {
 	width: 100%;
+}
+
+#contact_form {
+	a {
+		margin-right: 10px;
+		margin-top: 10px;
+	}
+
+	input {
+		margin: 5px;
+	}
+
+	p[data-display-role=error] {
+		color: red;
+	}
 }

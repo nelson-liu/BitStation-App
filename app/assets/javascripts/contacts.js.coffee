@@ -21,5 +21,6 @@ ready = ->
     window.recalculate_truncate_width("#address-book-table")
 
 
+
 $(document).ready(ready)
 $(document).on('page:load', ready)
