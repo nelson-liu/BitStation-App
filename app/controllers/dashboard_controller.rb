@@ -31,8 +31,8 @@ class DashboardController < ApplicationController
   end
 
   def buy_sell_bitcoin
-    @current_sell_price = current_coinbase_client.sell_price(1).to_d
-    @current_buy_price = current_coinbase_client.buy_price(1).to_d
+    @current_sell_price = current_coinbase_client.get('/prices/sell', {"qty"=>"1"})["subtotal"]["amount"]
+    @current_buy_price = current_coinbase_client.get('/prices/buy', {"qty"=>"1"})["subtotal"]["amount"]
     render layout: false
   end
 

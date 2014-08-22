@@ -1,27 +1,27 @@
-<%= form_tag '#', id: 'buy_sell_form' %>
+<%= form_tag transfers_create_path, id: 'buy_sell_form' %>
 <div class="panel-body">
   <div class="form-group">
     <div class="btn-group btn-group-justified" id="buy_sell_action_btn_group">
       <a class="btn btn-default btn-primary">Buy</a>
       <a class="btn btn-default">Sell</a>
     </div>
-    <%= hidden_field_tag 'action', 'buy' %>
+    <%= hidden_field_tag 'transfer_action', 'buy' %>
   </div>
 
 <div id="sellprice" style="display: none;">
-  <label>Sell Price:</label><p><span class="well well-sm"> 1 BTC = <span id='sell_current_rate'><%= @current_sell_price.round(2) %></span> USD</span></p>
+  <label>Current Sell Price:</label><p><span class="well well-sm"> 1 BTC = <span id='sell_current_rate'><%= @current_sell_price %></span> USD</span> (not including fees)</p>
 </div>
 
 <div id="buyprice">
-  <label>Buy Price:</label><p><span class="well well-sm"> 1 BTC = <span id='buy_current_rate'><%= @current_buy_price.round(2) %></span> USD</span></p>
+  <label>Current Buy Price:</label><p><span class="well well-sm"> 1 BTC = <span id='buy_current_rate'><%= @current_buy_price %></span> USD</span> (not including fees)</p>
 </div>
 
   <div class="form-group">
     <%= label_tag 'amount' %>
     <div class="input-group">
-      <%= text_field_tag 'amount', '', placeholder: 'BTC amount', class: 'form-control' %>
+      <%= text_field_tag 'amount', '', placeholder: 'BTC amount', class: 'form-control', onkeypress: 'window.validateNumField(event)' %>
       <span class="input-group-addon">BTC <i class="fa fa-long-arrow-right"></i> USD</span>
-      <%= text_field_tag 'preview_amount', '', placeholder: 'USD amount', class: 'form-control' %>
+      <%= text_field_tag 'preview_amount', '', placeholder: 'USD amount', class: 'form-control', onkeypress: 'window.validateNumField(event)' %>
     </div><!-- /input-group -->
   </div>
 

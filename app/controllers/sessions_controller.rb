@@ -160,6 +160,35 @@ class SessionsController < ApplicationController
           flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
           redirect_to dashboard_url
         end
+      elsif pending_action == "transfer"
+        # It's a pending transfer
+        ptr = Transfer.find(pending_action_id)
+        cc = coinbase_client_with_oauth_credentials(token.to_hash)
+        email = cc.get('/users').users[0].user.email
+
+        if pt.user_id != current_user.id || email != current_user.coinbase_account.email
+          flash[:error] = "Please authenticate with the Coinbase accuont that is linked to you only. "
+          redirect_to dashboard_url
+          return
+        end
+
+        begin
+          if process_pending_transfer(ptr, cc)
+            if ptr.action == "buy"
+              flash[:success] = "You have successfully bought #{ptr.amount} BTC. "
+            elsif ptr.action == "sell"
+              flash[:success] = "You have successfully sold #{ptr.amount} BTC. "
+            end
+            redirect_to dashboard_url
+          else
+            pt.failed!
+            raise
+          end
+        rescue => e
+          pt.failed!
+          flash[:error] = "Transfer failed for unknown reason. "
+          redirect_to dashboard_url
+        end
       end
     rescue OAuth2::Error
       flash[:error] = 'Authentication for Coinbase failed. '
@@ -177,6 +206,16 @@ class SessionsController < ApplicationController
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
       pt.completed! if r.success?
       pt.money_request.paid! if r.success? && !pt.money_request.nil?
+      r.success?
+    end
+
+    def process_pending_transfer(ptr, critical_client)
+      if ptr.action == "buy"
+        r = critical_client.buy!(ptr.amount)
+      elsif ptr.action == "sell"
+        r = critical_client.sell!(ptr.amount)
+      end
+      ptr.completed! if r.success?
       r.success?
     end
 end

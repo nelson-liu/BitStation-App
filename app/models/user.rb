@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
 
   has_many :contacts
 
+  has_many :transfers, class_name: "Transfer", foreign_key: "user_id"
+
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
 

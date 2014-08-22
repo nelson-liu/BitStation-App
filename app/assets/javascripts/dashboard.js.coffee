@@ -130,5 +130,15 @@ ready = ->
   window.capitalize_string = (string) ->
     string.substring(0, 1).toUpperCase() + string.substring(1, string.length);
 
+  window.validateNumField = (evt) ->
+    theEvent = evt or window.event
+    key = theEvent.keyCode or theEvent.which
+    key = String.fromCharCode(key)
+    regex = /[0-9]|\./
+    unless regex.test(key)
+      theEvent.returnValue = false
+      theEvent.preventDefault()  if theEvent.preventDefault
+    return
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

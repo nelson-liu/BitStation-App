@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'transfers/create'
 
   get 'transfers/index'
 
@@ -23,6 +22,7 @@ Rails.application.routes.draw do
   get 'dashboard/transfer'
   get 'dashboard/buy_sell_bitcoin'
   get 'transfers/get_price'
+  post 'transfers/create'
   get 'dashboard/access_qrcode_details'
   get 'dashboard/bitstation_feed'
 
@@ -40,6 +40,9 @@ Rails.application.routes.draw do
   match '/privacy', to: 'static_pages#privacy', via: :get, as: :privacy
 
   resources :transactions, only: [:create, :index, :show] do
+  end
+
+  resources :transfers, only: [:create] do
   end
 
   resources :money_requests, path: 'requests', only: [:show, :index, :create] do

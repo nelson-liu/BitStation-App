@@ -9,7 +9,7 @@ ready = ->
     return if $(this).parent().find('btn-primary').first().text() == $(this).text()
     $(this).parent().children().removeClass('btn-primary')
     $(this).addClass('btn-primary')
-    $(this).closest('form').find('input[name=action]').val($(this).text().toLowerCase()).trigger('change')
+    $(this).closest('form').find('input[name=transfer_action]').val($(this).text().toLowerCase()).trigger('change')
 
     if $(this).text() == 'Buy'
       do $('#sellprice').hide
@@ -27,7 +27,7 @@ ready = ->
   $(document.body).on 'keyup', '#buy_sell_form input[name=amount], #buy_sell_form input[name=preview_amount]', (event) ->
     other = $(this).parent().find('input[name!=' + $(this).attr('name') + ']').first()
     from_to = (other.attr('name') == 'preview_amount')
-    action = $(this).closest('form').find('input[name=action]').val()
+    action = $(this).closest('form').find('input[name=transfer_action]').val()
     if action == "buy" then rate = parseFloat($('#buy_current_rate').text()) else rate = parseFloat($('#sell_current_rate').text())
     conversion = if (from_to) then rate else 1.0 / rate
     other.val($(this).val() * conversion)
