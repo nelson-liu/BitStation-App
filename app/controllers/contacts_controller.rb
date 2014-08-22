@@ -70,9 +70,8 @@ class ContactsController < ApplicationController
       break if transactions.empty?
 
       transactions.each do |t|
-        # target = t['recipient'] if t['sender'] && t['sender']['id'] == coinbase_id
-        # target = t['sender'] if t['recipient'] && t['recipient']['id'] == coinbase_id
-        target = t['recipient']
+        target = t['recipient'] if t['sender'] && t['sender']['id'] == coinbase_id
+        target = t['sender'] if t['recipient'] && t['recipient']['id'] == coinbase_id
 
         next if target.nil?
 
