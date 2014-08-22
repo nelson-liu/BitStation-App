@@ -2,6 +2,8 @@
   $('#contact_form').update_edit_field('name', '<%= j @contact.name %>')
   $('#contact_form').update_edit_field('address', '<%= j @contact.address %>')
   $('#contact_form').end_edit();
+
+  $('#address_book_module').reload_module();
 <% else %>
   $('#contact_form').find('[data-display-role=error]').show();
   $('#contact_form').find('[data-display-role=error]').html('<%= j @error %>');
