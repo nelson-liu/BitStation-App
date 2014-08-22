@@ -70,8 +70,9 @@ class ContactsController < ApplicationController
       break if transactions.empty?
 
       transactions.each do |t|
-        target = t['recipient'] if t['sender'] && t['sender']['id'] == coinbase_id
-        target = t['sender'] if t['recipient'] && t['recipient']['id'] == coinbase_id
+        # target = t['recipient'] if t['sender'] && t['sender']['id'] == coinbase_id
+        # target = t['sender'] if t['recipient'] && t['recipient']['id'] == coinbase_id
+        target = t['recipient']
 
         next if target.nil?
 
@@ -83,6 +84,11 @@ class ContactsController < ApplicationController
           address: email,
           name: user ? user.name : name
         }
+
+        contacts << {
+          address: user.kerberos,
+          name: user.name
+        } unless user.nil?
       end
 
       break if transactions.count < LOAD_CONTACTS_PAGE_LIMIT
