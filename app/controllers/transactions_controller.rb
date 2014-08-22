@@ -1,7 +1,7 @@
 class TransactionsController < ApplicationController
   before_filter :ensure_signed_in, only: []
-  before_filter :ensure_coinbase_account_linked, only: [:create, :index, :show]
-  before_filter :check_for_unlinked_coinbase_account, only: [:index]
+  before_filter :ensure_coinbase_account_linked, only: [:create]
+  before_filter :check_for_unlinked_coinbase_account, only: [:index, :show]
 
   include ApplicationHelper
 
