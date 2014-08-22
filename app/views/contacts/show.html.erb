@@ -10,9 +10,7 @@
   <%= f.text_field :name, data: {display_role: 'edit', display_field: 'name'} %>
 
   <p>
-    <span class="label label-default" data-display-role="display" data-display-field="address"><%= @contact.address %></span>
-
-    <%= f.text_field :address, data: {display_role: 'edit', display_field: 'address'} %>
+    <span class="label label-default"><%= @contact.address %></span>
 
     <% if @contact.bitstation?  %>
       <span class="label label-danger">MIT</span>
