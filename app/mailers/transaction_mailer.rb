@@ -25,4 +25,24 @@ class TransactionMailer < ActionMailer::Base
   def resend_money_request(r, respond_link)
     request_money(r.sender, r.requestee, r.amount, r.dollar_amount, r.message, respond_link)
   end
+
+  def invite_recipient(sender, recipient, amount, dollar_amount, join_link)
+    @sender_name = sender.name
+    @amount = friendly_amount(amount, 'BTC')
+    @dollar_amount = friendly_amount(dollar_amount , 'USD')
+    @join_link = join_link
+
+    mail to: recipient + '@mit.edu',
+         subject: "Join BitStation to receive money from #{sender.name}! "
+  end
+
+  def remind_link_coinbase_account(sender, recipient, amount, dollar_amount, link_link)
+    @sender_name = sender.name
+    @amount = friendly_amount(amount, 'BTC')
+    @dollar_amount = friendly_amount(dollar_amount , 'USD')
+    @link_link = link_link
+
+    mail to: recipient + '@mit.edu',
+         subject: "Link a Coinbase account on BitStation to receive money from #{sender.name}! "
+  end
 end

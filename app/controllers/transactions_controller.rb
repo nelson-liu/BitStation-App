@@ -36,17 +36,26 @@ class TransactionsController < ApplicationController
     begin
       (@error = 'Invalid currency. ' and raise TransactionParameterError) unless CURRENCIES.include?(currency)
       (@error = 'Invalid BTC address. ' and raise TransactionParameterError) if is_btc && (!Bitcoin::valid_address?(recipient))
-      (@error = 'The designated recipient hasn\'t joined BitStation yet. ' and raise TransactionParameterError) if is_kerberos && user.nil?
-      (@error = 'The designated recipient hasn\'t linked a Coinbase account yet. ' and raise TransactionParameterError) if is_kerberos && user.coinbase_account.nil?
       (@error = 'Why sending yourself money...? ' and raise TransactionParameterError) if is_kerberos && user == current_user
       (@error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise TransactionParameterError) if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
 
-      amount /= (current_coinbase_client.spot_price(currency).to_d) unless currency == 'BTC'
+      spot_price = current_coinbase_client.spot_price('USD').to_d
+      dollar_amount = amount * spot_price
       (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d
 
-      pt = is_kerberos ?
-        Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public}) :
-        Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public})
+      if is_kerberos && user.nil?
+        @warning = "The recipient hasn't joined BitStation yet. We have sent an invitation to him / her at #{recipient}@mit.edu. "
+
+        TransactionMailer.invite_recipient(current_user, recipient, amount, dollar_amount, root_url).deliver
+      elsif is_kerberos && user.coinbase_account.nil?
+        @warning = "The recipient hasn't linked a Coinbase account yet. We have sent an notification to him / her at #{recipient}@mit.edu. "
+
+        TransactionMailer.remind_link_coinbase_account(current_user, recipient, amount, dollar_amount, link_coinbase_account_url).deliver
+      else
+        pt = is_kerberos ?
+          Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public}) :
+          Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public})
+      end
     rescue TransactionParameterError
     end
 
@@ -54,6 +63,8 @@ class TransactionsController < ApplicationController
       format.html do
         if @error
           redirect_to dashboard_url, flash: {error: @error}
+        elsif @warning
+          redirect_to dashboard_url, flash: {warning: @warning}
         else
           # FIXME ugh
           redirect_to @oauth_client.auth_code.authorize_url(redirect_uri: coinbase_callback_uri + '?pending_action=transact&pending_action_id=' + pt.id.to_s) + '&scope=send+user'
