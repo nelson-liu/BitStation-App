@@ -165,9 +165,8 @@ class SessionsController < ApplicationController
         ptr = Transfer.find(pending_action_id)
         cc = coinbase_client_with_oauth_credentials(token.to_hash)
         email = cc.get('/users').users[0].user.email
-
-        if pt.user_id != current_user.id || email != current_user.coinbase_account.email
-          flash[:error] = "Please authenticate with the Coinbase accuont that is linked to you only. "
+        if ptr.user != current_user || email != current_user.coinbase_account.email
+          flash[:error] = "Please authenticate with the Coinbase account that is linked to you only. "
           redirect_to dashboard_url
           return
         end
@@ -181,12 +180,12 @@ class SessionsController < ApplicationController
             end
             redirect_to dashboard_url
           else
-            pt.failed!
+            ptr.failed!
             raise
           end
         rescue => e
-          pt.failed!
-          flash[:error] = "Transfer failed for unknown reason. "
+          ptr.failed!
+          flash[:error] = "Transfer failed for unknown reason. " + e.message
           redirect_to dashboard_url
         end
       end
@@ -210,9 +209,9 @@ class SessionsController < ApplicationController
     end
 
     def process_pending_transfer(ptr, critical_client)
-      if ptr.action == "buy"
+      if ptr.action.to_s == "buy"
         r = critical_client.buy!(ptr.amount)
-      elsif ptr.action == "sell"
+      elsif ptr.action.to_s == "sell"
         r = critical_client.sell!(ptr.amount)
       end
       ptr.completed! if r.success?

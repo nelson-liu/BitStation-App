@@ -12,7 +12,7 @@ class TransfersController < ApplicationController
       if transfer_action == "buy"
         prices = current_coinbase_client.get('/prices/buy', {"qty"=>amount}).to_hash
         ptr =Transfer.create!({
-          user_id: current_user, 
+          user_id: current_user.id, 
           action: "buy",
           amount: amount, 
           status: :pending,
