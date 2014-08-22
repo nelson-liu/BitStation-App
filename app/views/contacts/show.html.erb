@@ -1,6 +1,6 @@
 <%= form_for @contact, remote: true, html: {id: 'contact_form'} do |f| %>
 <div class="panel-body">
-  <%= link_to 'Edit', "javascript: $('#contact_form').begin_edit(); ", id: 'edit_contact_btn', class: 'pull-right', data: {display_role: 'begin'} %>
+  <%= link_to 'Edit', "javascript: $('#contact_form').begin_edit(); ", id: 'edit_contact_btn', class: 'pull-right btn btn-success', data: {display_role: 'begin'} %>
   <%= link_to 'Submit Changes', "javascript: $('#contact_form').submit(); ", class: 'pull-right', data: {display_role: 'submit'} %>
   <%= link_to 'Cancel', "javascript: $('#contact_form').end_edit(); ", class: 'pull-right', data: {display_role: 'cancel'} %>
   <h4 data-display-role="display" data-display-field="name">
@@ -66,7 +66,7 @@
 
 <hr>
 
-<div>
+<div class="panel-body">
   <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
 </div>
 <% end %>
