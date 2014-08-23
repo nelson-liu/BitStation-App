@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   before_filter :ensure_signed_in, only: [:oauth]
 
   FEE_ERROR_MESSAGE_REGEX = /This transaction requires a (.*?) BTC fee to be accepted by the bitcoin network./
-  TRANSFER_ERROR_MESSAGE_REGEX = /Payemnt method can't be blank/
+  TRANSFER_ERROR_MESSAGE_REGEX = /Payment method can't be blank/
 
   def new
     @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token

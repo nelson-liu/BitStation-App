@@ -8,7 +8,7 @@ class TransfersController < ApplicationController
     @error = nil
 
     begin
-      (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d && transfer_action == "sell"
+      (@error = "You do not have enough funds in your Coinbase account. " and raise TransferParameterError) if amount > current_coinbase_client.balance.to_d && transfer_action == "sell"
       if transfer_action == "buy"
         prices = current_coinbase_client.get('/prices/buy', {"qty"=>amount}).to_hash
         ptr =Transfer.create!({
