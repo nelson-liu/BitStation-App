@@ -4,13 +4,7 @@
       <h4>Money Request Details</h4>
       <p>Sent on <%= @request.created_at.strftime('%b %d, %Y at %I:%M %p') %></p>
 
-      <p>
-        <span class="label label-<%= @from.downcase == 'you' ? 'primary' : 'warning' %>"><%= @from %></span>
-        <span class="label label-default">requested</span>
-        <span class="label label-<%= @to.downcase == 'you' ? 'danger' : 'success' %>"><%= friendly_amount(@request.amount, 'BTC') %></span>
-        <span class="label label-default">from</span>
-        <span class="label label-<%= @to.downcase == 'you' ? 'primary' : 'warning' %>"><%= @to %></span>
-      </p>
+      <%= transaction_description_labels(@from, :request, @to, @request.amount) %>
     </div>
 
     <% if @request.message && !@request.message.strip.empty? %>

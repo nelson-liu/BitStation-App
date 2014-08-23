@@ -122,41 +122,66 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction_id = params['id']
-    client = current_coinbase_client
+    @is_coinbase = is_coinbase_transaction_id?(@transaction_id)
 
-    @transaction = client.transaction(@transaction_id)['transaction']
+    if @is_coinbase
+      client = current_coinbase_client
 
-    @transaction_date = Time.parse(@transaction['created_at']).localtime.to_s[0..-7]
+      @transaction = client.transaction(@transaction_id)['transaction']
 
-    if @transaction['hsh'].nil?
-      @footer = "This transaction occurred within the Coinbase network and off the blockchain with zero fees."
-    else
-      @footer = '<a target=“_blank” href="https://coinbase.com/network/transactions/' + @transaction['hsh'] + '">View this transaction on the blockchain</a>'
-    end
+      @transaction_date = Time.parse(@transaction['created_at']).localtime.to_s[0..-7]
 
-    if @transaction[:sender].nil?
-      @transaction_sender_name = "External BTC Address"
-      @transaction_sender_email = @transaction[:sender_address]
-    else
-      @transaction_sender_name = @transaction[:sender][:name]
-      @transaction_sender_email = @transaction[:sender][:email]
-    end
-    if @transaction[:recipient].nil?
-      if @transaction[:sender][:email] == current_user.coinbase_account.email
-        @transaction_recipient_name = "External BTC Address"
-        @transaction_recipient_email = @transaction[:recipient_address]
+      if @transaction['hsh'].nil?
+        @footer = "This transaction occurred within the Coinbase network and off the blockchain with zero fees."
       else
-        @transaction_recipient_name = current_user.name
-        @transaction_recipient_email = "Sent to your receiving BTC Address"
+        @footer = '<a target=“_blank” href="https://coinbase.com/network/transactions/' + @transaction['hsh'] + '">View this transaction on the blockchain</a>'
       end
-    else
-      @transaction_recipient_name = @transaction[:recipient][:name]
-      @transaction_recipient_email = @transaction[:recipient][:email]
-    end
 
-    # TODO: Get full names from our user database if possible, not coinbase
-    @transaction_json = @transaction.to_json
+      if @transaction[:sender].nil?
+        @transaction_sender_name = "External BTC Address"
+        @transaction_sender_email = @transaction[:sender_address]
+      else
+        @transaction_sender_name = @transaction[:sender][:name]
+        @transaction_sender_email = @transaction[:sender][:email]
+      end
+      if @transaction[:recipient].nil?
+        if @transaction[:sender][:email] == current_user.coinbase_account.email
+          @transaction_recipient_name = "External BTC Address"
+          @transaction_recipient_email = @transaction[:recipient_address]
+        else
+          @transaction_recipient_name = current_user.name
+          @transaction_recipient_email = "Sent to your receiving BTC Address"
+        end
+      else
+        @transaction_recipient_name = @transaction[:recipient][:name]
+        @transaction_recipient_email = @transaction[:recipient][:email]
+      end
+
+      # TODO: Get full names from our user database if possible, not coinbase
+      @transaction_json = @transaction.to_json
+    else
+      @transaction = Transaction.find(@transaction_id)
+
+      @from = @transaction.sender == current_user ?
+        'You' :
+        @transaction.sender.name
+      @to = @transaction.recipient.nil? ?
+        'External User' :
+        (
+          @transaction.recipient == current_user ?
+          'you' :
+          @transaction.recipient.name
+        )
+    end
 
     render layout: false
   end
+
+  private
+
+    COINBASE_TRANSACTION_ID_REGEX = /[0-9a-zA-Z]{24}/
+
+    def is_coinbase_transaction_id?(id)
+      id =~ COINBASE_TRANSACTION_ID_REGEX
+    end
 end

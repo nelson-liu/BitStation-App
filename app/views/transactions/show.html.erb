@@ -1,32 +1,41 @@
-<div class="panel-body transaction_details">
-	<h4>Transaction <%= @transaction_id %></h4>
-	<p><%= DateTime.parse(@transaction_date).strftime('%b %d, %Y at %I:%M %p') %></p>
-	<p><span class="label label-<%= @transaction['amount'] > 0 ? 'success' : 'danger' %>"><%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %></span>
-		<% if @transaction['amount'] < 0 %>
-			<%= '<span class="label label-danger">Outgoing</span>'.html_safe %>
-		<% elsif @transaction['amount'] > 0 %>
-			<%= '<span class="label label-success">Incoming</span>'.html_safe %>
-		<% end %>
-		<% if @transaction['status'] == "pending" %>
-			<%= '<span class="label label-warning">Pending</span>'.html_safe %>
-		<% elsif @transaction['status'] == "complete" %>
-			<%= '<span class="label label-success">Complete</span>'.html_safe %>
-		<% end %>
-	</p>
-</div>
-<hr>
-<div class="panel-body transaction_details">
-	<h4>Sender</h4>
-	<p><%= @transaction_sender_name %></p>
-	<p><%= @transaction_sender_email %></p>
-</div>
-<hr>
-<div class="panel-body transaction_details">
-	<h4>Recipient</h4>
-	<p><%= @transaction_recipient_name %></p>
-	<p><%= @transaction_recipient_email %></p>
-</div>
-<hr>
-<div class="panel-body transaction_details">
-	<p><%= @footer.html_safe %><p>
-</div>
+<% if @is_coinbase %>
+	<div class="panel-body transaction_details">
+		<h4>Transaction <%= @transaction_id %></h4>
+		<p><%= DateTime.parse(@transaction_date).strftime('%b %d, %Y at %I:%M %p') %></p>
+		<p><span class="label label-<%= @transaction['amount'] > 0 ? 'success' : 'danger' %>"><%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %></span>
+			<% if @transaction['amount'] < 0 %>
+				<%= '<span class="label label-danger">Outgoing</span>'.html_safe %>
+			<% elsif @transaction['amount'] > 0 %>
+				<%= '<span class="label label-success">Incoming</span>'.html_safe %>
+			<% end %>
+			<% if @transaction['status'] == "pending" %>
+				<%= '<span class="label label-warning">Pending</span>'.html_safe %>
+			<% elsif @transaction['status'] == "complete" %>
+				<%= '<span class="label label-success">Complete</span>'.html_safe %>
+			<% end %>
+		</p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<h4>Sender</h4>
+		<p><%= @transaction_sender_name %></p>
+		<p><%= @transaction_sender_email %></p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<h4>Recipient</h4>
+		<p><%= @transaction_recipient_name %></p>
+		<p><%= @transaction_recipient_email %></p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<p><%= @footer.html_safe %><p>
+	</div>
+<% else %>
+	<div class="panel-body">
+		<h4>Transaction Details</h4>
+		<p>Made on <%= @transaction.created_at.strftime('%b %d, %Y at %I:%M %p') %></p>
+
+		<%= transaction_description_labels(@from, :send, @to, @transaction.amount) %>
+	</div>
+<% end %>

@@ -59,9 +59,9 @@ class Transaction < ActiveRecord::Base
       content: has_message? ? "\"#{message}\"" : 'Without saying anything :( ',
       comments: {
         count: comments.count,
-        load: Rails.application.routes.url_helpers.transaction_path(self)
       },
-      like_link: Rails.application.routes.url_helpers.transaction_path(self)
+      like_link: Rails.application.routes.url_helpers.transaction_path(self),
+      load: Rails.application.routes.url_helpers.transaction_path(self)
     }
   end
 end

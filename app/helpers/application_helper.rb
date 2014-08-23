@@ -48,4 +48,18 @@ module ApplicationHelper
     else
       result += '<p class="autocomplete-coinbase-link-status text-danger">No Coinbase account linked</p>'
   end
+
+  def transaction_description_labels(sender, action, recipient, amount)
+    verb = (action == :send ? 'sent' : 'requested')
+    direction = (action == :send ? 'to' : 'from')
+    receiving_money = (action == :send) ^ (amount > 0)
+
+    [
+      content_tag(:span, sender, class: "label label-#{sender.downcase == 'you' ? 'primary' : 'warning'}"),
+      content_tag(:span, verb, class: 'label label-default'),
+      content_tag(:span, friendly_amount(amount, 'BTC'), class: "label label-#{receiving_money ? 'success' : 'danger'}"),
+      content_tag(:span, direction, class: 'label label-default'),
+      content_tag(:span, recipient, class: "label label-#{recipient.downcase == 'you' ? 'primary' : 'warning'}")
+    ].join(' ').html_safe
+  end
 end
