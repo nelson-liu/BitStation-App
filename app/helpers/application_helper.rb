@@ -33,7 +33,7 @@ module ApplicationHelper
   }
 
   def address_type_label(type, text_level = :char, options = {})
-    type = type.to_sym
+    type = type.to_sym if !type.nil?
     html_class = "label label-#{ADDRESS_TYPE_LABEL_CLASS[type]} address-type-label-#{text_level} "
     html_class += options.delete(:class) if options[:class]
     content_tag(:span, ADDRESS_TYPE_LABEL_TEXT[text_level][type],

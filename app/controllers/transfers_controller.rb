@@ -24,7 +24,7 @@ class TransfersController < ApplicationController
       elsif transfer_action == "sell"
         prices = current_coinbase_client.get('/prices/sell', {"qty"=>amount}).to_hash
         ptr = Transfer.create!({
-          user_id: current_user, 
+          user_id: current_user.id, 
           action: "sell",
           amount: amount, 
           status: :pending,

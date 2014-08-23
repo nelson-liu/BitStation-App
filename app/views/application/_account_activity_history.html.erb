@@ -47,11 +47,7 @@
         </td>
 
         <td class="fit-to-contents">
-          <% if e[:transfer_type] %>
-            <%= e[:transfer_type] %>
-          <% else %>
-            <%= e[:direction] == :to ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%>
-          <% end %>
+          <%= e[:direction] == :to ? '<i class="fa fa-long-arrow-right"></i>'.html_safe : '<i class="fa fa-long-arrow-left"></i>'.html_safe%>
         </td>
 
         <td class="ellipsis">
@@ -61,7 +57,16 @@
         </td>
 
         <td class="fit-to-contents last-column">
-          <%= address_type_label(e[:target_type], :char) %>
+          <%= puts "activity history" + e[:target_type].to_s %>
+          <% if e[:transfer_type] %>
+            <% if e[:transfer_type] == "sell" %>
+              <span class="label label-danger address-type-label-char ">S</span>
+            <% else %>
+              <span class="label label-success address-type-label-char ">B</span>
+            <% end %>
+          <% else %>
+            <%= address_type_label(e[:target_type], :char) %>
+          <% end %>
 
           <% if e[:pending] %>
             <span title="This <%= activity %> is pending" class="label label-warning">P</span>
