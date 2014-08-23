@@ -17,6 +17,15 @@ class Contact < ActiveRecord::Base
     end
   end
 
+  def to_search_suggestion
+    {
+      'address' => address,
+      'name' => name,
+      'tokens' => name.split(' ') + [address],
+      'type' => source.to_s
+    }
+  end
+
   def external?
     self.class.source_from_address(address) == :external
   end
@@ -27,6 +36,10 @@ class Contact < ActiveRecord::Base
 
   def coinbase?
     self.class.source_from_address(address) == :coinbase
+  end
+
+  def source
+    self.class.source_from_address(address)
   end
 
   def self.source_from_address(address)

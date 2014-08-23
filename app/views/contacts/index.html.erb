@@ -11,9 +11,7 @@
           </span>
         </td>
         <td class="fit-to-contents address-book-contact-label last-column">
-          <% concat '<span class="label label-danger pull-right">MIT</span>'.html_safe if c.bitstation? %>
-          <% concat '<span class="label label-primary pull-right">CB</span>'.html_safe if c.coinbase? %>
-          <% concat '<span class="label label-warning pull-right">Ext</span>'.html_safe if c.external? %>
+          <%= address_type_label(c.source, :short, class: 'pull-right') %>
         </td>
       </tr>
     <% end %>

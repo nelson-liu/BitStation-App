@@ -102,3 +102,7 @@ footer {
 [data-display-role=edit], [data-display-role=submit], [data-display-role=error], [data-display-role=cancel] {
   display: none;
 }
+
+.address-type-label-short {
+  width: 35px;
+}

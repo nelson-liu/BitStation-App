@@ -61,16 +61,7 @@
         </td>
 
         <td class="fit-to-contents last-column">
-          <%=
-            case e[:target_type]
-            when :bitstation
-              '<span title="This person is a MIT user" class="label label-danger">M</span>'
-            when :coinbase
-              '<span title="This person is a Coinbase user" class="label label-info">C</span>'
-            when :external
-              '<span title="This person is an external user" class="label label-success">E</span>'
-            end.html_safe
-          %>
+          <%= address_type_label(e[:target_type], :char) %>
 
           <% if e[:pending] %>
             <span title="This <%= activity %> is pending" class="label label-warning">P</span>

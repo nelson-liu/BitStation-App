@@ -51,14 +51,10 @@ ready = ->
     }, {
       name: 'user-dataset',
       source: suggestion_engine.ttAdapter(),
-      displayKey: 'kerberos',
+      displayKey: 'address',
       templates: {
         suggestion: (d) ->
-          result = '<p class="autocomplete_name">' + d.name + '</p>'
-          if d.coinbase_account_linked
-            result += '<p class="autocomplete-coinbase-link-status text-success">Coinbase account linked</p>'
-          else
-            result += '<p class="autocomplete-coinbase-link-status text-danger">No Coinbase account linked</p>'
+          d.html
       }
     })
 

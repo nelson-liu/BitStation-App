@@ -27,6 +27,15 @@ class User < ActiveRecord::Base
     update!({access_code: nil, access_code_redeemed: false})
   end
 
+  def to_search_suggestion
+    {
+      'address' => kerberos,
+      'name' => name,
+      'tokens' => name.split(' ') + [kerberos],
+      'type' => 'bitstation'
+    }
+  end
+
   def self.user_with_unredeemed_access_code(code)
     where({access_code: code, access_code_redeemed: false}).first
   end
