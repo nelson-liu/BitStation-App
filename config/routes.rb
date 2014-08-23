@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   get 'transfers/index'
 
   get 'search_suggestions/user/:query', to: 'search_suggestions#user'
@@ -58,6 +57,9 @@ Rails.application.routes.draw do
     collection do
       post 'import', as: :import
     end
+  end
+
+  resources :activities, only: [:index] do
   end
 
   # Example of regular route:

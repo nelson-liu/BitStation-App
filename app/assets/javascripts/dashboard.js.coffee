@@ -56,7 +56,7 @@ ready = ->
   window.bind_popup_card = ->
     $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
       path = $(this).closest(".popuppable").attr('data-load')
-      $("#popup-card-wrapper>div").load(path, -> 
+      $("#popup-card-wrapper>div").load(path, ->
         if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
           $("#popup-card-wrapper>div").parent().css "bottom", "40px"
         )
@@ -106,7 +106,9 @@ ready = ->
     $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
       path = $(this).attr('data-load')
       # passes the query string to sub-modules for fields pre-filling
-      $(this).load(path + '?' + window.location.search.substring(1))
+      $(this).load(path + '?' + window.location.search.substring(1), '', ->
+        FB.XFBML.parse()
+      )
 
   # Setup AJAX Pagination Links
   window.setup_paging_links = (table_name) ->

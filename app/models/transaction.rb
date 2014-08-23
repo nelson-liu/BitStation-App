@@ -8,6 +8,7 @@ class Transaction < ActiveRecord::Base
   scope :public_transactions, -> { where(is_public: true) }
 
   extend ApplicationHelper
+  include ApplicationHelper
 
   def self.display_data_from_cb_transaction(t, current_coinbase_id)
     r = {
@@ -36,5 +37,25 @@ class Transaction < ActiveRecord::Base
     end
 
     r
+  end
+
+  def sender_name
+    sender.name
+  end
+
+  def recipient_name
+    recipient ? recipient.name : 'External User'
+  end
+
+  def has_message?
+    message && !message.strip.empty?
+  end
+
+  def to_activity
+    {
+      title: "#{sender_name} gave #{recipient_name} #{friendly_amount(amount, 'BTC')}! ",
+      content: has_message? ? "\"#{message}\"" : 'Without saying anything :( ',
+      like_link: Rails.application.routes.url_helpers.transaction_path(self)
+    }
   end
 end
