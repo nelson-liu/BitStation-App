@@ -10,7 +10,7 @@
           <p><%= a[:content] %></p>
           <div>
             <% if a[:comments] %>
-              <span class="label label-default"><%= pluralize(a[:comments][:count], 'Comment') %></span>
+              <span id="<%= a[:comments][:display_id] %>" class="label label-default"><%= pluralize(a[:comments][:count], 'Comment') %></span>
             <% end %>
             <div class="fb-like" data-href="<%= a[:like_link] %>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
           </div>

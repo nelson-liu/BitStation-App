@@ -6,4 +6,6 @@
 
   $('#comments>p').remove()
   $('#comments').prepend("<%=j @rendered_comment %>");
+
+  $("#transaction_comments_count_<%= @transaction.id %>").text("<%=j pluralize(@transaction.comments.count, 'Comment') %>");
 <% end %>

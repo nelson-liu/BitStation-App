@@ -8,6 +8,7 @@ class Transaction < ActiveRecord::Base
   enum status: [:pending, :completed, :failed]
 
   scope :public_transactions, -> { where(is_public: true) }
+  scope :completed_public_transactions, -> { completed.where(is_public: true) }
 
   extend ApplicationHelper
   include ApplicationHelper
@@ -70,6 +71,7 @@ class Transaction < ActiveRecord::Base
       content: has_message? ? "\"#{message}\"" : 'Without saying anything :( ',
       comments: {
         count: comments.count,
+        display_id: "transaction_comments_count_#{id}"
       },
       like_link: Rails.application.routes.url_helpers.transaction_path(self),
       load: Rails.application.routes.url_helpers.transaction_path(self)

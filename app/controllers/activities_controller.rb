@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   ACTIVITIES_INDEX_LIMIT = 50
 
   def index
-    @activities = Transaction.public_transactions.limit(ACTIVITIES_INDEX_LIMIT).order('created_at DESC').map { |a| a.to_activity }
+    @activities = Transaction.completed_public_transactions.limit(ACTIVITIES_INDEX_LIMIT).order('created_at DESC').map { |a| a.to_activity }
 
     render layout: false
   end
