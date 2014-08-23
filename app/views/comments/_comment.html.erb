@@ -1,0 +1,8 @@
+<div class="comment" id="comment_<%= comment.id %>">
+  <hr>
+  <div class="comment_container">
+    <%= link_to 'Delete', [@transaction, comment], method: :delete, class: 'pull-right', remote: true, data: {confirm: 'Do you really want to delete this comment? '} %>
+    <b><%= comment.user.name %></b> <small><%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %></small>
+    <p><%= comment.content %></p>
+  </div>
+</div>

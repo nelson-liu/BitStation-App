@@ -1,0 +1,9 @@
+<% if @error %>
+  $('#new_comment #error').text("<%=j @error %>");
+<% else %>
+  $('#new_comment #error').text('');
+  $('#new_comment input[name=comment\\[content\\]]').val('');
+
+  $('#comments>p').remove()
+  $('#comments').prepend("<%=j @rendered_comment %>");
+<% end %>

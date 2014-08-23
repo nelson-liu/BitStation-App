@@ -10,7 +10,7 @@
             </span>
        </div>
       </th>
-           
+
       <th><input class="form-control" id="filter-amount" placeholder="Amount" type="text"></th>
       <th></th>
       <th><input class="form-control" id="filter-name" placeholder="Filter by Contact Name" type="text"></th>
@@ -85,7 +85,6 @@
 
 <script>
   window.recalculate_truncate_width("#transaction-history-table-detailed");
-  window.bind_popup_card();
   $("#filter-name, #filter-date, #filter-amount, #filter-message, #filter-note").change(function() {
     $("#transaction-history-table-detailed").filterTable([[".transaction-detailed-date", $("#filter-date").val()], [".transaction-detailed-amount", $("#filter-amount").val()], [".transaction-detailed-name", $("#filter-name").val()], [".transaction-detailed-message", $("#filter-message").val()], [".transaction-detailed-note", $("#filter-note").val()]]);
   }).keyup(function() {

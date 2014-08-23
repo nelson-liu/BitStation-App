@@ -38,4 +38,18 @@
 
 		<%= transaction_description_labels(@from, :send, @to, @transaction.amount) %>
 	</div>
+
+	<hr>
+
+	<div>
+		<div data-load="<%= new_transaction_comment_path(@transaction) %>" data-load-order="1"></div>
+
+		<div data-load="<%= transaction_comments_path(@transaction) %>" data-load-order="2">
+			Loading comments...
+		</div>
+	</div>
+
+	<%= javascript_tag do -%>
+		window.load_contents();
+	<% end %>
 <% end %>

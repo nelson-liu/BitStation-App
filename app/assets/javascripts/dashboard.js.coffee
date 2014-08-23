@@ -52,17 +52,27 @@ ready = ->
     $("#detailed-wrapper").show()
     $("#mask").show().fadeTo(300, 0.5)
 
-  # Opens Popup card when popuppable classes are clicked
-  window.bind_popup_card = ->
-    $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
-      path = $(this).closest(".popuppable").attr('data-load')
-      $("#popup-card-wrapper>div").load(path, ->
-        if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
-          $("#popup-card-wrapper>div").parent().css "bottom", "40px"
-        )
-      $("#popup-card-wrapper h5").html("Detailed View")
-      window.show_popup_card()
-      return false
+  # # Opens Popup card when popuppable classes are clicked
+  # window.bind_popup_card = ->
+  #   $(".popuppable").children().addBack().filter($('[popup-handler-bound!="true"]')).attr('popup-handler-bound', 'true').click ->
+  #     path = $(this).closest(".popuppable").attr('data-load')
+  #     $("#popup-card-wrapper>div").load(path, ->
+  #       if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
+  #         $("#popup-card-wrapper>div").parent().css "bottom", "40px"
+  #       )
+  #     $("#popup-card-wrapper h5").html("Detailed View")
+  #     window.show_popup_card()
+  #     return false
+
+  $(document).on 'click', '.popuppable', ->
+    path = $(this).closest(".popuppable").attr('data-load')
+    $("#popup-card-wrapper>div").load(path, ->
+      if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
+        $("#popup-card-wrapper>div").parent().css "bottom", "40px"
+      )
+    $("#popup-card-wrapper h5").html("Detailed View")
+    window.show_popup_card()
+    return false
 
   # Opens Popup card alert when called
   window.trigger_popup_alert = (message, type) ->
@@ -101,14 +111,18 @@ ready = ->
     $("#popup-card-wrapper>div").load $.getUrlVar('popup')
     window.show_popup_card()
 
-  # Load modules with AJAX Priority
-  for i in [1..3]
-    $("div[data-load]").filter("[data-load-order=" + i + "]").filter(":visible").each ->
-      path = $(this).attr('data-load')
-      # passes the query string to sub-modules for fields pre-filling
-      $(this).load(path + '?' + window.location.search.substring(1), '', ->
-        FB.XFBML.parse()
-      )
+  window.load_contents = ->
+    # Load modules with AJAX Priority
+    for i in [1..3]
+      $("div[data-load]").filter("[data-load-order=" + i + "]").filter("[data-loaded!=true]").filter(":visible").each ->
+        path = $(this).attr('data-load')
+        $(this).attr('data-loaded', true)
+        # passes the query string to sub-modules for fields pre-filling
+        $(this).load(path + '?' + window.location.search.substring(1), '', ->
+          FB.XFBML.parse()
+        )
+
+  window.load_contents()
 
   # Setup AJAX Pagination Links
   window.setup_paging_links = (table_name) ->

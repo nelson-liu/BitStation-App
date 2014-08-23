@@ -1,0 +1,9 @@
+<%= form_for [@transaction, @comment], remote: true do |f| -%>
+  <div class="input-group">
+    <%= f.text_field :content, class: 'form-control' %>
+    <span class="input-group-btn">
+      <button class="btn btn-default">Comment</button>
+    </span>
+  </div>
+  <p id="error" class="text-danger"></p>
+<% end -%>
