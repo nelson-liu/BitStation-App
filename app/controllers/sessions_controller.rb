@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
   before_filter :ensure_signed_in, only: [:oauth]
 
   FEE_ERROR_MESSAGE_REGEX = /This transaction requires a (.*?) BTC fee to be accepted by the bitcoin network./
+  TRANSFER_ERROR_MESSAGE_REGEX = /Payemnt method can't be blank/
 
   def new
     @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token
@@ -185,6 +186,10 @@ class SessionsController < ApplicationController
           end
         rescue => e
           ptr.failed!
+          if e.is_a?(Coinbase::Client::Error) && TRANSFER_ERROR_MESSAGE_REGEX =~ e.message
+            redirect_to(dashboard_url, flash: {warning: 'You must link a bank account through Coinbase to buy or sell Bitcoin. '}) and return
+          end
+
           flash[:error] = "Transfer failed for unknown reason. " + e.message
           redirect_to dashboard_url
         end
