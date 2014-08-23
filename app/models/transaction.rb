@@ -4,16 +4,21 @@ class Transaction < ActiveRecord::Base
   belongs_to :money_request
 
   has_many :comments, foreign_key: 'associated_transaction_id'
+  has_many :notes, foreign_key: 'associated_transaction_id'
 
   enum status: [:pending, :completed, :failed]
 
   scope :public_transactions, -> { where(is_public: true) }
   scope :completed_public_transactions, -> { completed.where(is_public: true) }
 
+  after_save :create_notes
+
+  attr_accessor :message
+
   extend ApplicationHelper
   include ApplicationHelper
 
-  def self.display_data_from_cb_transaction(t, current_coinbase_id)
+  def self.display_data_from_cb_transaction(t, current_coinbase_id, current_user)
     begin
       r = {
         time: DateTime.parse(t['created_at']),
@@ -26,16 +31,28 @@ class Transaction < ActiveRecord::Base
     rescue => e
       puts e.message
     end
-    puts t
 
     if t['transfer_type']
       r[:transfer_type] = t['transfer_type']
       if t['transfer_type'] == "sell"
         r[:target] = "Coinbase Sell"
-      else 
+      else
         r[:target] = "Coinbase Buy"
       end
     else
+      id = t['id']
+      trans = Transaction.find_by(coinbase_transaction_id: id)
+      logger.error '#'*80
+      logger.error trans.class
+      logger.error id
+      note = trans.notes.find_by(user_id: current_user.id) rescue nil
+
+      if note && note.content
+        r[:note] = {
+          content: note.content
+        }
+      end
+
       if r[:direction] == :to
         r[:target] = t['recipient'] ? (CoinbaseAccount.find_by_email(t['recipient']['email']).user.name rescue t['recipient']['name']) : 'External Account'
         r[:target_type] = t['recipient'] ?
@@ -46,11 +63,16 @@ class Transaction < ActiveRecord::Base
         r[:target_type] = t['sender'] ?
           (CoinbaseAccount.find_by_email(t['sender']['email']) ? :bitstation : :coinbase) :
           :external
-        puts r[:target_type]
       end
     end
 
     r
+  end
+
+  def message=(m)
+    logger.error '#' * 100
+    logger.error 'Setter'
+    @message = m
   end
 
   def sender_name
@@ -77,4 +99,24 @@ class Transaction < ActiveRecord::Base
       load: Rails.application.routes.url_helpers.transaction_path(self)
     }
   end
+
+  def sender_note
+    notes.find_by(user_id: sender.id)
+  end
+
+  def recipient_note
+    notes.find_by(user_id: recipient.id)
+  end
+
+  private
+
+    def create_notes
+      [sender, recipient].each do |u|
+        Note.create!(
+          user_id: u.id,
+          associated_transaction_id: id,
+          content: @message
+        )
+      end
+    end
 end

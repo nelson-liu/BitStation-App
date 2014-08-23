@@ -1,4 +1,3 @@
-
 <table id="transaction-history-table-detailed" class="table table-striped table-responsive table-hover table-condensed">
   <tbody>
     <tr>
@@ -38,15 +37,14 @@
           </div>
         </div></td>
 
-        <td class="ellipsis transaction-detailed-message"><div>
-          <div class="td-truncate">
-            Sample Transaction Message
-          </div>
-        </div></td>
-
         <td class="ellipsis transaction-detailed-note"><div>
           <div class="td-truncate">
-            Sample Transaction Note
+            <% logger.error e.to_yaml %>
+            <% if e[:note] && !e[:note][:content].empty? %>
+              <%= e[:note][:content] %>
+            <% else %>
+              No note assigned.
+            <% end %>
           </div>
         </div></td>
 

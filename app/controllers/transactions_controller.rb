@@ -96,7 +96,7 @@ class TransactionsController < ApplicationController
     @display = cb_transactions.map do |t|
       # TODO ignore request transactions for now
       next if t['request']
-      Transaction.display_data_from_cb_transaction(t, coinbase_id)
+      Transaction.display_data_from_cb_transaction(t, coinbase_id, current_user)
     end
 
     @next_page = (current_page < num_pages) ? transactions_path(page: current_page + 1) : nil

@@ -132,7 +132,7 @@ class ContactsController < ApplicationController
         end
         @transactions = @transactions.first(SHOW_CONTACT_RECENT_TRANSACTIONS_DISPLAY_LIMIT)
 
-        @transactions.map! { |t| Transaction.display_data_from_cb_transaction(t, coinbase_id) }
+        @transactions.map! { |t| Transaction.display_data_from_cb_transaction(t, coinbase_id, current_user) }
       end
     end
 

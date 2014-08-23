@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140823035724) do
+ActiveRecord::Schema.define(version: 20140823202224) do
 
   create_table "coinbase_accounts", force: true do |t|
     t.string   "email"
@@ -50,11 +50,21 @@ ActiveRecord::Schema.define(version: 20140823035724) do
     t.decimal  "dollar_amount"
   end
 
+  create_table "notes", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "associated_transaction_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notes", ["associated_transaction_id"], name: "index_notes_on_associated_transaction_id"
+  add_index "notes", ["user_id"], name: "index_notes_on_user_id"
+
   create_table "transactions", force: true do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
     t.decimal  "amount"
-    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "recipient_address"
@@ -62,6 +72,7 @@ ActiveRecord::Schema.define(version: 20140823035724) do
     t.decimal  "fee_amount"
     t.integer  "money_request_id"
     t.boolean  "is_public"
+    t.string   "coinbase_transaction_id"
   end
 
   create_table "transfers", force: true do |t|

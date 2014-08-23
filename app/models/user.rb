@@ -8,10 +8,9 @@ class User < ActiveRecord::Base
   has_many :incoming_money_requests, class_name: 'MoneyRequest', foreign_key: 'requestee_id'
 
   has_many :contacts
-
   has_many :transfers, class_name: "Transfer", foreign_key: "user_id"
-
   has_many :comments
+  has_many :notes
 
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
