@@ -3,7 +3,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :recipient, class_name: 'User'
   belongs_to :money_request
 
-  has_many :comments
+  has_many :comments, foreign_key: 'associated_transaction_id'
 
   enum status: [:pending, :completed, :failed]
 
