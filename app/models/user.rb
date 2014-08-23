@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_many :transfers, class_name: "Transfer", foreign_key: "user_id"
 
+  has_many :comments
+
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
 

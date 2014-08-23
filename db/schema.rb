@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822043915) do
+ActiveRecord::Schema.define(version: 20140823035724) do
 
   create_table "coinbase_accounts", force: true do |t|
     t.string   "email"
@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(version: 20140822043915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "oauth_credentials"
+  end
+
+  create_table "comments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "transaction_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "contacts", force: true do |t|

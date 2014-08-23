@@ -3,6 +3,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :recipient, class_name: 'User'
   belongs_to :money_request
 
+  has_many :comments
+
   enum status: [:pending, :completed, :failed]
 
   scope :public_transactions, -> { where(is_public: true) }
@@ -55,6 +57,10 @@ class Transaction < ActiveRecord::Base
     {
       title: "#{sender_name} gave #{recipient_name} #{friendly_amount(amount, 'BTC')}! ",
       content: has_message? ? "\"#{message}\"" : 'Without saying anything :( ',
+      comments: {
+        count: comments.count,
+        load: Rails.application.routes.url_helpers.transaction_path(self)
+      },
       like_link: Rails.application.routes.url_helpers.transaction_path(self)
     }
   end
