@@ -28,6 +28,17 @@ class Transaction < ActiveRecord::Base
       puts e.message
     end
 
+    id = t['id']
+    trans = Transaction.find_by(coinbase_transaction_id: id)
+    note = trans.notes.find_by(user_id: current_user.id) rescue nil
+
+    r[:note] = {
+      edit_path: Rails.application.routes.url_helpers.annotate_transaction_path(id),
+      form_id: "annotate_transaction_#{id}"
+    }
+
+    r[:note][:content] = note.content if (note && note.content)
+
     if t['transfer_type']
       r[:transfer_type] = t['transfer_type']
       if t['transfer_type'] == "sell"
@@ -36,17 +47,6 @@ class Transaction < ActiveRecord::Base
         r[:target] = "Coinbase Buy"
       end
     else
-      id = t['id']
-      trans = Transaction.find_by(coinbase_transaction_id: id)
-      note = trans.notes.find_by(user_id: current_user.id) rescue nil
-
-      r[:note] = {
-        edit_path: Rails.application.routes.url_helpers.annotate_transaction_path(id),
-        form_id: "annotate_transaction_#{id}"
-      }
-
-      r[:note][:content] = note.content if (note && note.content)
-
       if r[:direction] == :to
         r[:target] = t['recipient'] ? (CoinbaseAccount.find_by_email(t['recipient']['email']).user.name rescue t['recipient']['name']) : 'External Account'
         r[:target_type] = t['recipient'] ?
