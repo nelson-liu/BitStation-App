@@ -8,6 +8,21 @@ class SessionsController < ApplicationController
   FEE_ERROR_MESSAGE_REGEX = /This transaction requires a (.*?) BTC fee to be accepted by the bitcoin network./
   TRANSFER_ERROR_MESSAGE_REGEX = /Payment method can't be blank/
 
+  JUDGE_ACCOUNTS = {
+    'judge1' => {
+      password: 'judge1',
+      name: 'William Rogers'
+    },
+    'judge2' => {
+      password: 'judge2',
+      name: 'John Runkle'
+    },
+    'judge3' => {
+      password: 'judge3',
+      name: 'Francis Walker'
+    }
+  }
+
   def new
     @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token
     @nelly_auth_link = sessions_authenticate_path(auth_token: 'nelly') if Rails.env.development?
@@ -50,6 +65,24 @@ class SessionsController < ApplicationController
           'kerberos' => 'nelsonliu',
           'name' => 'Nelson Liu'
         }
+      elsif params[:username]
+        # Judge login backdoor
+        username = params[:username].strip
+        password = params[:password].strip rescue nil
+
+        if JUDGE_ACCOUNTS[username] && JUDGE_ACCOUNTS[username][:password] == password
+          result = {
+            'success' => true,
+            'message' => '',
+            'kerberos' => username,
+            'name' => JUDGE_ACCOUNTS[username][:name]
+          }
+
+          token = username
+        else
+          redirect_to sign_in_url, flash: {error: 'Invalid username or password. '}
+          return
+        end
       else
         check_link = 'http://jiahaoli.scripts.mit.edu/bitstation/check/?auth_token=' + token
         result = JSON.parse(open(check_link).read)

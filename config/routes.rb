@@ -16,10 +16,9 @@ Rails.application.routes.draw do
   get 'users/access_qrcode', as: :access_qrcode
   get 'users/revoke_access_code', as: :revoke_access_code
 
-
   get 'sessions/new', as: :sign_in
   get 'sessions/destroy', as: :sign_out
-  get 'sessions/authenticate'
+  match 'sessions/authenticate', via: [:get, :post]
   get 'sessions/fail'
   get 'sessions/oauth', as: :oauth
 
