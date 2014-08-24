@@ -164,11 +164,14 @@
 
 	/***** ACCOUNT SUMMARY STYLES *****/
 	#account_summary_module {
+    .btn {
+      margin-top: 5px;
+    }
 		#balances {
 			text-align: center;
 			padding: 10px 0;
 			span {
-				font-size: 24px;
+				font-size: 16px;
 				color: green;
 				font-family: "Courier New";
 				font-weight: bold;
