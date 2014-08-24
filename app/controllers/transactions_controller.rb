@@ -2,6 +2,7 @@ class TransactionsController < ApplicationController
   before_filter :ensure_signed_in, only: []
   before_filter :ensure_coinbase_account_linked, only: [:create]
   before_filter :check_for_unlinked_coinbase_account, only: [:index, :show]
+  before_filter :ensure_signed_in_without_redirect, only: [:annotate]
 
   include ApplicationHelper
 
@@ -175,6 +176,17 @@ class TransactionsController < ApplicationController
     end
 
     render layout: false
+  end
+
+  def annotate
+    @id = params[:id]
+    @content = params[:content]
+    note = Note.find_or_create_by(
+      user_id: current_user.id,
+      coinbase_transaction_id: @id
+    )
+
+    note.update!(content: @content)
   end
 
   private

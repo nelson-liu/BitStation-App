@@ -47,6 +47,10 @@ Rails.application.routes.draw do
   resources :transactions, only: [:create, :index, :show] do
     resources :comments, only: [:index, :new, :create, :destroy] do
     end
+
+    member do
+      post 'annotate'
+    end
   end
 
   resources :transfers, only: [:create] do

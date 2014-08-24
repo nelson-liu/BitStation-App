@@ -90,5 +90,10 @@ ready = ->
     $('#transfer_form input[name=is_public]').val(is_public)
     return false
 
+  $(document).on 'click', '.transaction-detailed-note', ->
+    $(this).find('form').begin_edit()
+    $(this).find('>div').removeClass('unpadded').addClass('unpadded');
+    return false
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

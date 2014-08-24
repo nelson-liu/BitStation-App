@@ -11,10 +11,6 @@ class Transaction < ActiveRecord::Base
   scope :public_transactions, -> { where(is_public: true) }
   scope :completed_public_transactions, -> { completed.where(is_public: true) }
 
-  after_save :create_notes
-
-  attr_accessor :message
-
   extend ApplicationHelper
   include ApplicationHelper
 
@@ -42,16 +38,14 @@ class Transaction < ActiveRecord::Base
     else
       id = t['id']
       trans = Transaction.find_by(coinbase_transaction_id: id)
-      logger.error '#'*80
-      logger.error trans.class
-      logger.error id
       note = trans.notes.find_by(user_id: current_user.id) rescue nil
 
-      if note && note.content
-        r[:note] = {
-          content: note.content
-        }
-      end
+      r[:note] = {
+        edit_path: Rails.application.routes.url_helpers.annotate_transaction_path(id),
+        form_id: "annotate_transaction_#{id}"
+      }
+
+      r[:note][:content] = note.content if (note && note.content)
 
       if r[:direction] == :to
         r[:target] = t['recipient'] ? (CoinbaseAccount.find_by_email(t['recipient']['email']).user.name rescue t['recipient']['name']) : 'External Account'
@@ -69,10 +63,10 @@ class Transaction < ActiveRecord::Base
     r
   end
 
-  def message=(m)
-    logger.error '#' * 100
-    logger.error 'Setter'
-    @message = m
+  def notes
+    coinbase_transaction_id.nil? ?
+      [] :
+      Note.where(coinbase_transaction_id: coinbase_transaction_id).all
   end
 
   def sender_name
@@ -109,14 +103,4 @@ class Transaction < ActiveRecord::Base
   end
 
   private
-
-    def create_notes
-      [sender, recipient].each do |u|
-        Note.create!(
-          user_id: u.id,
-          associated_transaction_id: id,
-          content: @message
-        )
-      end
-    end
 end

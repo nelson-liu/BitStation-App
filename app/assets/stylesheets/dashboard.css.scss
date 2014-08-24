@@ -219,10 +219,13 @@
 		}
 		td>div {
 			height:35px;
-			padding: 9px 5px;
 			height: 35px;
+      padding: 9px 5px;
 			border-top: 1px solid #dddddd;
 		}
+    td>div.unpadded {
+      padding: 0;
+    }
 	}
 
 	/***** BITSTATION FEED STYLES *****/

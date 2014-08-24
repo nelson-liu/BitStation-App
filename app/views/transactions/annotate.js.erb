@@ -1,0 +1,3 @@
+$('#annotate_transaction_' + "<%= @id %>").update_edit_field('content', "<%=j @content %>");
+$('#annotate_transaction_' + "<%= @id %>").end_edit();
+$('#annotate_transaction_' + "<%= @id %>").closest('td').find('>div').removeClass('unpadded');

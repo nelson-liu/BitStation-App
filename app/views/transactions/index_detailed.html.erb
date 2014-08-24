@@ -39,12 +39,17 @@
 
         <td class="ellipsis transaction-detailed-note"><div>
           <div class="td-truncate">
-            <% logger.error e.to_yaml %>
-            <% if e[:note] && !e[:note][:content].empty? %>
-              <%= e[:note][:content] %>
-            <% else %>
-              No note assigned.
-            <% end %>
+            <%= form_tag e[:note][:edit_path], id: e[:note][:form_id], remote: true %>
+              <% note = e[:note][:content] rescue nil %>
+              <%= text_field_tag :content, note, class: 'form-control', data: {display_role: 'edit', display_field: 'content'} %>
+              <p data-display-role="display" data-display-field="content">
+                <% if note && !note.empty? %>
+                  <%= note %>
+                <% else %>
+                  No note assigned.
+                <% end %>
+              </p>
+            </form>
           </div>
         </div></td>
 

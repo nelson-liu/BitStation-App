@@ -210,6 +210,15 @@ class SessionsController < ApplicationController
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
       if r.success?
         pt.update!(coinbase_transaction_id: r['transaction']['id'])
+
+        [pt.sender, pt.recipient].compact.each do |u|
+          Note.create!(
+            user_id: u.id,
+            coinbase_transaction_id: r['transaction']['id'],
+            content: pt.message
+          )
+        end
+
         pt.completed!
       end
       pt.money_request.paid! if r.success? && !pt.money_request.nil?
