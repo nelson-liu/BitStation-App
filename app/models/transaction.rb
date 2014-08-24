@@ -29,8 +29,10 @@ class Transaction < ActiveRecord::Base
     end
 
     id = t['id']
-    trans = Transaction.find_by(coinbase_transaction_id: id)
-    note = trans.notes.find_by(user_id: current_user.id) rescue nil
+    note = Note.find_by(
+      user_id: current_user.id,
+      coinbase_transaction_id: id
+    ) rescue nil
 
     r[:note] = {
       edit_path: Rails.application.routes.url_helpers.annotate_transaction_path(id),
