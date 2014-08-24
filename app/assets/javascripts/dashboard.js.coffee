@@ -64,12 +64,15 @@ ready = ->
   #     window.show_popup_card()
   #     return false
 
+  window.resize_popup = ->
+    if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
+      $("#popup-card-wrapper>div").parent().css "bottom", "40px"
+
   $(document).on 'click', '.popuppable', ->
     path = $(this).closest(".popuppable").attr('data-load')
     $("#popup-card-wrapper>div").load(path, ->
       if $("#popup-card-wrapper>div").height() + 80 > $(window).height()
-        $("#popup-card-wrapper>div").parent().css "bottom", "40px"
-      )
+        $("#popup-card-wrapper>div").parent().css "bottom", "40px")
     $("#popup-card-wrapper h5").html("Detailed View")
     window.show_popup_card()
     return false
