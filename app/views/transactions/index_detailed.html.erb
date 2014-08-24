@@ -40,7 +40,7 @@
           <div class="td-truncate">
             <%= form_tag e[:note][:edit_path], id: e[:note][:form_id], remote: true %>
               <% note = e[:note][:content] rescue nil %>
-              <%= text_field_tag :content, note, class: 'form-control', data: {display_role: 'edit', display_field: 'content'} %>
+              <%= text_field_tag :content, note, class: 'form-control', data: {display_role: 'edit', display_field: 'content'}, placeholder: "Press enter to confirm" %>
               <p data-display-role="display" data-display-field="content">
                 <% if note && !note.empty? %>
                   <%= note %>
