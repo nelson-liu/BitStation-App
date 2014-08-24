@@ -15,6 +15,8 @@
     <p class="text-center">
       <%= link_to 'Unlink this account', unlink_coinbase_account_path, class: "btn btn-primary", data: {confirm: 'Do you really want to unlink your Coinbase account? '} %>
       <%= link_to 'Import Contacts', import_contacts_path, method: :post, class: 'btn btn-primary' %>
+	  <%= link_to 'View Public BitCoin Addresses', dashboard_view_public_addresses_path,class: "btn btn-primary popuppable", 'data-load' => "#{dashboard_view_public_addresses_path}" %>
+
     </p>
   <% else %>
     <p>You haven't linked a Coinbase account yet.</p>

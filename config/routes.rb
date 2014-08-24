@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'users/access_qrcode', as: :access_qrcode
   get 'users/revoke_access_code', as: :revoke_access_code
 
+
   get 'sessions/new', as: :sign_in
   get 'sessions/destroy', as: :sign_out
   get 'sessions/authenticate'
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
   post 'transfers/create'
   get 'dashboard/access_qrcode_details'
   get 'dashboard/bitstation_feed'
+  get 'dashboard/view_public_addresses'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -30,6 +30,12 @@ class DashboardController < ApplicationController
     render layout: false
   end
 
+  def view_public_addresses
+    @public_address = current_coinbase_client.get('/addresses').to_hash
+    @public_address = @public_address["addresses"]
+    render layout: false
+  end
+
   def buy_sell_bitcoin
     @current_sell_price = current_coinbase_client.get('/prices/sell', {"qty"=>"1"})["subtotal"]["amount"]
     @current_buy_price = current_coinbase_client.get('/prices/buy', {"qty"=>"1"})["subtotal"]["amount"]

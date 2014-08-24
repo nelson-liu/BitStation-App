@@ -90,3 +90,4 @@ gem 'thin'
 
 # Email validation
 gem 'valid_email'
+
