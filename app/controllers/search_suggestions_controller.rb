@@ -11,7 +11,8 @@ class SearchSuggestionsController < ApplicationController
     if query.empty?
       render json: []
     else
-      users = User.where('kerberos LIKE ? or name LIKE ? or name LIKE ?', query + '%', query + '%', '% ' + query + '%').limit(5).all.to_a
+      u = User.arel_table
+      users = User.where(u[:kerberos].matches(query + '%').or(u[:name].matches(query + '%').or(u[:name].matches('% ' + query + '%')))).limit(5).all.to_a
       users.map!(&:to_search_suggestion)
 
       contacts = current_user.contacts.select do |c|
