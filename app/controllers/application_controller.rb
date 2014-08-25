@@ -128,6 +128,7 @@ class ApplicationController < ActionController::Base
       begin
         yield
       rescue => e
+        logger.error 'From the unknown error handler: '
         logger.error e.message
         logger.error e.backtrace.join("\n")
 
