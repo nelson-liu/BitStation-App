@@ -121,9 +121,13 @@ ready = ->
         path = $(this).attr('data-load')
         $(this).attr('data-loaded', true)
         # passes the query string to sub-modules for fields pre-filling
-        $(this).load(path + '?' + window.location.search.substring(1), '', ->
-          FB.XFBML.parse()
-        )
+        $.ajax({
+          url: path + '?' + window.location.search.substring(1),
+          dataType: 'html',
+          success: (data) =>
+            $(this).html(data)
+            FB.XFBML.parse()
+        })
 
   window.load_contents()
 
