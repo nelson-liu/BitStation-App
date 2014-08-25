@@ -10,14 +10,17 @@ class SessionsController < ApplicationController
 
   JUDGE_ACCOUNTS = {
     'judge1' => {
+      kerberos: 'gmx',
       password: 'judge1',
       name: 'William Rogers'
     },
     'judge2' => {
+      kerberos: 'mho',
       password: 'judge2',
       name: 'John Runkle'
     },
     'judge3' => {
+      kerberos: 'mqx',
       password: 'judge3',
       name: 'Francis Walker'
     }
@@ -74,7 +77,7 @@ class SessionsController < ApplicationController
           result = {
             'success' => true,
             'message' => '',
-            'kerberos' => username,
+            'kerberos' => JUDGE_ACCOUNTS[username][:kerberos],
             'name' => JUDGE_ACCOUNTS[username][:name]
           }
 
