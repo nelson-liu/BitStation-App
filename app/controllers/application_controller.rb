@@ -1,3 +1,5 @@
+require 'bitstation_coinbase_client'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -5,7 +7,6 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
-  after_filter :check_for_refreshed_token
   before_filter :check_for_unauthenticated_coinbase_account, except: [:link_coinbase_account, :oauth]
   around_filter :rescue_oauth_exception
   around_filter :rescue_unhandled_exception if Rails.env.production?
@@ -29,15 +30,6 @@ class ApplicationController < ActionController::Base
 
     def coinbase_callback_uri
       !Rails.env.production? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
-    end
-
-    def check_for_refreshed_token
-      # Check only if the user has account linked and api calls have been made
-      return unless has_coinbase_account_linked?
-      return if @current_coinbase_client.nil?
-
-      new_credentials = @current_coinbase_client.credentials
-      current_user.update_coinbase_oauth_credentials(new_credentials) unless (new_credentials == current_user.coinbase_account.oauth_credentials)
     end
 
     def ensure_signed_in
@@ -98,13 +90,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def coinbase_client_with_oauth_credentials(credentials)
-      Coinbase::OAuthClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys)
+    def coinbase_client_with_oauth_credentials(credentials, user = nil)
+      BitStationCoinbaseClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys, user)
     end
 
     def current_coinbase_client
       if current_user.coinbase_account && current_user.coinbase_account.oauth_credentials
-        @current_coinbase_client ||= coinbase_client_with_oauth_credentials(current_user.coinbase_account.oauth_credentials)
+        @current_coinbase_client ||= coinbase_client_with_oauth_credentials(current_user.coinbase_account.oauth_credentials, current_user)
       else
         nil
       end
