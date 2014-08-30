@@ -1,8 +1,6 @@
 class BitStationCoinbaseClient < Coinbase::OAuthClient
   def initialize(client_id, client_secret, user_credentials, user, options = {})
     @user = user
-    @client_id = client_id
-    @client_secret = client_secret
     super(client_id, client_secret, user_credentials, options)
   end
 
