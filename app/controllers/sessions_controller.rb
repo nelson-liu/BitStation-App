@@ -109,7 +109,7 @@ class SessionsController < ApplicationController
         flash[:success] = "You have successfully signed in as #{user.name}. "
         redirect_back_or_default dashboard_url
       else
-        redirect_to sessions_fail_url(message: 'Authentication failed. ')
+        redirect_to sessions_fail_url(message: 'Authentication failed. Reason: ' + result["message"])
       end
     end
   end
