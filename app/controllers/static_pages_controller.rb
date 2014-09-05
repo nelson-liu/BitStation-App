@@ -15,4 +15,6 @@ class StaticPagesController < ApplicationController
   end
   def team
   end
+  def beta
+  end
 end

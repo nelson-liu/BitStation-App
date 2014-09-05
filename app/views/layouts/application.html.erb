@@ -34,9 +34,9 @@
             <% elsif !@auth_link.nil? %>
               <% if Rails.env.development? %>
                 <%= link_to 'Nelly\'s Backdoor', @nelly_auth_link, class: 'btn btn-primary btn-sm pull-right' %>
+                <%= link_to 'Judges\' Login', sign_in_path, class: 'btn btn-primary btn-sm pull-right' %>
               <% end %>
               <%= link_to 'MIT Certificate Login', @auth_link, class: 'btn btn-primary btn-sm pull-right' %>
-              <%= link_to 'Judges\' Login', sign_in_path, class: 'btn btn-primary btn-sm pull-right' %>
             <% end %>
           </li>
         </ul>

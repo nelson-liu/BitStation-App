@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   root :to => 'static_pages#homepage'
 
   match '/about', to: 'static_pages#about', via: :get, as: :about
+  match '/beta', to: 'static_pages#beta', via: :get, as: :beta
   match '/security', to: 'static_pages#security', via: :get, as: :security
   match '/faq', to: 'static_pages#faq', via: :get, as: :faq
   match '/team', to: 'static_pages#team', via: :get, as: :team
