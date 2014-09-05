@@ -123,6 +123,8 @@ footer {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
+  width: 70%;
+  margin: 0 15%;
 }
 
 p.team{
