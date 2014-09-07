@@ -15,6 +15,13 @@ class User < ActiveRecord::Base
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
 
+  def self.address_type(address)
+    return :coinbase if address =~ /@/
+    return :bitstation if address.length <= 10
+    return :external if Bitcoin::valid_address?(address)
+    return nil
+  end
+
   def update_coinbase_oauth_credentials(credentials)
     coinbase_account.update!({oauth_credentials: credentials})
   end

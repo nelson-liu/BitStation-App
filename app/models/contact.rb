@@ -44,18 +44,12 @@ class Contact < ActiveRecord::Base
 
   def self.source_from_address(address)
     return nil if address.nil?
-    address.strip!
-    return :bitstation if address.downcase =~ /@mit.edu/
-    return :bitstation if (!(address =~ /@/) && address.length <= 10 && !address.empty?)
-    return :coinbase if ValidateEmail.valid?(address)
-    return :external if Bitcoin::valid_address?(address)
-    return nil
+    return User.address_type(address)
   end
 
   def self.normalize_address(address)
-    return nil if source_from_address(address).nil?
     address.strip!
-    address = address[0...-8] if source_from_address(address) == :bitstation && address =~ /@/
+    return nil if source_from_address(address).nil?
     address
   end
 
@@ -68,13 +62,7 @@ class Contact < ActiveRecord::Base
   end
 
   def source
-    if external?
-      :external
-    elsif bitstation?
-      :bitstation
-    else
-      :coinbase
-    end
+    self.class.source_from_address(address)
   end
 
   def email
