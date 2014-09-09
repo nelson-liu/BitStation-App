@@ -79,6 +79,8 @@ class SearchSuggestionsController < ApplicationController
         else
           ['danger', 'This user hasn\'t joined BitStation yet. ']
         end
+      elsif u['type'] == 'coinbase'
+        ['warning', 'This seems to be an user from Coinbase. ']
       elsif u['type'] == 'external'
         ['warning', 'This is an external address. ']
       end
