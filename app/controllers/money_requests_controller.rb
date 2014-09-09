@@ -168,7 +168,7 @@ class MoneyRequestsController < ApplicationController
 
     respond_to do |format|
       format.js do
-        @rendered_html = render_to_string(formats: [:html]).lines.map { |l| l.strip }.join('').html_safe
+        @rendered_html = render_to_string(formats: [:html]).lines.join('').html_safe
         # raise @rendered_html.lines.count.to_s
         render formats: [:js]
       end
