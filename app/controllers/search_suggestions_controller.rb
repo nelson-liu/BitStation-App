@@ -34,9 +34,7 @@ class SearchSuggestionsController < ApplicationController
 
     def user_contacts(query)
       current_user.contacts.select do |c|
-        c.coinbase? ?
-          false :
-          ((/\b#{query}/i =~ c.name) || (/^#{query}/i =~ c.address))
+        ((/\b#{query}/i =~ c.name) || (/^#{query}/i =~ c.address))
       end.first(SEARCH_SUGGESTION_USER_LIMIT).map(&:to_search_suggestion)
     end
 
