@@ -4,7 +4,7 @@ class SearchSuggestionsController < ApplicationController
 
   before_filter :ensure_signed_in_without_redirect, only: [:user]
 
-  SEARCH_SUGGESTION_USER_LIMIT = 10
+  SEARCH_SUGGESTION_USER_LIMIT = 5
 
   def user
     query = params[:query] || ''
