@@ -29,31 +29,28 @@ class TransactionsController < ApplicationController
 
     @error = nil
 
-    is_kerberos = (!recipient.nil?) && (recipient.length <= 10)
-    is_btc = !is_kerberos
+    recipient_type = User.address_type(recipient)
 
-    user = User.find_by(kerberos: recipient) if is_kerberos
+    user = User.find_by(kerberos: recipient) if (recipient_type == :bitstation)
 
     begin
       (@error = 'Invalid currency. ' and raise TransactionParameterError) unless CURRENCIES.include?(currency)
-      (@error = 'Invalid BTC address. ' and raise TransactionParameterError) if is_btc && (!Bitcoin::valid_address?(recipient))
-      (@error = 'Why sending yourself money...? ' and raise TransactionParameterError) if is_kerberos && user == current_user
+      (@error = 'Invalid address. ' and raise TransactionParameterError) if recipient_type.nil?
+      (@error = 'Why sending yourself money...? ' and raise TransactionParameterError) if user && (user == current_user)
       (@error = "Invalid transfer amount. The minimum transaction amount is #{MINIMUM_TRANSACTION_AMOUNT[currency]} #{currency}." and raise TransactionParameterError) if amount.nil? || amount < MINIMUM_TRANSACTION_AMOUNT[currency]
 
       spot_price = current_coinbase_client.spot_price('USD').to_d
       dollar_amount = amount * spot_price
       (@error = "You do not have enough funds in your Coinbase account. " and raise TransactionParameterError) if amount > current_coinbase_client.balance.to_d
 
-      if is_kerberos && user.nil?
+      if (recipient_type == :bitstation) && user.nil?
         @warning = "The recipient hasn't joined BitStation yet. We have sent an invitation to him / her at #{recipient}@mit.edu. "
-
         TransactionMailer.invite_recipient(current_user, recipient, amount, dollar_amount, root_url).deliver
-      elsif is_kerberos && user.coinbase_account.nil?
+      elsif (recipient_type == :bitstation) && user.coinbase_account.nil?
         @warning = "The recipient hasn't linked a Coinbase account yet. We have sent an notification to him / her at #{recipient}@mit.edu. "
-
         TransactionMailer.remind_link_coinbase_account(current_user, recipient, amount, dollar_amount, link_coinbase_account_url).deliver
       else
-        pt = is_kerberos ?
+        pt = (recipient_type == :bitstation) ?
           Transaction.create!({sender: current_user, recipient: user, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public}) :
           Transaction.create!({sender: current_user, recipient: nil, recipient_address: recipient, amount: amount, message: message, fee_amount: fee_amount, is_public: is_public})
       end
