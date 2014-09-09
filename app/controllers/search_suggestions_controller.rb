@@ -4,32 +4,61 @@ class SearchSuggestionsController < ApplicationController
 
   before_filter :ensure_signed_in_without_redirect, only: [:user]
 
+  SEARCH_SUGGESTION_USER_LIMIT = 10
+
   def user
     query = params[:query] || ''
     query.strip!
+    query.downcase!
 
     if query.empty?
       render json: []
     else
-      u = User.arel_table
-      users = User.where(u[:kerberos].matches(query + '%').or(u[:name].matches(query + '%').or(u[:name].matches('% ' + query + '%')))).limit(5).all.to_a
-      users.map!(&:to_search_suggestion)
+      suggestions = user_users(query)
+      suggestions += user_contacts(query) unless suggestions.size >= SEARCH_SUGGESTION_USER_LIMIT
+      suggestions += user_potentials(query) unless suggestions.size >= SEARCH_SUGGESTION_USER_LIMIT
 
-      contacts = current_user.contacts.select do |c|
-        c.coinbase? ?
-          false :
-          ((/\b#{query}/i =~ c.name) || (/^#{query}/i =~ c.address))
-      end.map(&:to_search_suggestion)
-
-      suggestions = users + contacts
-      suggestions.uniq! { |s| [s['type'], s['address']] }
-
+      suggestions = suggestions.uniq { |s| s['address'] }.first(SEARCH_SUGGESTION_USER_LIMIT)
       suggestions.each { |s| s['html'] = html_from_search_suggestion(s) }
+
       render json: suggestions
     end
   end
 
   private
+    def user_users(query)
+      u = User.arel_table
+      users = User.where(u[:kerberos].matches(query + '%').or(u[:name].matches(query + '%').or(u[:name].matches('% ' + query + '%')))).limit(SEARCH_SUGGESTION_USER_LIMIT).all.to_a
+      users.map!(&:to_search_suggestion)
+    end
+
+    def user_contacts(query)
+      current_user.contacts.select do |c|
+        c.coinbase? ?
+          false :
+          ((/\b#{query}/i =~ c.name) || (/^#{query}/i =~ c.address))
+      end.first(SEARCH_SUGGESTION_USER_LIMIT).map(&:to_search_suggestion)
+    end
+
+    def user_potentials(query)
+      search_tokens = query.split(' ')
+      results = KERBEROS_DIRECTORY_HASH[search_tokens[0]] || []
+
+      1.upto(search_tokens.size - 1) do |i|
+        results.select! { |ei| KERBEROS_DIRECTORY[ei][:common_name] =~ /\b#{search_tokens[i]}/i }
+      end
+
+      results.first(SEARCH_SUGGESTION_USER_LIMIT).map do |ei|
+        e = KERBEROS_DIRECTORY[ei]
+        {
+          'address' => e[:kerberos],
+          'name' => e[:common_name],
+          'tokens' => e[:common_name].split(' ') + [e[:kerberos]],
+          'type' => 'bitstation'
+        }
+      end
+    end
+
     def html_from_search_suggestion(u)
       inner_content = content_tag(:span, u['name'] + ' ') + address_type_label(u['type'], :short, class: 'pull-right autocomplete-type')
       result = content_tag(:p, inner_content.html_safe, class: 'autocomplete_name')
