@@ -10,7 +10,7 @@
   width: 196px;
 }
 
-.dashboard-action {
+.dashboard-action, #transactions-show_external {
 	#wrapper-main {
 		margin-top: 20px;
 	}
@@ -111,11 +111,7 @@
   }
 
 	#detailed-wrapper, #popup-card-wrapper {
-		position: fixed;
 		z-index: 1000;
-		top: 40px;
-		left: 0px;
-		display: none;
 		>div {
 			height: 100%;
 		}
@@ -257,6 +253,17 @@
 			}
 		}
 	}
+
+	.fb_iframe_widget {
+		display: inline-block !important;
+	}
+}
+
+.dashboard-action #popup-card-wrapper, .dashboard-action #detailed-wrapper {
+		position: fixed;
+		top: 40px;
+		left: 0px;
+		display: none;
 }
 
 .bodylock1, .bodylock2 {
@@ -264,7 +271,7 @@
 }
 
 @media (min-width: 768px) {
-	section.module>div {
+	.dashboard-action section.module>div {
 		height: 420px;
     .dashboard-module-spinner-container {
       margin-top: 165px;

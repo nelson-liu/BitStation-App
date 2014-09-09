@@ -51,6 +51,7 @@ Rails.application.routes.draw do
 
     member do
       post 'annotate'
+      get 'show_external'
     end
   end
 

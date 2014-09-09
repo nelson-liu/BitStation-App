@@ -159,6 +159,7 @@ class TransactionsController < ApplicationController
       @transaction_json = @transaction.to_json
     else
       @transaction = Transaction.find(@transaction_id)
+      @a = @transaction.to_activity
 
       @from = @transaction.sender == current_user ?
         'You' :
@@ -173,6 +174,24 @@ class TransactionsController < ApplicationController
     end
 
     render layout: false
+  end
+
+  def show_external
+    @transaction_id = params['id']
+    @is_coinbase = is_coinbase_transaction_id?(@transaction_id)
+    @transaction = Transaction.find(@transaction_id)
+    @a = @transaction.to_activity
+
+    @from = @transaction.sender == current_user ?
+      'You' :
+      @transaction.sender.name
+    @to = @transaction.recipient.nil? ?
+      'External User' :
+      (
+        @transaction.recipient == current_user ?
+        'you' :
+        @transaction.recipient.name
+      )
   end
 
   def annotate

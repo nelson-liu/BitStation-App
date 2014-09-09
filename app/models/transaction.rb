@@ -91,7 +91,7 @@ class Transaction < ActiveRecord::Base
         count: comments.count,
         display_id: "transaction_comments_count_#{id}"
       },
-      like_link: Rails.application.routes.url_helpers.transaction_path(self),
+      like_link: Rails.application.routes.url_helpers.show_external_transaction_path(self),
       load: Rails.application.routes.url_helpers.transaction_path(self)
     }
   end
