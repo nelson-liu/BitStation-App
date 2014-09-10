@@ -157,6 +157,7 @@ class TransactionsController < ApplicationController
 
       # TODO: Get full names from our user database if possible, not coinbase
       @transaction_json = @transaction.to_json
+      @display_data = Transaction.display_data_from_cb_transaction(@transaction, nil, current_user)
     else
       @transaction = Transaction.find(@transaction_id)
       @a = @transaction.to_activity

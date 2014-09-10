@@ -1,7 +1,14 @@
 <% if @is_coinbase %>
 	<div class="panel-body transaction_details">
 		<h4>Transaction <%= @transaction_id %></h4>
+
 		<p><%= DateTime.parse(@transaction_date).strftime('%b %d, %Y at %I:%M %p') %></p>
+
+		<% note = @display_data[:note][:content] rescue nil %>
+		<% if note && !note.empty? %>
+			<p><%= @display_data[:note][:content] %></p>
+		<% end %>
+
 		<p><span class="label label-<%= @transaction['amount'] > 0 ? 'success' : 'danger' %>"><%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %></span>
 			<% if @transaction['amount'] < 0 %>
 				<%= '<span class="label label-danger">Outgoing</span>'.html_safe %>
