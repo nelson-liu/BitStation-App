@@ -1,10 +1,14 @@
 require 'recap/recipes/rails'
 
-set :application, 'bitstation'
+set :application, 'bitstation_gce'
 set :repository, 'git@github.com:isundaylee/BitStation-App.git'
-set :user, 'ubuntu'
+# set :user, 'ubuntu'
+set :user, 'bitstation'
 
-server '54.164.74.107', :app
+ssh_options[:keys] = '/Users/Sunday/.ssh/gce'
+
+# server '54.164.74.107', :app
+server '107.178.209.244', :app # GCE
 
 namespace :deploy do
   task :restart do
