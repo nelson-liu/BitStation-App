@@ -1,11 +1,14 @@
 class BitStationCoinbaseClient < Coinbase::OAuthClient
+  # Lock the token within 30s of refreshing time
+  TOKEN_LOCK_THRESHOLD = 30
+
   def initialize(client_id, client_secret, user_credentials, user, options = {})
     @user = user
     super(client_id, client_secret, user_credentials, options)
   end
 
   def http_verb(verb, path, options = {})
-    if @user.nil?
+    if @user.nil? || @user.coinbase_account.nil? || !@user.coinbase_account.token_expires_in?(TOKEN_LOCK_THRESHOLD.seconds)
       super
     else
       @user.coinbase_account.with_lock do
