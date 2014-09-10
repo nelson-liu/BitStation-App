@@ -19,7 +19,7 @@ worker_processes 4
 # user, do this to switch euid/egid in the workers (also chowns logs):
 # user "unprivileged_user", "unprivileged_group"
 
-APP_PATH = '/home/bitstation_gce/app'
+APP_PATH = '/home/bitstation/app'
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
