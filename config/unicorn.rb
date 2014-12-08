@@ -29,7 +29,7 @@ working_directory APP_PATH # available in 0.94.0+
 # we use a shorter backlog for quicker failover when busy
 # listen APP_PATH + "/.unicorn.sock", :backlog => 64
 listen "/tmp/unicorn.bitstation.sock"
-listen 8080, :tcp_nopush => true
+# listen 8080, :tcp_nopush => true
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
