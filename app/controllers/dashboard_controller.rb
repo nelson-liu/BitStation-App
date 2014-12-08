@@ -10,6 +10,7 @@ class DashboardController < ApplicationController
   end
 
   def transfer
+    @is_module = true
     @default_currency = 'USD'
     @exchange_rate = current_coinbase_client.spot_price("USD").to_d
 
@@ -17,6 +18,7 @@ class DashboardController < ApplicationController
   end
 
   def account_summary
+    @is_module = true
     if has_coinbase_account_linked?
       @current_balance = current_coinbase_client.balance.to_d
       @current_balance_usd = current_coinbase_client.spot_price("USD").to_d * @current_balance
@@ -37,12 +39,14 @@ class DashboardController < ApplicationController
   end
 
   def buy_sell_bitcoin
+    @is_module = true
     @current_sell_price = current_coinbase_client.get('/prices/sell', {"qty"=>"1"})["subtotal"]["amount"]
     @current_buy_price = current_coinbase_client.get('/prices/buy', {"qty"=>"1"})["subtotal"]["amount"]
     render layout: false
   end
 
   def bitstation_feed
+    @is_module = true
     render layout: false
   end
 end

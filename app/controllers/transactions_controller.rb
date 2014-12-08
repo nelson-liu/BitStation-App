@@ -72,6 +72,7 @@ class TransactionsController < ApplicationController
   end
 
   def index
+    @is_module = true
     client = current_coinbase_client
     page = params[:page] || 1
     page = page.to_i

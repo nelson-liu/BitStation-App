@@ -124,8 +124,12 @@ class ApplicationController < ActionController::Base
         logger.error e.message
         logger.error e.backtrace.join("\n")
 
-        flash[:error] = 'An unknown error happened. '
-        redirect_to root_url
+        if @is_module
+          render inline: '<p>An unknown error happened. '
+        else
+          flash[:error] = 'An unknown error happened. '
+          redirect_to root_url
+        end
       end
     end
 

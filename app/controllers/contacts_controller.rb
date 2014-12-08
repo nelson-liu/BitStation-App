@@ -53,6 +53,7 @@ class ContactsController < ApplicationController
   end
 
   def index
+    @is_module = true
     @contacts = current_user.contacts.order('name ASC')
 
     render layout: false
