@@ -12,7 +12,7 @@ class CoinbaseAccount < ActiveRecord::Base
 
   def token_expires_in?(time)
     oauth_credentials ?
-      (Time.at(oauth_credentials[:expires_at]) - Time.now) <= time :
+      (Time.at(oauth_credentials["expires_at"]) - Time.now) <= time :
       false
   end
 end
