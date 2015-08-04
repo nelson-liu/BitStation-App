@@ -13,7 +13,48 @@
  *= require_tree .
  *= require font-awesome
  *= require_self
+ *= require bootstrap-datepicker3
  */
+
+ /* Side notes for calling out things
+-------------------------------------------------- */
+ 
+/* Base styles (regardless of theme) */
+.bs-callout {
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border-left: 5px solid #eee;
+}
+.bs-callout h4 {
+  margin-top: 0;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+.bs-callout code,
+.bs-callout .highlight {
+  background-color: #fff;
+}
+ 
+/* Themes for different contexts */
+.bs-callout-danger {
+  background-color: #fcf2f2;
+  border-color: #dFb5b4;
+}
+.bs-callout-warning {
+  background-color: #fefbed;
+  border-color: #f1e7bc;
+}
+.bs-callout-info {
+
+  border-color: #428bca;
+}
+
+p{
+  line-height: 1.5em;
+}
+ /* EXTRA STYLES
+-------------------------------------------------- */
 
 body {
   margin-top: 0px;
@@ -61,11 +102,6 @@ hr {
   color: #428bca;
 }
 
-.navbar-brand.text-hide {
-  background-image: url(/assets/brand.png);
-  width: 196px;
-}
-
 /* Our footer */
 
 footer {
@@ -80,6 +116,19 @@ footer {
 
 .float-left {
   float: left;
+}
+
+/*Team Page */
+.teammember{
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  width: 70%;
+  margin: 0 15%;
+}
+
+p.team{
+  text-align: justify;
 }
 
 /* Debug info styles */
@@ -99,4 +148,14 @@ footer {
   .navbar-nav p.navbar-text {
     padding: 0 15px;
   }
+}
+
+/* Display & edit data styles */
+
+[data-display-role=edit], [data-display-role=submit], [data-display-role=error], [data-display-role=cancel] {
+  display: none;
+}
+
+.address-type-label-short {
+  width: 35px;
 }

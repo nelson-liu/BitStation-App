@@ -6,11 +6,7 @@ class SessionsController < ApplicationController
   before_filter :ensure_signed_in, only: [:oauth]
 
   FEE_ERROR_MESSAGE_REGEX = /This transaction requires a (.*?) BTC fee to be accepted by the bitcoin network./
-
-  def new
-    @auth_link = 'https://jiahaoli.scripts.mit.edu:444/bitstation/authenticate/?auth_token=' + generate_auth_token
-    @nelly_auth_link = sessions_authenticate_path(auth_token: 'nelly') if Rails.env.development?
-  end
+  TRANSFER_ERROR_MESSAGE_REGEX = /Payment method can't be blank/
 
   def authenticate
     result = nil
@@ -70,16 +66,16 @@ class SessionsController < ApplicationController
         sign_in user
 
         flash[:success] = "You have successfully signed in as #{user.name}. "
-        redirect_to dashboard_url
+        redirect_back_or_default dashboard_url
       else
-        redirect_to sessions_fail_url(message: 'Authentication failed. ')
+        redirect_to sessions_fail_url(message: 'Authentication failed. Reason: ' + result["message"])
       end
     end
   end
 
   def fail
     flash[:error] = params[:message]
-    redirect_to sign_in_url
+    redirect_to root_url
     # @message = params[:message]
   end
 
@@ -125,7 +121,7 @@ class SessionsController < ApplicationController
         end
       elsif pending_action == 'transact'
         # It's a pending transaction
-        pt = PendingTransaction.find(pending_action_id)
+        pt = Transaction.find(pending_action_id)
         cc = coinbase_client_with_oauth_credentials(token.to_hash)
         email = cc.get('/users').users[0].user.email
 
@@ -160,6 +156,38 @@ class SessionsController < ApplicationController
           flash[:error] = "Transaction failed. Are you trying to send money to yourself (which isn't allowed)? Or maybe you do not have enough funds? "
           redirect_to dashboard_url
         end
+      elsif pending_action == "transfer"
+        # It's a pending transfer
+        ptr = Transfer.find(pending_action_id)
+        cc = coinbase_client_with_oauth_credentials(token.to_hash)
+        email = cc.get('/users').users[0].user.email
+        if ptr.user != current_user || email != current_user.coinbase_account.email
+          flash[:error] = "Please authenticate with the Coinbase account that is linked to you only. "
+          redirect_to dashboard_url
+          return
+        end
+
+        begin
+          if process_pending_transfer(ptr, cc)
+            if ptr.action == "buy"
+              flash[:success] = "You have successfully bought #{ptr.amount} BTC. "
+            elsif ptr.action == "sell"
+              flash[:success] = "You have successfully sold #{ptr.amount} BTC. "
+            end
+            redirect_to dashboard_url
+          else
+            ptr.failed!
+            raise
+          end
+        rescue => e
+          ptr.failed!
+          if e.is_a?(Coinbase::Client::Error) && TRANSFER_ERROR_MESSAGE_REGEX =~ e.message
+            redirect_to(dashboard_url, flash: {warning: 'You must link a bank account through Coinbase to buy or sell Bitcoin. '}) and return
+          end
+
+          flash[:error] = "Transfer failed for unknown reason. " + e.message
+          redirect_to dashboard_url
+        end
       end
     rescue OAuth2::Error
       flash[:error] = 'Authentication for Coinbase failed. '
@@ -175,7 +203,30 @@ class SessionsController < ApplicationController
 
     def process_pending_transaction(pt, critical_client)
       r = critical_client.send_money((pt.recipient.coinbase_account.email rescue pt.recipient_address), pt.amount, pt.message, transaction: {user_fee: pt.fee_amount.to_s})
-      pt.completed! if r.success?
+      if r.success?
+        pt.update!(coinbase_transaction_id: r['transaction']['id'])
+
+        [pt.sender, pt.recipient].compact.each do |u|
+          Note.create!(
+            user_id: u.id,
+            coinbase_transaction_id: r['transaction']['id'],
+            content: pt.message
+          )
+        end
+
+        pt.completed!
+      end
+      pt.money_request.paid! if r.success? && !pt.money_request.nil?
+      r.success?
+    end
+
+    def process_pending_transfer(ptr, critical_client)
+      if ptr.action.to_s == "buy"
+        r = critical_client.buy!(ptr.amount)
+      elsif ptr.action.to_s == "sell"
+        r = critical_client.sell!(ptr.amount)
+      end
+      ptr.completed! if r.success?
       r.success?
     end
 end

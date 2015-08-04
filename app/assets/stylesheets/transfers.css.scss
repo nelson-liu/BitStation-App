@@ -1,0 +1,30 @@
+// Place all the styles related to the transfers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#buyprice, #sellprice {
+	p {
+		margin: 8px 0 16px 0;
+
+		.well {
+			margin-right: 5px;
+		}
+	}
+}
+
+.buy-sell-table {
+	tbody>tr>td {
+		border: none;
+		padding: 5px;
+		height: auto;
+	}
+	.table-amount {
+		font-family: monospace;
+		text-align: right;
+	}
+
+	.table-total>td {
+		border-top: 1px solid #666;
+		font-weight: bold;
+	}
+}

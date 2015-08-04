@@ -1,0 +1,8 @@
+<% if @success %>
+  $('#contact_form').update_edit_field('name', '<%= j @contact.name %>')
+  $('#contact_form').end_edit();
+
+  $('#address_book_module').reload_module();
+<% else %>
+  $('#contact_form').show_edit_error('<%= j @error %>');
+<% end %>

@@ -1,0 +1,6 @@
+<%= render 'account_activity_history', id: 'transaction-history-table', data: @display, activity: 'transaction', prev_page: @prev_page, next_page: @next_page %>
+
+<!-- FIXME this too is ugly -->
+<script>
+  window.setup_paging_links('#transaction-history-table');
+</script>

@@ -1,3 +1,5 @@
+require 'bitstation_coinbase_client'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -5,14 +7,16 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_flash_class_variable
   before_filter :prepare_oauth_client
   before_filter :warn_unlinked_coinbase_account
-  after_filter :check_for_refreshed_token
   before_filter :check_for_unauthenticated_coinbase_account, except: [:link_coinbase_account, :oauth]
   around_filter :rescue_oauth_exception
-  around_filter :rescue_unhandled_exception unless Rails.env.development?
+  around_filter :rescue_unhandled_exception if Rails.env.production?
 
-  COINBASE_CLIENT_ID = 'c0ce8b898aa60d616b3a4051d65d19b3d2dff5ed05f78c5c761cfb2f8806b7bb'
-  COINBASE_CLIENT_SECRET = '72bbe98c81e7b02765812e0c3c059d453cdf28bb45e6e6067dea9363ba618b74'
-  COINBASE_CALLBACK_URI = 'http://localhost:3000/sessions/oauth'
+  COINBASE_CLIENT_ID = 'e4698a40d15948391bba01e0fd66a292140d9e65623709819267eac4d1f19022'
+  COINBASE_CLIENT_SECRET = '4ffe034c38914e1d0a71aa4153954e2a647e6f9b4a2023fd088db220c96cc548'
+  COINBASE_CALLBACK_URI = 'https://localhost:3000/sessions/oauth'
+
+  # FIXME must be a better way
+  include ActionView::Helpers::JavaScriptHelper
 
   # FIXME must be a better way
   include ActionView::Helpers::JavaScriptHelper
@@ -20,30 +24,21 @@ class ApplicationController < ActionController::Base
   private
 
     def coinbase_client_id
-      Rails.env.development? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
+      !Rails.env.production? ? COINBASE_CLIENT_ID : ENV["BITSTATION_COINBASE_CLIENT_ID"]
     end
 
     def coinbase_client_secret
-      Rails.env.development? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
+      !Rails.env.production? ? COINBASE_CLIENT_SECRET : ENV["BITSTATION_COINBASE_CLIENT_SECRET"]
     end
 
     def coinbase_callback_uri
-      Rails.env.development? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
-    end
-
-    def check_for_refreshed_token
-      # Check only if the user has account linked and api calls have been made
-      return unless has_coinbase_account_linked?
-      return if @current_coinbase_client.nil?
-
-      new_credentials = @current_coinbase_client.credentials
-      current_user.update_coinbase_oauth_credentials(new_credentials) unless (new_credentials == current_user.coinbase_account.oauth_credentials)
+      !Rails.env.production? ? COINBASE_CALLBACK_URI : ENV["BITSTATION_COINBASE_CALLBACK_URI"]
     end
 
     def ensure_signed_in
       unless signed_in?
         flash[:error] = "Please sign in first. "
-        redirect_to sign_in_url
+        redirect_to root_url
       end
     end
 
@@ -98,13 +93,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def coinbase_client_with_oauth_credentials(credentials)
-      Coinbase::OAuthClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys)
+    def coinbase_client_with_oauth_credentials(credentials, user = nil)
+      BitStationCoinbaseClient.new(coinbase_client_id, coinbase_client_secret, credentials.symbolize_keys, user)
     end
 
     def current_coinbase_client
       if current_user.coinbase_account && current_user.coinbase_account.oauth_credentials
-        @current_coinbase_client ||= coinbase_client_with_oauth_credentials(current_user.coinbase_account.oauth_credentials)
+        @current_coinbase_client ||= coinbase_client_with_oauth_credentials(current_user.coinbase_account.oauth_credentials, current_user)
       else
         nil
       end
@@ -127,9 +122,17 @@ class ApplicationController < ActionController::Base
     def rescue_unhandled_exception
       begin
         yield
-      rescue
-        flash[:error] = 'An unknown error happened. '
-        redirect_to root_url
+      rescue => e
+        logger.error 'From the unknown error handler: '
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
+
+        if @is_module
+          render inline: '<p>An unknown error happened. '
+        else
+          flash[:error] = 'An unknown error happened. '
+          redirect_to root_url
+        end
       end
     end
 
@@ -158,6 +161,18 @@ class ApplicationController < ActionController::Base
 
     def signed_in_with_access_code?
       session[:access_code] && signed_in?
+    end
+
+    def check_for_unlinked_coinbase_account
+      render 'dashboard/unlinked_coinbase_account', layout: false unless has_coinbase_account_linked?
+    end
+
+    def store_location
+      session[:return_to] = request.fullpath if request.get? and controller_name != "sessions" and action_name != 'homepage'
+    end
+
+    def redirect_back_or_default(default)
+      redirect_to(session[:return_to] || default)
     end
 
     helper_method :current_user, :signed_in?, :current_user_name, :has_coinbase_account_linked?, :sign_in_with_access_code, :signed_in_with_access_code?

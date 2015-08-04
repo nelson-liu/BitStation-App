@@ -1,0 +1,26 @@
+<% if @activities.empty? %>
+  <div class="panel-body center">Nothing going on, really? :(</div>
+<% else %>
+  <% @activities.each do |a| %>
+    <div class="panel-body">
+      <div class="media">
+
+        <div class="media-body popuppable" data-load="<%= a[:load] %>">
+          <h5 class="media-heading"><%= a[:title] %></h5>
+          <p><%= a[:content] %></p>
+          <div>
+            <% if a[:comments] %>
+              <span id="<%= a[:comments][:display_id] %>" class="label label-default"><%= pluralize(a[:comments][:count], 'Comment') %></span>
+            <% end %>
+            <div class="fb-like" data-href="<%= a[:like_link] %>" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div><a href="<%= a[:like_link] %>" target="_blank" class="external-link"><i class="fa fa-external-link" style="color: #333; margin-left: 7px;"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+  <% end %>
+<% end %>
+
+<script>
+  $(".external-link").click(function() {window.open($(this).closest("a").attr("href"), "_blank"); return false});</script>

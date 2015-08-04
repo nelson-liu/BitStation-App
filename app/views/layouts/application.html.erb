@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>
+    <% if Rails.env.development? %>
+      [Dev]
+    <% end %>
     BitStation
     <% if @subtitle %>
       <%= " - #{@subtitle}" %>
@@ -70,6 +73,20 @@
   </div>
 
   <%= javascript_include_tag "application" %>
+
+  <!-- Facebook SDK -->
+  <div id="fb-root"></div>
+
+  <script>
+    if (typeof (FB) != 'undefined') {
+      FB.init({ status: true, cookie: true, xfbml: true });
+    } else {
+      $.getScript("https://connect.facebook.net/en_US/all.js#xfbml=1", function () {
+        FB.init({ status: true, cookie: true, xfbml: true });
+      });
+    }
+  </script>
+
   <!-- FOOTER -->
   <footer class="container">
     <div class="">
@@ -80,10 +97,10 @@
         <%= link_to 'FAQ', faq_path %> &middot;
         <%= link_to 'Team', team_path %> &middot;
         <%= link_to 'Privacy', privacy_path %> &middot;
-        <a href="mailto:someone@example.com" target="_top">Contact</a>
+        <a href="mailto:bitstation@mit.edu" target="_top">Contact</a>
       </p>
-      </div>
-    </footer>
+    </div>
+  </footer>
 
 </body>
 </html>

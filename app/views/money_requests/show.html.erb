@@ -1,0 +1,58 @@
+<% if @request %>
+  <% if @should_show %>
+    <div class="panel-body">
+      <h4>Money Request Details</h4>
+      <p>Sent on <%= @request.created_at.strftime('%b %d, %Y at %I:%M %p') %></p>
+
+      <%= transaction_description_labels(@from, :request, @to, @request.amount) %>
+    </div>
+
+    <% if @request.message && !@request.message.strip.empty? %>
+      <hr>
+      <div class="panel-body">
+        <p>Here is the message attached: </p>
+        <p><%= @request.message %></p>
+      </div>
+    <% end %>
+
+    <% if @to == 'you' && @request.pending? %>
+      <hr>
+      <div class="panel-body">
+        <%= link_to 'Pay', pay_money_request_path(@request), method: :post, class: 'btn btn-primary' %>
+        <%= link_to 'Deny', deny_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true, data: {confirm: 'Do you really want to deny this money request? '} %>
+      </div>
+    <% end %>
+
+    <% if @from == 'You' && @request.pending? %>
+      <hr>
+      <div class="panel-body">
+        <%= link_to 'Resend', resend_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true %>
+        <%= link_to 'Cancel', cancel_money_request_path(@request), method: :post, class: 'btn btn-primary', remote: true, data: {confirm: 'Do you really want to cancel this money request? '} %>
+      </div>
+    <% end %>
+
+    <hr>
+
+    <div class="panel-body">
+      <% if @request.paid? %>
+        <p>The request has already been paid on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
+      <% end %>
+
+      <% if @request.denied? %>
+        <p>The request has been denied by the requestee on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
+      <% end %>
+
+      <% if @request.pending? %>
+        <p>The requestee hasn't responded to the request yet. </p>
+      <% end %>
+
+      <% if @request.cancelled? %>
+        <p>The request has been cancelled by the sender on <%= @request.updated_at.strftime('%b %d, %Y at %I:%M %p') %>. </p>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="panel-body">You can only view requests that are either sent by you or to you. </div>
+  <% end %>
+<% else %>
+  <p>No such request. </p>
+<% end %>

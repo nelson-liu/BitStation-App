@@ -4,7 +4,7 @@ source 'https://rubygems.org/'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', :group => [:development, :test]
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -66,3 +66,26 @@ gem 'recap'
 
 # Foreman
 gem 'foreman'
+
+# Bootstrap Datepicker
+gem 'bootstrap-datepicker-rails'
+
+# Testing gems
+gem 'rspec-rails'
+gem 'factory_girl_rails'
+gem 'faker'
+gem 'capybara'
+gem 'database_cleaner'
+gem 'launchy'
+gem 'selenium-webdriver'
+
+# Heroku
+gem 'rails_12factor'
+gem 'pg'
+
+# Thin server
+gem 'thin'
+
+# Email validation
+gem 'valid_email'
+

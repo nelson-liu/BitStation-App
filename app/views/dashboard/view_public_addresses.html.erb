@@ -1,0 +1,11 @@
+<div class="panel-body transaction_details">
+	<div class="panel-body transaction_details">
+		<h4>Your Public Bitcoin Addresses:</h4>
+		(click to view info on the blockchain)
+		<% @public_address.each do |key| %>
+			<% @useraddress = key["address"]["address"] %>
+			<% @url = "https://blockchain.info/address/" + @useraddress %>
+			<p><%= link_to @useraddress, @url %></p>
+		<% end %>
+	</div>
+</div>

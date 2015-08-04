@@ -11,6 +11,8 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+/config/database.yml
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
@@ -20,3 +22,5 @@ vendor
 /.tags
 /.tags_sorted_by_file
 /.gemtags
+bfg.jar
+set_env_for_heroku.sh

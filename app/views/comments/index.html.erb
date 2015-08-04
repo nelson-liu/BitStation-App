@@ -1,0 +1,9 @@
+<div id="comments">
+  <% if @comments.empty? %>
+    <p>There are no comments to be shown. </p>
+  <% else %>
+    <% @comments.each do |c| %>
+      <%= render c %>
+    <% end %>
+  <% end %>
+</div>

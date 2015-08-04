@@ -1,0 +1,63 @@
+<% if @is_coinbase %>
+	<div class="panel-body transaction_details">
+		<h4>Transaction <%= @transaction_id %></h4>
+
+		<p><%= DateTime.parse(@transaction_date).strftime('%b %d, %Y at %I:%M %p') %></p>
+
+		<% note = @display_data[:note][:content] rescue nil %>
+		<% if note && !note.empty? %>
+			<p><%= @display_data[:note][:content] %></p>
+		<% end %>
+
+		<p><span class="label label-<%= @transaction['amount'] > 0 ? 'success' : 'danger' %>"><%= friendly_amount_from_money(@transaction['amount'], {:round=>4}) %></span>
+			<% if @transaction['amount'] < 0 %>
+				<%= '<span class="label label-danger">Outgoing</span>'.html_safe %>
+			<% elsif @transaction['amount'] > 0 %>
+				<%= '<span class="label label-success">Incoming</span>'.html_safe %>
+			<% end %>
+			<% if @transaction['status'] == "pending" %>
+				<%= '<span class="label label-warning">Pending</span>'.html_safe %>
+			<% elsif @transaction['status'] == "complete" %>
+				<%= '<span class="label label-success">Complete</span>'.html_safe %>
+			<% end %>
+		</p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<h4>Sender</h4>
+		<p><%= @transaction_sender_name %></p>
+		<p><%= @transaction_sender_email %></p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<h4>Recipient</h4>
+		<p><%= @transaction_recipient_name %></p>
+		<p><%= @transaction_recipient_email %></p>
+	</div>
+	<hr>
+	<div class="panel-body transaction_details">
+		<p><%= @footer.html_safe %><p>
+	</div>
+<% else %>
+	<div class="panel-body">
+		<h4>Transaction Details</h4>
+		<p>Made on <%= @transaction.created_at.strftime('%b %d, %Y at %I:%M %p') %></p>
+
+		<%= transaction_description_labels(@from, :send, @to, @transaction.amount) %>
+    <p><div class="fb-like" data-href="<%= @a[:like_link] %>" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div></p>
+	</div>
+
+	<hr>
+
+	<div>
+		<div data-load="<%= new_transaction_comment_path(@transaction) %>" data-load-order="1"></div>
+
+		<div data-load="<%= transaction_comments_path(@transaction) %>" data-load-order="2">
+			Loading comments...
+		</div>
+	</div>
+
+	<%= javascript_tag do -%>
+		window.load_contents();
+	<% end %>
+<% end %>

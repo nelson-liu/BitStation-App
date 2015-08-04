@@ -7,9 +7,19 @@
 		background-color: white;
 		box-shadow:0 1px 2px #aaa;
 		background: white;
+		h1 { text-align: center;}
 	}
 	.alert {
 		margin: 0;
+	}
+}
+
+.static_pages-action {
+	.col-lg-4, .col-md-4 {
+		padding:20px;
+		h4 {
+			text-align: center;
+		}
 	}
 }
 
@@ -32,6 +42,10 @@
 		padding-top: 15px;
 		padding-bottom: 30px;
 	}
+	.col-lg-4, .col-md-4 {
+		padding: 0 15px;
+	}
+
 	#preview {
 		padding-top: 30px;
 		padding-bottom: 50px;
@@ -46,4 +60,8 @@
 	.center.row h1 {
 			margin-bottom: 30px;
 	}
+}
+
+#static_pages-beta{
+	
 }

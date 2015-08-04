@@ -1,11 +1,26 @@
 class User < ActiveRecord::Base
   has_one :coinbase_account
 
-  has_many :pending_outgoing_transactions, class_name: 'PendingTransaction', foreign_key: 'sender_id'
-  has_many :pending_incoming_transactions, class_name: 'PendingTransaction', foreign_key: 'recipient_id'
+  has_many :pending_outgoing_transactions, class_name: 'Transaction', foreign_key: 'sender_id'
+  has_many :pending_incoming_transactions, class_name: 'Transaction', foreign_key: 'recipient_id'
+
+  has_many :outgoing_money_requests, class_name: 'MoneyRequest', foreign_key: 'sender_id'
+  has_many :incoming_money_requests, class_name: 'MoneyRequest', foreign_key: 'requestee_id'
+
+  has_many :contacts
+  has_many :transfers, class_name: "Transfer", foreign_key: "user_id"
+  has_many :comments
+  has_many :notes
 
   validates :kerberos, uniqueness: true, presence: true
   validates :name, presence: true
+
+  def self.address_type(address)
+    return :coinbase if address =~ /@/
+    return :bitstation if address.length <= 10
+    return :external if Bitcoin::valid_address?(address)
+    return nil
+  end
 
   def update_coinbase_oauth_credentials(credentials)
     coinbase_account.update!({oauth_credentials: credentials})
@@ -18,6 +33,15 @@ class User < ActiveRecord::Base
 
   def revoke_access_code
     update!({access_code: nil, access_code_redeemed: false})
+  end
+
+  def to_search_suggestion
+    {
+      'address' => kerberos,
+      'name' => name,
+      'tokens' => name.split(' ') + [kerberos],
+      'type' => 'bitstation'
+    }
   end
 
   def self.user_with_unredeemed_access_code(code)

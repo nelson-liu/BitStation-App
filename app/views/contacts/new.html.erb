@@ -1,0 +1,15 @@
+<div>
+  <%= form_tag contacts_path, id: 'new_contact_form', remote: true %>
+    <div class="form-group">
+      <%= label_tag 'Name' %>
+      <%= text_field_tag 'name', '', placeholder: 'Name of Contact', class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'address' %>
+      <%= text_field_tag 'address', '', placeholder: "Kerberos ID / email, Coinbase email (if non-MIT), or BTC address", class: 'form-control' %>
+    </div>
+
+    <%= submit_tag 'Add Contact', class: 'btn btn-primary' %>
+  </form>
+</div>

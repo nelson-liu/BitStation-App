@@ -1,0 +1,87 @@
+// Place all the styles related to the transaction controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#history_activity_dropdown {
+  // border: none;
+  padding: 0;
+  height: 35px;
+  width: 100%;
+
+  button {
+    height: 35px;
+    width: 100%;
+    border: none;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+  }
+}
+
+#clearfilter{
+  position:absolute; 
+  right: 6px;
+  top: 4px;
+  font-size: 19px;
+}
+
+#clearfilterspan{
+  position:absolute; 
+  right: 6px;
+  top: 4px;
+  font-size: 19px;
+}
+
+.fa-lg > i {
+  color: #888;
+}
+
+.fa-lg:hover {
+  color: #000000
+}
+
+.fa-lg:hover > i {
+  color: #000000; 
+}
+
+#cleardate{
+  position:relative;
+  width:90px;
+  padding-right:70px
+}
+
+#filter-date{
+  width:90px;
+}
+
+/***** TRANSACTION DETAILS POPUP STYLES *****/
+.transaction_details {
+  padding: 5px 20px;
+  h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+/***** TRANSACTION HISTORY STYLES *****/
+.account-activity-history-table {
+  text-align: center;
+  i.fa {
+    font-size: 20px;
+    line-height: 50%;
+  }
+}
+
+#transaction-history-table-detailed {
+  text-align: center;
+  #filter-date {
+    min-width: 75px;
+  }
+  #filter-amount {
+    min-width: 100px;
+  }
+}

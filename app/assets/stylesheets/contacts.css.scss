@@ -1,0 +1,55 @@
+// Place all the styles related to the contacts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/***** ADDRESS BOOK MODULE STYLES *****/
+#address_book_module {
+	section {
+		height: 350px;
+		overflow: hidden;
+	}
+	#address-book-filter, #address-book-new-contact {
+		border-radius: 0;
+		border: none;
+		height: 35px;
+		display: inline-block;
+	}
+	#address-book-filter {
+		width: 75%;
+	}
+	#address-book-new-contact {
+		width: 25%;
+		border-left: 1px solid #BBB
+	}
+	#address-book-pagination {
+		padding: 0;
+		height:35px;
+		#previous, #next {
+			border-radius: 0;
+		}
+	}
+
+}
+
+#edit_contact_btn {
+	padding:5px 10px;
+}
+
+.contact-detail-delete {
+	width: 100%;
+}
+
+#contact_form {
+	a {
+		margin-right: 10px;
+		margin-top: 10px;
+	}
+
+	input {
+		margin: 5px;
+	}
+
+	p[data-display-role=error] {
+		color: red;
+	}
+}

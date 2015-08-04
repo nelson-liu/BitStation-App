@@ -1,0 +1,74 @@
+<%= form_for @contact, remote: true, html: {id: 'contact_form'} do |f| %>
+<div class="panel-body">
+  <%= link_to 'Edit', "javascript: $('#contact_form').begin_edit(); ", id: 'edit_contact_btn', class: 'pull-right btn btn-success', data: {display_role: 'begin'} %>
+  <%= link_to 'Submit Changes', "javascript: $('#contact_form').submit(); ", class: 'pull-right', data: {display_role: 'submit'} %>
+  <%= link_to 'Cancel', "javascript: $('#contact_form').end_edit(); ", class: 'pull-right', data: {display_role: 'cancel'} %>
+  <h4 data-display-role="display" data-display-field="name">
+    <%= @contact.name %>
+  </h4>
+
+  <%= f.text_field :name, data: {display_role: 'edit', display_field: 'name'} %>
+
+  <p>
+    <span class="label label-default"><%= @contact.address %></span>
+
+    <% if @contact.bitstation?  %>
+      <span class="label label-danger">MIT</span>
+    <% end %>
+
+    <% if @contact.coinbase? %>
+      <span class="label label-primary">Coinbase</span>
+    <% end %>
+
+    <% if @contact.external? %>
+      <span class="label label-warning">External</span>
+    <% end %>
+  </p>
+
+  <p data-display-role="error"></p>
+</div>
+
+<% if @is_placeholder %>
+  <hr>
+  <div class="panel-body">
+    <p>The contact hasn't joined BitStation yet. </p>
+  </div>
+<% else %>
+  <% if @has_money_requests_section %>
+    <hr>
+
+    <div class="panel-table-header">
+      <h5>Recent money requests</h5>
+    </div>
+
+    <%= render 'account_activity_history', id: 'contact-details-money-requests-history-table', data: @requests, activity: 'money request', paging: false, activity_type_dropdown: false %>
+  <% end %>
+
+  <% if @has_transactions_section %>
+    <% unless @has_money_requests_section %>
+      <hr>
+    <% end %>
+
+    <div class="panel-table-header">
+      <h5>Recent transactions</h5>
+    </div>
+
+    <%= render 'account_activity_history', id: 'contact-details-transactions-history-table', data: @transactions, activity: 'transaction', paging: false, activity_type_dropdown: false %>
+  <% end %>
+
+  <script>
+    window.recalculate_truncate_width('#contact-details-money-requests-history-table');
+    window.recalculate_truncate_width('#contact-details-transactions-history-table');
+  </script>
+<% end %>
+
+<hr>
+
+<div class="panel-body">
+  <%= link_to 'Delete Contact', contact_path(@contact), class: 'btn btn-danger contact-detail-delete', method: :delete, remote: true, data: {confirm: 'Do you really want to delete ' + @contact.name + '? '} %>
+</div>
+<% end %>
+
+<script>
+  $('#contact_form').init_edit();
+</script>

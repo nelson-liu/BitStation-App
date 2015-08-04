@@ -1,0 +1,11 @@
+<% if @error %>
+  window.trigger_popup_alert("<%=j @error %>", "error");
+<% else %>
+  $('#comment_<%= @comment.id %>').remove();
+
+  if ($('#comments').children().length == 0) {
+    $('#comments').html('<p>There are no comments to be shown. </p>');
+  }
+
+  $("#transaction_comments_count_<%= @transaction.id %>").text("<%=j pluralize(@transaction.comments.count, 'Comment') %>");
+<% end %>
